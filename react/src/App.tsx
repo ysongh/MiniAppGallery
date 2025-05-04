@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-      <div>Mini App Gallery</div>
+      <div className="bg-blue-400">Mini App Gallery</div>
       <ConnectMenu />
     </>
   );
