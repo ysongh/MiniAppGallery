@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Upload, X } from 'lucide-react';
 
+import FormHeader from '../components/layout/FormHeader';
+
 const categories = [
   "Developer Tools",
   "Shopping",
@@ -154,6 +156,8 @@ function SubmitAppPage() {
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col">
+        <FormHeader />
+        
         <div className="container mx-auto px-4 py-10 flex-1 flex flex-col">
           <div className="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto flex flex-col items-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
@@ -185,7 +189,8 @@ function SubmitAppPage() {
     
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-
+      <FormHeader />
+      
       {/* Main Content */}
       <div className="container mx-auto px-4 py-10 flex-1">
         <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
