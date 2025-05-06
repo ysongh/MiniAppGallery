@@ -4,6 +4,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom'
 
 import { ConnectMenu } from "./components/ConnectMenu";
 import MiniAppList from "./pages/MiniAppList";
+import SubmitAppPage from "./pages/SubmitAppPage";
 
 function App() {
   useEffect(() => {
@@ -15,8 +16,8 @@ function App() {
       <ConnectMenu />
       <Routes>
         <Route
-          path="/test"
-          element={<h1>Test</h1>} />
+          path="/submitapp"
+          element={<SubmitAppPage />} />
         <Route
           path="/"
           element={<MiniAppList />} />
