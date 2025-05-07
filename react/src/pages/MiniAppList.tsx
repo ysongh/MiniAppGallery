@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Tag, Zap } from 'lucide-react';
 
+import MiniAppListHeader from '../components/layout/MiniAppListHeader';
 import AppCard from '../components/AppCard';
 import FeaturedAppCard from '../components/FeaturedAppCard';
 
@@ -187,6 +188,8 @@ function MiniAppList() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <MiniAppListHeader />
+      
       {/* Main Content */}
       <main className="container mx-auto px-4 py-6">
         {/* Category Filter */}
