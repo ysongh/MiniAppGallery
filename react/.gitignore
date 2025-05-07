@@ -13,6 +13,10 @@ dist-ssr
 *.local
 pnpm-lock.yaml
 
+# Hardhat files
+cache
+artifacts
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

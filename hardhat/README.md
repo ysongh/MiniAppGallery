@@ -5,6 +5,6 @@
  npx hardhat test
  REPORT_GAS=true npx hardhat test
  npx hardhat node
- npx hardhat ignition deploy ./ignition/modules/DataRewardFlow.js --network localhost
+ npx hardhat ignition deploy ./ignition/modules/MiniAppGallery.js --network localhost
  ```
  
