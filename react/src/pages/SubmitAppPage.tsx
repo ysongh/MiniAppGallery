@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Upload, X } from 'lucide-react';
+import { useWriteContract } from "wagmi";
+import { hardhat } from "wagmi/chains";
 
 import FormHeader from '../components/layout/FormHeader';
+import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json'
+import { CONTRACT_ADDRESS } from '../config';
 
 const categories = [
   "Developer Tools",
@@ -29,6 +33,12 @@ function SubmitAppPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const {
+    writeContract,
+    data: txHash,
+    isPending
+  } = useWriteContract();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -123,6 +133,15 @@ function SubmitAppPage() {
     
     if (validateForm()) {
       setIsSubmitting(true);
+
+      const {name, description, developer, category, url} = formData;
+
+      writeContract({
+        address: CONTRACT_ADDRESS,
+        abi: MiniAppGallery.abi,
+        functionName: "registerApp",
+        args: [name, description, developer, category, url, url]
+      })
       
       // Simulate API call
       setTimeout(() => {
@@ -167,6 +186,16 @@ function SubmitAppPage() {
             <p className="text-gray-600 text-center mb-8">
               Thank you for submitting your app. Our team will review it and get back to you soon.
             </p>
+            {isPending && <div className="mt-4">Pending...</div>}
+            {txHash && (
+              <div className="mt-4">
+                <a
+                  href={hardhat.blockExplorers?.default + "/tx/" + txHash}
+                >
+                  View Transaction
+                </a>
+              </div>
+            )}
             <div className="flex space-x-4">
               <button
                 onClick={resetForm}
