@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, Upload, X } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { useWriteContract } from "wagmi";
 import { hardhat } from "wagmi/chains";
 import { parseEther } from 'viem';
@@ -27,13 +27,11 @@ function SubmitAppPage() {
     developer: '',
     category: '',
     url: '',
-    icon: null as File | null,
     customCategory: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const {
     writeContract,
@@ -52,29 +50,6 @@ function SubmitAppPage() {
         delete newErrors[name];
         return newErrors;
       });
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    
-    if (file) {
-      // Create preview URL
-      const objectUrl = URL.createObjectURL(file);
-      setPreviewUrl(objectUrl);
-      
-      setFormData(prev => ({ ...prev, icon: file }));
-      
-      // Clear error
-      if (errors.icon) {
-        setErrors(prev => {
-          const newErrors = { ...prev };
-          delete newErrors.icon;
-          return newErrors;
-        });
-      }
-      
-      return () => URL.revokeObjectURL(objectUrl);
     }
   };
 
@@ -121,10 +96,6 @@ function SubmitAppPage() {
       newErrors.url = 'URL must start with http:// or https://';
     }
     
-    if (!formData.icon) {
-      newErrors.icon = 'Please upload an app icon';
-    }
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -163,15 +134,10 @@ function SubmitAppPage() {
       developer: '',
       category: '',
       url: '',
-      icon: null,
       customCategory: ''
     });
     setErrors({});
     setIsSubmitted(false);
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-      setPreviewUrl(null);
-    }
   };
 
   if (isSubmitted) {
@@ -227,61 +193,6 @@ function SubmitAppPage() {
         <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
-              {/* App Icon Upload */}
-              <div>
-                <label className="block text-gray-700 font-medium mb-2">App Icon</label>
-                <div className="flex items-center space-x-6">
-                  <div className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center bg-gray-50 overflow-hidden">
-                    {previewUrl ? (
-                      <div className="relative w-full h-full">
-                        <img 
-                          src={previewUrl} 
-                          alt="App icon preview" 
-                          className="w-full h-full object-cover"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (previewUrl) {
-                              URL.revokeObjectURL(previewUrl);
-                              setPreviewUrl(null);
-                              setFormData(prev => ({ ...prev, icon: null }));
-                            }
-                          }}
-                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ) : (
-                      <Upload className="w-8 h-8 text-gray-400" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <input
-                      type="file"
-                      id="icon"
-                      name="icon"
-                      className="hidden"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                    />
-                    <label
-                      htmlFor="icon"
-                      className="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors cursor-pointer"
-                    >
-                      Choose File
-                    </label>
-                    <p className="text-sm text-gray-500 mt-2">
-                      Recommended size: 512x512px, PNG or JPG
-                    </p>
-                    {errors.icon && (
-                      <p className="text-red-500 text-sm mt-1">{errors.icon}</p>
-                    )}
-                  </div>
-                </div>
-              </div>
-
               {/* App Name */}
               <div>
                 <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
