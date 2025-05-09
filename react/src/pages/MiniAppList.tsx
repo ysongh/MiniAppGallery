@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Tag, Zap } from 'lucide-react';
+import { useReadContract } from 'wagmi';
 
 import MiniAppListHeader from '../components/layout/MiniAppListHeader';
 import AppCard from '../components/AppCard';
 import FeaturedAppCard from '../components/FeaturedAppCard';
+import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
+import { CONTRACT_ADDRESS } from '../config';
 
 // Define TypeScript interfaces
 interface MiniApp {
@@ -183,8 +186,16 @@ function MiniAppList() {
     setApps(filteredApps);
   }, [searchTerm, selectedCategory]);
 
+  const { data: miniappids = [] } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: MiniAppGallery.abi,
+    functionName: 'getAllApps'
+  });
+
   // Get featured apps
   const featuredApps = mockApps.filter(app => app.featured);
+
+  console.log(miniappids);
 
   return (
     <div className="min-h-screen bg-gray-50">
