@@ -258,10 +258,10 @@ function MiniAppList() {
             </h2>
           </div>
           
-          {apps.length > 0 ? (
+          {miniappids.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-              {apps.map(app => (
-                <AppCard key={app.id} app={app} />
+              {miniappids.map(id => (
+                <AppCard key={id} id={id} />
               ))}
             </div>
           ) : (
