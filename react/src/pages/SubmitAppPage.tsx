@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Check, Upload, X } from 'lucide-react';
 import { useWriteContract } from "wagmi";
 import { hardhat } from "wagmi/chains";
+import { parseEther } from 'viem';
 
 import FormHeader from '../components/layout/FormHeader';
-import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json'
+import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { CONTRACT_ADDRESS } from '../config';
 
 const categories = [
@@ -140,7 +141,8 @@ function SubmitAppPage() {
         address: CONTRACT_ADDRESS,
         abi: MiniAppGallery.abi,
         functionName: "registerApp",
-        args: [name, description, developer, category, url, url]
+        args: [name, description, developer, category, url, url],
+        value: parseEther("0.1"),
       })
       
       // Simulate API call
