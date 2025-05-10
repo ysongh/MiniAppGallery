@@ -17,7 +17,6 @@ contract MiniAppGallery {
         uint256 id;
         string name;
         string description;
-        string developer;
         string category;
         string appUrl;
         string iconUrl;
@@ -94,7 +93,6 @@ contract MiniAppGallery {
      * @dev Register a new app
      * @param _name App name
      * @param _description App description
-     * @param _developer Developer name
      * @param _category App category
      * @param _appUrl App URL
      * @param _iconUrl App icon URL
@@ -102,14 +100,12 @@ contract MiniAppGallery {
     function registerApp(
         string memory _name,
         string memory _description,
-        string memory _developer,
         string memory _category,
         string memory _appUrl,
         string memory _iconUrl
     ) external payable {
         require(bytes(_name).length > 0, "App name cannot be empty");
         require(bytes(_description).length > 0, "App description cannot be empty");
-        require(bytes(_developer).length > 0, "Developer name cannot be empty");
         require(bytes(_category).length > 0, "Category cannot be empty");
         require(bytes(_appUrl).length > 0, "App URL cannot be empty");
         require(msg.value >= registrationFee, "Insufficient registration fee");
@@ -122,7 +118,6 @@ contract MiniAppGallery {
             id: totalApps,
             name: _name,
             description: _description,
-            developer: _developer,
             category: _category,
             appUrl: _appUrl,
             iconUrl: _iconUrl,
@@ -156,7 +151,6 @@ contract MiniAppGallery {
      * @param _appId ID of the app to update
      * @param _name Updated app name
      * @param _description Updated app description
-     * @param _developer Updated developer name
      * @param _category Updated app category
      * @param _appUrl Updated app URL
      * @param _iconUrl Updated app icon URL
@@ -165,14 +159,12 @@ contract MiniAppGallery {
         uint256 _appId,
         string memory _name,
         string memory _description,
-        string memory _developer,
         string memory _category,
         string memory _appUrl,
         string memory _iconUrl
     ) external appExists(_appId) onlyAppDeveloper(_appId) {
         require(bytes(_name).length > 0, "App name cannot be empty");
         require(bytes(_description).length > 0, "App description cannot be empty");
-        require(bytes(_developer).length > 0, "Developer name cannot be empty");
         require(bytes(_category).length > 0, "Category cannot be empty");
         require(bytes(_appUrl).length > 0, "App URL cannot be empty");
         
@@ -180,7 +172,6 @@ contract MiniAppGallery {
         
         app.name = _name;
         app.description = _description;
-        app.developer = _developer;
         app.category = _category;
         app.appUrl = _appUrl;
         app.iconUrl = _iconUrl;

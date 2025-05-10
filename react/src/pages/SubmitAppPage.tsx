@@ -24,7 +24,6 @@ function SubmitAppPage() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    developer: '',
     category: '',
     url: '',
     customCategory: ''
@@ -78,10 +77,6 @@ function SubmitAppPage() {
       newErrors.description = 'Description is required';
     }
     
-    if (!formData.developer.trim()) {
-      newErrors.developer = 'Developer name is required';
-    }
-    
     if (!formData.category) {
       newErrors.category = 'Please select a category';
     }
@@ -106,13 +101,13 @@ function SubmitAppPage() {
     if (validateForm()) {
       setIsSubmitting(true);
 
-      const {name, description, developer, category, url} = formData;
+      const {name, description, category, url} = formData;
 
       writeContract({
         address: CONTRACT_ADDRESS,
         abi: MiniAppGallery.abi,
         functionName: "registerApp",
-        args: [name, description, developer, category, url, url],
+        args: [name, description, category, url, url],
         value: parseEther("0.1"),
       })
       
@@ -131,7 +126,6 @@ function SubmitAppPage() {
     setFormData({
       name: '',
       description: '',
-      developer: '',
       category: '',
       url: '',
       customCategory: ''
@@ -213,29 +207,6 @@ function SubmitAppPage() {
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-                )}
-              </div>
-
-              {/* Developer Name */}
-              <div>
-                <label htmlFor="developer" className="block text-gray-700 font-medium mb-2">
-                  Developer/Creator
-                </label>
-                <input
-                  type="text"
-                  id="developer"
-                  name="developer"
-                  value={formData.developer}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                    errors.developer
-                      ? 'border-red-300 focus:ring-red-200'
-                      : 'border-gray-300 focus:ring-indigo-200'
-                  }`}
-                  placeholder="Enter developer or creator name"
-                />
-                {errors.developer && (
-                  <p className="text-red-500 text-sm mt-1">{errors.developer}</p>
                 )}
               </div>
 
