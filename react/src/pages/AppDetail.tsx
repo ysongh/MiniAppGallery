@@ -5,10 +5,7 @@ import {
   Star, 
   ExternalLink, 
   Calendar, 
-  BarChart, 
-  Download, 
-  Share2, 
-  Flag, 
+  Download,
   Tag,
   ChevronLeft,
   ChevronRight
@@ -28,14 +25,11 @@ interface MiniApp {
   downloads?: number;
   releaseDate?: string;
   version?: string;
-  screenshots?: string[];
   longDescription?: string;
   privacyPolicy?: string;
   supportUrl?: string;
 }
 
-// Import the mockApps from your application context or API
-// For this example, we'll assume a function that returns app by ID
 const getAppById = (id: string): MiniApp | undefined => {
   // This would be a call to your API or app context in a real application
   // Placeholder function that returns mock app data
@@ -52,11 +46,6 @@ const getAppById = (id: string): MiniApp | undefined => {
     downloads: 125000,
     releaseDate: '2024-03-15',
     version: '2.1.3',
-    screenshots: [
-      'https://example.com/frames-screenshot1.png',
-      'https://example.com/frames-screenshot2.png',
-      'https://example.com/frames-screenshot3.png'
-    ],
     longDescription: 'Frames.js is a powerful framework for building interactive, onchain applications on Farcaster. With the Frames protocol, developers can create engaging experiences that blend social media with web3 functionality.\n\nThe library provides a comprehensive set of tools and components to streamline development and ensure compatibility across the Farcaster ecosystem. Whether you\'re building simple interactive posts or complex dApps, Frames.js offers the flexibility and performance you need.\n\nKey features include:\n- Easy integration with existing Farcaster apps\n- Robust authentication and authorization flows\n- Optimized performance for chain interactions\n- Comprehensive documentation and examples\n- Active developer community and support',
     privacyPolicy: 'https://frames.js.org/privacy',
     supportUrl: 'https://frames.js.org/support'
@@ -201,59 +190,6 @@ function AppDetail() {
             </div>
           </div>
         </section>
-
-        {/* Screenshots */}
-        {app.screenshots && app.screenshots.length > 0 && (
-          <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Screenshots</h2>
-            <div className="relative">
-              <div className="flex justify-center bg-gray-100 rounded-lg overflow-hidden h-64 md:h-96">
-                {/* Placeholder for screenshots - in a real app we'd use actual images */}
-                <div className="relative w-full">
-                  <div className="absolute inset-0 flex items-center justify-center bg-indigo-100 m-4 rounded-lg">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-indigo-500">Screenshot {currentScreenshotIndex + 1}</div>
-                      <div className="text-gray-500 mt-2">{app.name} - {app.screenshots[currentScreenshotIndex].split('/').pop()}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Navigation arrows */}
-              {app.screenshots.length > 1 && (
-                <>
-                  <button
-                    onClick={prevScreenshot}
-                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
-                  >
-                    <ChevronLeft className="w-6 h-6 text-gray-800" />
-                  </button>
-                  <button
-                    onClick={nextScreenshot}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
-                  >
-                    <ChevronRight className="w-6 h-6 text-gray-800" />
-                  </button>
-                </>
-              )}
-            </div>
-            
-            {/* Thumbnail indicators */}
-            {app.screenshots.length > 1 && (
-              <div className="flex justify-center space-x-2 mt-4">
-                {app.screenshots.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentScreenshotIndex(index)}
-                    className={`w-2 h-2 rounded-full ${
-                      index === currentScreenshotIndex ? 'bg-indigo-600' : 'bg-gray-300'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
-          </section>
-        )}
 
         {/* Description */}
         <section className="bg-white rounded-lg shadow-md p-6 mb-6">
