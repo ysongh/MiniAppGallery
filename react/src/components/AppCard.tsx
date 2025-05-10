@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Star, ExternalLink } from 'lucide-react';
 import { useReadContract } from 'wagmi';
 
@@ -55,6 +56,14 @@ function AppCard({ id }: { id: Number }) {
             <ExternalLink className="w-4 h-4 mr-2" />
             Open App
           </a>
+        </div>
+        <div className="mt-4">
+          <Link
+            to={`/app/${id}`}
+            className="flex items-center justify-center w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg transition-colors"
+          >
+            View
+          </Link>
         </div>
       </div>
     </div>
