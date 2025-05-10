@@ -3,7 +3,7 @@ pragma solidity ^0.8.19;
 
 /**
  * @title MiniAppGallery
- * @dev A smart contract for registering and managing Farcaster mini-apps
+ * @dev A smart contract for registering and managing Farcaster mini-apps with rating system
  */
 contract MiniAppGallery {
     // Contract owner
@@ -24,10 +24,27 @@ contract MiniAppGallery {
         bool isFeatured;
         uint256 registrationDate;
         bool isActive;
+        uint256 totalRating;     // Sum of all ratings
+        uint256 ratingCount;     // Number of ratings received
+    }
+    
+    // Rating structure
+    struct Rating {
+        address user;
+        uint256 value;          // 1-5
+        string comment;
+        uint256 timestamp;
     }
     
     // Store apps by ID
     mapping(uint256 => App) public apps;
+    
+    // Store app ratings
+    mapping(uint256 => Rating[]) public appRatings;
+    
+    // Track user ratings
+    mapping(uint256 => mapping(address => uint256)) public userRatingIndex;
+    mapping(uint256 => mapping(address => bool)) public hasUserRated;
     
     // Mapping of developer addresses to their app IDs
     mapping(address => uint256[]) public developerApps;
@@ -41,7 +58,7 @@ contract MiniAppGallery {
     // Category list
     string[] public categories;
     
-    // Total apps counter (also used as ID generator)
+    // Total apps counter
     uint256 public totalApps;
     
     // Events
@@ -52,50 +69,43 @@ contract MiniAppGallery {
     event FeeUpdated(uint256 newFee);
     event FundsWithdrawn(address indexed to, uint256 amount);
     event CategoryAdded(string category);
+    event RatingSubmitted(uint256 indexed appId, address indexed user, uint256 rating);
+    event RatingUpdated(uint256 indexed appId, address indexed user, uint256 newRating);
     
     // Modifiers
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only the contract owner can call this function");
+        require(msg.sender == owner, "Only owner can call");
         _;
     }
     
     modifier onlyAppDeveloper(uint256 _appId) {
-        require(apps[_appId].developerAddress == msg.sender, "Only the app developer can call this function");
+        require(apps[_appId].developerAddress == msg.sender, "Only app developer can call");
         _;
     }
     
     modifier appExists(uint256 _appId) {
-        require(_appId > 0 && _appId <= totalApps, "App does not exist");
-        require(apps[_appId].registrationDate > 0, "App does not exist");
+        require(_appId > 0 && _appId <= totalApps && apps[_appId].registrationDate > 0, "App does not exist");
+        _;
+    }
+    
+    modifier validRating(uint256 _rating) {
+        require(_rating >= 1 && _rating <= 5, "Rating must be 1-5");
         _;
     }
     
     /**
-     * @dev Constructor: initializes the contract with default categories
+     * @dev Constructor: initializes the contract
      */
     constructor() {
         owner = msg.sender;
         
         // Add default categories
-        categories.push("Social");
-        categories.push("Finance");
-        categories.push("NFTs");
-        categories.push("Games");
-        categories.push("Developer Tools");
-        categories.push("Communication");
-        categories.push("Entertainment");
-        categories.push("News");
-        categories.push("Governance");
-        categories.push("Shopping");
+        categories = ["Social", "Finance", "NFTs", "Games", "Developer Tools", 
+                      "Communication", "Entertainment", "News", "Governance", "Shopping"];
     }
     
     /**
      * @dev Register a new app
-     * @param _name App name
-     * @param _description App description
-     * @param _category App category
-     * @param _appUrl App URL
-     * @param _iconUrl App icon URL
      */
     function registerApp(
         string memory _name,
@@ -104,17 +114,15 @@ contract MiniAppGallery {
         string memory _appUrl,
         string memory _iconUrl
     ) external payable {
-        require(bytes(_name).length > 0, "App name cannot be empty");
-        require(bytes(_description).length > 0, "App description cannot be empty");
-        require(bytes(_category).length > 0, "Category cannot be empty");
-        require(bytes(_appUrl).length > 0, "App URL cannot be empty");
-        require(msg.value >= registrationFee, "Insufficient registration fee");
+        require(bytes(_name).length > 0, "Name empty");
+        require(bytes(_description).length > 0, "Description empty");
+        require(bytes(_category).length > 0, "Category empty");
+        require(bytes(_appUrl).length > 0, "URL empty");
+        require(msg.value >= registrationFee, "Insufficient fee");
         
-        // Increment app counter
         totalApps++;
         
-        // Create new app
-        App memory newApp = App({
+        apps[totalApps] = App({
             id: totalApps,
             name: _name,
             description: _description,
@@ -124,22 +132,16 @@ contract MiniAppGallery {
             developerAddress: msg.sender,
             isFeatured: false,
             registrationDate: block.timestamp,
-            isActive: true
+            isActive: true,
+            totalRating: 0,
+            ratingCount: 0
         });
         
-        // Store app
-        apps[totalApps] = newApp;
-        
-        // Add to developer's apps
         developerApps[msg.sender].push(totalApps);
-        
-        // Add to all apps
         allAppIds.push(totalApps);
         
-        // Emit event
         emit AppRegistered(totalApps, _name, msg.sender);
         
-        // Return excess payment if any
         uint256 excessPayment = msg.value - registrationFee;
         if (excessPayment > 0) {
             payable(msg.sender).transfer(excessPayment);
@@ -147,13 +149,74 @@ contract MiniAppGallery {
     }
     
     /**
+     * @dev Submit a rating for an app
+     */
+    function rateApp(
+        uint256 _appId, 
+        uint256 _rating, 
+        string memory _comment
+    ) external appExists(_appId) validRating(_rating) {
+        App storage app = apps[_appId];
+        
+        require(msg.sender != app.developerAddress, "Devs can't rate own apps");
+        require(app.isActive, "App inactive");
+        
+        if (hasUserRated[_appId][msg.sender]) {
+            uint256 index = userRatingIndex[_appId][msg.sender];
+            uint256 oldRating = appRatings[_appId][index].value;
+            
+            appRatings[_appId][index].value = _rating;
+            appRatings[_appId][index].comment = _comment;
+            appRatings[_appId][index].timestamp = block.timestamp;
+            
+            app.totalRating = app.totalRating - oldRating + _rating;
+            
+            emit RatingUpdated(_appId, msg.sender, _rating);
+        } else {
+            appRatings[_appId].push(Rating({
+                user: msg.sender,
+                value: _rating,
+                comment: _comment,
+                timestamp: block.timestamp
+            }));
+            
+            userRatingIndex[_appId][msg.sender] = appRatings[_appId].length - 1;
+            hasUserRated[_appId][msg.sender] = true;
+            
+            app.totalRating += _rating;
+            app.ratingCount++;
+            
+            emit RatingSubmitted(_appId, msg.sender, _rating);
+        }
+    }
+    
+    /**
+     * @dev Get the average rating for an app
+     * @return Average rating (0-5 with 2 decimal precision, multiplied by 100)
+     */
+    function getAverageRating(uint256 _appId) external view appExists(_appId) returns (uint256) {
+        App memory app = apps[_appId];
+        if (app.ratingCount == 0) return 0;
+        return (app.totalRating * 100) / app.ratingCount;
+    }
+    
+    /**
+     * @dev Get all ratings for an app
+     */
+    function getAppRatings(uint256 _appId) external view appExists(_appId) returns (Rating[] memory) {
+        return appRatings[_appId];
+    }
+    
+    /**
+     * @dev Get a user's rating for an app
+     */
+    function getUserRating(uint256 _appId, address _user) external view appExists(_appId) returns (Rating memory) {
+        require(hasUserRated[_appId][_user], "User hasn't rated");
+        return appRatings[_appId][userRatingIndex[_appId][_user]];
+    }
+    
+    /**
      * @dev Update an existing app's details
-     * @param _appId ID of the app to update
-     * @param _name Updated app name
-     * @param _description Updated app description
-     * @param _category Updated app category
-     * @param _appUrl Updated app URL
-     * @param _iconUrl Updated app icon URL
      */
     function updateApp(
         uint256 _appId,
@@ -163,10 +226,10 @@ contract MiniAppGallery {
         string memory _appUrl,
         string memory _iconUrl
     ) external appExists(_appId) onlyAppDeveloper(_appId) {
-        require(bytes(_name).length > 0, "App name cannot be empty");
-        require(bytes(_description).length > 0, "App description cannot be empty");
-        require(bytes(_category).length > 0, "Category cannot be empty");
-        require(bytes(_appUrl).length > 0, "App URL cannot be empty");
+        require(bytes(_name).length > 0, "Name empty");
+        require(bytes(_description).length > 0, "Description empty");
+        require(bytes(_category).length > 0, "Category empty");
+        require(bytes(_appUrl).length > 0, "URL empty");
         
         App storage app = apps[_appId];
         
@@ -181,24 +244,19 @@ contract MiniAppGallery {
     
     /**
      * @dev Set app as featured or not (only owner)
-     * @param _appId ID of the app
-     * @param _isFeatured Whether the app should be featured
      */
     function setAppFeatured(uint256 _appId, bool _isFeatured) external onlyOwner appExists(_appId) {
         App storage app = apps[_appId];
         
-        // Only process if status is changing
         if (app.isFeatured != _isFeatured) {
             app.isFeatured = _isFeatured;
             
-            // Update featured apps list
             if (_isFeatured) {
                 featuredAppIds.push(_appId);
             } else {
                 // Remove from featured list
                 for (uint256 i = 0; i < featuredAppIds.length; i++) {
                     if (featuredAppIds[i] == _appId) {
-                        // Replace with last element and pop
                         featuredAppIds[i] = featuredAppIds[featuredAppIds.length - 1];
                         featuredAppIds.pop();
                         break;
@@ -212,16 +270,13 @@ contract MiniAppGallery {
     
     /**
      * @dev Set app active/inactive status (developer or owner)
-     * @param _appId ID of the app
-     * @param _isActive Whether the app should be active
      */
     function setAppStatus(uint256 _appId, bool _isActive) external appExists(_appId) {
         App storage app = apps[_appId];
         
-        // Only owner or app developer can change status
         require(
             msg.sender == owner || msg.sender == app.developerAddress,
-            "Only owner or developer can change app status"
+            "Only owner or developer"
         );
         
         app.isActive = _isActive;
@@ -231,21 +286,16 @@ contract MiniAppGallery {
     
     /**
      * @dev Add a new category (only owner)
-     * @param _category Name of the new category
      */
     function addCategory(string memory _category) external onlyOwner {
-        require(bytes(_category).length > 0, "Category cannot be empty");
+        require(bytes(_category).length > 0, "Category empty");
         
-        // Check if category already exists
-        bool categoryExists = false;
+        // Check if category exists
         for (uint256 i = 0; i < categories.length; i++) {
             if (keccak256(bytes(categories[i])) == keccak256(bytes(_category))) {
-                categoryExists = true;
-                break;
+                revert("Category exists");
             }
         }
-        
-        require(!categoryExists, "Category already exists");
         
         categories.push(_category);
         emit CategoryAdded(_category);
@@ -253,7 +303,6 @@ contract MiniAppGallery {
     
     /**
      * @dev Update registration fee (only owner)
-     * @param _newFee New registration fee in wei
      */
     function updateRegistrationFee(uint256 _newFee) external onlyOwner {
         registrationFee = _newFee;
@@ -262,12 +311,10 @@ contract MiniAppGallery {
     
     /**
      * @dev Withdraw contract funds (only owner)
-     * @param _amount Amount to withdraw (0 for all)
      */
     function withdraw(uint256 _amount) external onlyOwner {
         uint256 amount = _amount;
         
-        // If amount is 0 or greater than balance, withdraw all
         if (amount == 0 || amount > address(this).balance) {
             amount = address(this).balance;
         }
@@ -280,42 +327,28 @@ contract MiniAppGallery {
     
     /**
      * @dev Transfer contract ownership (only owner)
-     * @param _newOwner Address of the new owner
      */
     function transferOwnership(address _newOwner) external onlyOwner {
         require(_newOwner != address(0), "Invalid address");
         owner = _newOwner;
     }
     
-    /**
-     * @dev Get all apps
-     * @return Array of all app IDs
-     */
+    // View functions
+    
     function getAllApps() external view returns (uint256[] memory) {
         return allAppIds;
     }
     
-    /**
-     * @dev Get featured apps
-     * @return Array of featured app IDs
-     */
     function getFeaturedApps() external view returns (uint256[] memory) {
         return featuredAppIds;
     }
     
-    /**
-     * @dev Get apps by developer
-     * @param _developer Developer address
-     * @return Array of app IDs by the developer
-     */
     function getAppsByDeveloper(address _developer) external view returns (uint256[] memory) {
         return developerApps[_developer];
     }
     
     /**
      * @dev Get apps by category
-     * @param _category Category to filter by
-     * @return Array of app IDs in the specified category
      */
     function getAppsByCategory(string memory _category) external view returns (uint256[] memory) {
         // Count apps in category first
@@ -326,11 +359,9 @@ contract MiniAppGallery {
             }
         }
         
-        // Create result array
         uint256[] memory result = new uint256[](count);
         uint256 resultIndex = 0;
         
-        // Fill result array
         for (uint256 i = 0; i < allAppIds.length; i++) {
             if (keccak256(bytes(apps[allAppIds[i]].category)) == keccak256(bytes(_category))) {
                 result[resultIndex] = allAppIds[i];
@@ -342,26 +373,69 @@ contract MiniAppGallery {
     }
     
     /**
-     * @dev Get all categories
-     * @return Array of all categories
+     * @dev Get top-rated apps (limited to specified count)
      */
+    function getTopRatedApps(uint256 _count) external view returns (uint256[] memory) {
+        uint256 resultCount = _count;
+        if (resultCount > totalApps) {
+            resultCount = totalApps;
+        }
+        
+        // Arrays for sorting
+        uint256[] memory appIds = new uint256[](totalApps);
+        uint256[] memory ratings = new uint256[](totalApps);
+        
+        // Fill with app IDs and ratings
+        uint256 activeCount = 0;
+        for (uint256 i = 0; i < allAppIds.length; i++) {
+            uint256 appId = allAppIds[i];
+            App memory app = apps[appId];
+            
+            if (app.isActive && app.ratingCount > 0) {
+                appIds[activeCount] = appId;
+                ratings[activeCount] = (app.totalRating * 100) / app.ratingCount;
+                activeCount++;
+            }
+        }
+        
+        if (resultCount > activeCount) {
+            resultCount = activeCount;
+        }
+        
+        // Sort by rating (bubble sort)
+        for (uint256 i = 0; i < activeCount; i++) {
+            for (uint256 j = i + 1; j < activeCount; j++) {
+                if (ratings[j] > ratings[i]) {
+                    // Swap ratings
+                    uint256 tempRating = ratings[i];
+                    ratings[i] = ratings[j];
+                    ratings[j] = tempRating;
+                    
+                    // Swap app IDs
+                    uint256 tempId = appIds[i];
+                    appIds[i] = appIds[j];
+                    appIds[j] = tempId;
+                }
+            }
+        }
+        
+        // Create result with top N apps
+        uint256[] memory result = new uint256[](resultCount);
+        for (uint256 i = 0; i < resultCount; i++) {
+            result[i] = appIds[i];
+        }
+        
+        return result;
+    }
+    
     function getAllCategories() external view returns (string[] memory) {
         return categories;
     }
     
-    /**
-     * @dev Get contract balance (only owner)
-     * @return Contract balance in wei
-     */
     function getContractBalance() external view onlyOwner returns (uint256) {
         return address(this).balance;
     }
     
-    /**
-     * @dev Get detailed app information
-     * @param _appId ID of the app
-     * @return App detailed information
-     */
     function getAppDetails(uint256 _appId) external view appExists(_appId) returns (App memory) {
         return apps[_appId];
     }
