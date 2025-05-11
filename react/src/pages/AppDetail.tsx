@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useReadContract } from 'wagmi';
 
+import RatingSection from '../components/RatingSection';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress } from '../utils/format';
 import { CONTRACT_ADDRESS } from '../config';
@@ -115,6 +116,12 @@ function AppDetail() {
             </div>
           </div>
         </section>
+
+        {/* User Rating Section */}
+        <RatingSection 
+          appId={id} 
+          currentRating={Number(miniapp?.ratingCount?.toString() || 0)}
+        />
 
         {/* Description */}
         <section className="bg-white rounded-lg shadow-md p-6 mb-6">
