@@ -6,6 +6,8 @@ import {
   useSignMessage
 } from "wagmi";
 
+import { formatAddress } from "../utils/format";
+
 export function ConnectMenu() {
   const { isConnected, address } = useAccount();
   const { connect, connectors } = useConnect();
@@ -18,7 +20,7 @@ export function ConnectMenu() {
     return (
       <>
         <p>Connected to: {currentChain ? currentChain.name : 'Not connected'}</p>
-        <div>{address}</div>
+        <div>{formatAddress(address)}</div>
         <SignButton />
       </>
     );

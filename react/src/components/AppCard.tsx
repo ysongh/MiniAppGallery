@@ -4,6 +4,7 @@ import { useReadContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { CONTRACT_ADDRESS } from '../config';
+import { formatAddress } from '../utils/format';
 
 function AppCard({ id }: { id: Number }) {
   const { data: miniapp } = useReadContract({
@@ -27,7 +28,7 @@ function AppCard({ id }: { id: Number }) {
       {/* App Info */}
       <div className="p-4">
         <h3 className="font-bold text-lg text-gray-800">{miniapp?.name}</h3>
-        <p className="text-gray-500 text-sm mt-1">{miniapp?.developerAddress}</p>
+        <p className="text-gray-500 text-sm mt-1">{formatAddress(miniapp?.developerAddress)}</p>
         <div className="flex items-center mt-2">
           <div className="flex mr-2">
             {[...Array(5)].map((_, i) => (

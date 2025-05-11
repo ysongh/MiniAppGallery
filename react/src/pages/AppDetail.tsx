@@ -11,6 +11,7 @@ import {
 import { useReadContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
+import { formatAddress } from '../utils/format';
 import { CONTRACT_ADDRESS } from '../config';
 
 function AppDetail() {
@@ -68,7 +69,7 @@ function AppDetail() {
               <div className="flex flex-col md:flex-row md:items-center justify-between">
                 <div>
                   <h1 className="text-2xl md:text-3xl font-bold text-gray-800">{miniapp?.name}</h1>
-                  <p className="text-lg text-indigo-600 mt-1">{miniapp?.developerAddress}</p>
+                  <p className="text-lg text-indigo-600 mt-1">{formatAddress(miniapp?.developerAddress)}</p>
                   <div className="flex items-center mt-2">
                     <span className="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center">
                       <Tag className="w-3 h-3 mr-1" />
@@ -130,7 +131,7 @@ function AppDetail() {
             <div>
               <div className="mb-4">
                 <h3 className="text-sm font-medium text-gray-500">Developer</h3>
-                <p className="text-gray-700">{miniapp?.developerAddress}</p>
+                <p className="text-gray-700">{formatAddress(miniapp?.developerAddress)}</p>
               </div>
               <div className="mb-4">
                 <h3 className="text-sm font-medium text-gray-500">Category</h3>
