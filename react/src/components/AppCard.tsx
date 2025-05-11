@@ -27,21 +27,21 @@ function AppCard({ id }: { id: Number }) {
       {/* App Info */}
       <div className="p-4">
         <h3 className="font-bold text-lg text-gray-800">{miniapp?.name}</h3>
-        <p className="text-gray-500 text-sm mt-1">{miniapp?.developer}</p>
+        <p className="text-gray-500 text-sm mt-1">{miniapp?.developerAddress}</p>
         <div className="flex items-center mt-2">
           <div className="flex mr-2">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
                 className={`w-3 h-3 ${
-                  i < Math.floor(5)
+                  i < Math.floor(miniapp?.ratingCount?.toString())
                     ? 'text-yellow-400 fill-yellow-400'
                     : 'text-gray-300'
                 }`}
               />
             ))}
           </div>
-          <span className="text-xs text-gray-500">{5}</span>
+          <span className="text-xs text-gray-500">{miniapp?.ratingCount?.toString()}</span>
         </div>
         <p className="text-gray-600 text-sm mt-3 line-clamp-2 h-10">
           {miniapp?.description}
