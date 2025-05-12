@@ -11,7 +11,7 @@ import { useReadContract } from 'wagmi';
 
 import RatingSection from '../components/RatingSection';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
-import { formatAddress } from '../utils/format';
+import { formatAddress, formatDate } from '../utils/format';
 import { CONTRACT_ADDRESS } from '../config';
 
 function AppDetail() {
@@ -109,7 +109,7 @@ function AppDetail() {
                 </div>
                 <div className="flex items-center">
                   <Calendar className="w-4 h-4 mr-1 text-gray-500" />
-                  <span>Released {miniapp?.registrationDate?.toString()}</span>
+                  <span>Released {formatDate(miniapp?.registrationDate)}</span>
                 </div>
               </div>
             </div>
