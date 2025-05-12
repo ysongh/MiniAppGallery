@@ -9,9 +9,6 @@ contract MiniAppGallery {
     // Contract owner
     address public owner;
     
-    // App registration fee in wei
-    uint256 public registrationFee = 0.01 ether;
-    
     // App structure
     struct App {
         uint256 id;
@@ -66,7 +63,6 @@ contract MiniAppGallery {
     event AppUpdated(uint256 indexed appId, string name);
     event AppFeatured(uint256 indexed appId, bool isFeatured);
     event AppStatusChanged(uint256 indexed appId, bool isActive);
-    event FeeUpdated(uint256 newFee);
     event FundsWithdrawn(address indexed to, uint256 amount);
     event CategoryAdded(string category);
     event RatingSubmitted(uint256 indexed appId, address indexed user, uint256 rating);
@@ -113,12 +109,11 @@ contract MiniAppGallery {
         string memory _category,
         string memory _appUrl,
         string memory _iconUrl
-    ) external payable {
+    ) external {
         require(bytes(_name).length > 0, "Name empty");
         require(bytes(_description).length > 0, "Description empty");
         require(bytes(_category).length > 0, "Category empty");
         require(bytes(_appUrl).length > 0, "URL empty");
-        require(msg.value >= registrationFee, "Insufficient fee");
         
         totalApps++;
         
@@ -141,11 +136,6 @@ contract MiniAppGallery {
         allAppIds.push(totalApps);
         
         emit AppRegistered(totalApps, _name, msg.sender);
-        
-        uint256 excessPayment = msg.value - registrationFee;
-        if (excessPayment > 0) {
-            payable(msg.sender).transfer(excessPayment);
-        }
     }
     
     /**
@@ -299,14 +289,6 @@ contract MiniAppGallery {
         
         categories.push(_category);
         emit CategoryAdded(_category);
-    }
-    
-    /**
-     * @dev Update registration fee (only owner)
-     */
-    function updateRegistrationFee(uint256 _newFee) external onlyOwner {
-        registrationFee = _newFee;
-        emit FeeUpdated(_newFee);
     }
     
     /**

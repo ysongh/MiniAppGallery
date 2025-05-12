@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useWriteContract } from "wagmi";
 import { hardhat } from "wagmi/chains";
-import { parseEther } from 'viem';
 
 import FormHeader from '../components/layout/FormHeader';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
@@ -108,17 +107,11 @@ function SubmitAppPage() {
         abi: MiniAppGallery.abi,
         functionName: "registerApp",
         args: [name, description, category, url, url],
-        value: parseEther("0.1"),
       })
       
-      // Simulate API call
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-        console.log('Form submitted:', formData);
-        
-        // In a real app, you would send this data to your API
-      }, 1500);
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      console.log('Form submitted:', formData);
     }
   };
 
