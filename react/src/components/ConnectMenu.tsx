@@ -3,7 +3,6 @@ import {
   useConnect,
   useChains,
   useChainId,
-  useSignMessage
 } from "wagmi";
 
 import { formatAddress } from "../utils/format";
@@ -21,7 +20,6 @@ export function ConnectMenu() {
       <>
         <p>Connected to: {currentChain ? currentChain.name : 'Not connected'}</p>
         <div>{formatAddress(address)}</div>
-        <SignButton />
       </>
     );
   }
@@ -30,29 +28,5 @@ export function ConnectMenu() {
     <button className="bg-blue-400" type="button" onClick={() => connect({ connector: connectors[0] })}>
       Connect
     </button>
-  );
-}
-
-function SignButton() {
-  const { signMessage, isPending, data, error } = useSignMessage();
-
-  return (
-    <>
-      <button className="bg-blue-400" type="button" onClick={() => signMessage({ message: "hello world" })} disabled={isPending}>
-        {isPending ? "Signing..." : "Sign message"}
-      </button>
-      {data && (
-        <>
-          <div>Signature</div>
-          <div>{data}</div>
-        </>
-      )}
-      {error && (
-        <>
-          <div>Error</div>
-          <div>{error.message}</div>
-        </>
-      )}
-    </>
   );
 }
