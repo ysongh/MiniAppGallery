@@ -98,14 +98,14 @@ function AppDetail() {
                       <Star
                         key={i}
                         className={`w-4 h-4 ${
-                          i < Math.floor(miniapp?.ratingCount?.toString())
+                          i < Math.floor(miniapp?.totalRating?.toString() / miniapp?.ratingCount?.toString())
                             ? 'text-yellow-400 fill-yellow-400'
                             : 'text-gray-300'
                         }`}
                       />
                     ))}
                   </div>
-                  <span>{miniapp?.ratingCount?.toString()}</span>
+                  <span>{miniapp?.totalRating?.toString() / miniapp?.ratingCount?.toString()}</span>
                 </div>
                 <div className="flex items-center">
                   <Calendar className="w-4 h-4 mr-1 text-gray-500" />

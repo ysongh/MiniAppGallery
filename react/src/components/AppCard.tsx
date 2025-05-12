@@ -35,14 +35,14 @@ function AppCard({ id }: { id: Number }) {
               <Star
                 key={i}
                 className={`w-3 h-3 ${
-                  i < Math.floor(miniapp?.ratingCount?.toString())
+                  i < Math.floor(miniapp?.totalRating?.toString() / miniapp?.ratingCount?.toString())
                     ? 'text-yellow-400 fill-yellow-400'
                     : 'text-gray-300'
                 }`}
               />
             ))}
           </div>
-          <span className="text-xs text-gray-500">{miniapp?.ratingCount?.toString()}</span>
+          <span className="text-xs text-gray-500">{miniapp?.totalRating?.toString() / miniapp?.ratingCount?.toString()}</span>
         </div>
         <p className="text-gray-600 text-sm mt-3 line-clamp-2 h-10">
           {miniapp?.description}
