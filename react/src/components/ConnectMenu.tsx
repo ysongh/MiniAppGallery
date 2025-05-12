@@ -17,10 +17,14 @@ export function ConnectMenu() {
 
   if (isConnected) {
     return (
-      <>
-        <p>Connected to: {currentChain ? currentChain.name : 'Not connected'}</p>
-        <div>{formatAddress(address)}</div>
-      </>
+      <div className="bg-indigo-600 text-white flex justify-between py-2 px-6 md:px-20">
+        <div>
+          <p>Connected to: {currentChain ? currentChain.name : 'Not connected'}</p>
+        </div>
+        <div>
+          <div>{formatAddress(address || "")}</div>
+        </div>
+      </div>
     );
   }
 

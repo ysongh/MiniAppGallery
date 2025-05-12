@@ -147,7 +147,7 @@ function AppDetail() {
             <div>
               <div className="mb-4">
                 <h3 className="text-sm font-medium text-gray-500">Released</h3>
-                <p className="text-gray-700">{miniapp?.registrationDate?.toString()}</p>
+                <p className="text-gray-700">{formatDate(miniapp?.registrationDate)}</p>
               </div>
               <div>
                 <h3 className="text-sm font-medium text-gray-500">Links</h3>
