@@ -29,12 +29,12 @@ function SubmitAppPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const {
     writeContract,
     data: txHash,
-    isPending
+    isPending,
+    isSuccess
   } = useWriteContract();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -110,7 +110,6 @@ function SubmitAppPage() {
       })
       
       setIsSubmitting(false);
-      setIsSubmitted(true);
       console.log('Form submitted:', formData);
     }
   };
@@ -124,10 +123,9 @@ function SubmitAppPage() {
       customCategory: ''
     });
     setErrors({});
-    setIsSubmitted(false);
   };
 
-  if (isSubmitted) {
+  if (isSuccess) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col">
         <FormHeader />
