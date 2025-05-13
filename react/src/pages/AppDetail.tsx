@@ -14,6 +14,17 @@ import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGal
 import { formatAddress, formatDate } from '../utils/format';
 import { CONTRACT_ADDRESS } from '../config';
 
+interface MiniApp {
+  name: string;
+  description: string;
+  appUrl: string;
+  developerAddress: string;
+  totalRating: bigint;
+  ratingCount: bigint;
+  category: string;
+  registrationDate: bigint;
+}
+
 function AppDetail() {
   const { id } = useParams<{ id: string }>();
 
@@ -22,9 +33,15 @@ function AppDetail() {
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
     args: [id]
-  });
+  }) as { data: MiniApp | undefined };
 
   console.log(miniapp);
+
+  // Calculate rating safely
+  const rating = miniapp && 'ratingCount' in miniapp && miniapp.ratingCount && miniapp.ratingCount > 0n
+  ? Number(miniapp.totalRating) / Number(miniapp.ratingCount)
+  : 0;
+  
 
   if (!miniapp) {
     return (
@@ -98,14 +115,14 @@ function AppDetail() {
                       <Star
                         key={i}
                         className={`w-4 h-4 ${
-                          i < Math.floor(miniapp?.totalRating?.toString() / miniapp?.ratingCount?.toString())
+                          i < Math.floor(rating)
                             ? 'text-yellow-400 fill-yellow-400'
                             : 'text-gray-300'
                         }`}
                       />
                     ))}
                   </div>
-                  <span>{miniapp?.totalRating?.toString() / miniapp?.ratingCount?.toString()}</span>
+                  <span>{rating ? rating.toFixed(1) : '-'}</span>
                 </div>
                 <div className="flex items-center">
                   <Calendar className="w-4 h-4 mr-1 text-gray-500" />
