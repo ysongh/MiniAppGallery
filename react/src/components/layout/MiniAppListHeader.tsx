@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Search, Upload } from 'lucide-react';
+import { Upload } from 'lucide-react';
 
 function MiniAppListHeader() {
   const navigate = useNavigate();
@@ -20,14 +20,6 @@ function MiniAppListHeader() {
               <Upload className="w-4 h-4 mr-2" />
               Submit Your App
             </button>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search apps..."
-                className="bg-white pl-10 pr-4 py-2 rounded-lg w-full md:w-64 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-300"
-              />
-              <Search className="absolute left-3 top-2.5 text-gray-500 w-4 h-4" />
-            </div>
           </div>
         </div>
       </div>

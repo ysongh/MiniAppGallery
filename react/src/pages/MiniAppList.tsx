@@ -161,21 +161,12 @@ const mockApps: MiniApp[] = [
 const categories = Array.from(new Set(mockApps.map(app => app.category)));
 
 function MiniAppList() {
-  const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [apps, setApps] = useState<MiniApp[]>(mockApps);
   
   // Filter apps based on search term and selected category
   useEffect(() => {
     let filteredApps = mockApps;
-    
-    if (searchTerm) {
-      filteredApps = filteredApps.filter(app => 
-        app.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        app.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        app.developer.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
     
     if (selectedCategory !== 'All') {
       filteredApps = filteredApps.filter(app => 
@@ -184,7 +175,7 @@ function MiniAppList() {
     }
     
     setApps(filteredApps);
-  }, [searchTerm, selectedCategory]);
+  }, [selectedCategory]);
 
   const { data: miniappids = [] } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -235,7 +226,7 @@ function MiniAppList() {
         </div>
 
         {/* Featured Apps Section */}
-        {selectedCategory === 'All' && searchTerm === '' && (
+        {selectedCategory === 'All' && (
           <section className="mb-10">
             <div className="flex items-center mb-4">
               <Zap className="w-5 h-5 text-yellow-500 mr-2" />
