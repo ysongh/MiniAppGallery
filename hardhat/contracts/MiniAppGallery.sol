@@ -16,7 +16,6 @@ contract MiniAppGallery {
         string description;
         string category;
         string appUrl;
-        string iconUrl;
         address developerAddress;
         bool isFeatured;
         uint256 registrationDate;
@@ -107,8 +106,7 @@ contract MiniAppGallery {
         string memory _name,
         string memory _description,
         string memory _category,
-        string memory _appUrl,
-        string memory _iconUrl
+        string memory _appUrl
     ) external {
         require(bytes(_name).length > 0, "Name empty");
         require(bytes(_description).length > 0, "Description empty");
@@ -123,7 +121,6 @@ contract MiniAppGallery {
             description: _description,
             category: _category,
             appUrl: _appUrl,
-            iconUrl: _iconUrl,
             developerAddress: msg.sender,
             isFeatured: false,
             registrationDate: block.timestamp,
@@ -213,8 +210,7 @@ contract MiniAppGallery {
         string memory _name,
         string memory _description,
         string memory _category,
-        string memory _appUrl,
-        string memory _iconUrl
+        string memory _appUrl
     ) external appExists(_appId) onlyAppDeveloper(_appId) {
         require(bytes(_name).length > 0, "Name empty");
         require(bytes(_description).length > 0, "Description empty");
@@ -227,7 +223,6 @@ contract MiniAppGallery {
         app.description = _description;
         app.category = _category;
         app.appUrl = _appUrl;
-        app.iconUrl = _iconUrl;
         
         emit AppUpdated(_appId, _name);
     }

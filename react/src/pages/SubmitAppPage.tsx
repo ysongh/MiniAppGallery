@@ -106,7 +106,7 @@ function SubmitAppPage() {
         address: CONTRACT_ADDRESS,
         abi: MiniAppGallery.abi,
         functionName: "registerApp",
-        args: [name, description, category, url, url],
+        args: [name, description, category, url],
       })
       
       setIsSubmitting(false);
