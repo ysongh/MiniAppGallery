@@ -136,7 +136,6 @@ function AppDetail() {
         {/* User Rating Section */}
         <RatingSection 
           appId={id} 
-          currentRating={Number(miniapp?.ratingCount?.toString() || 0)}
         />
 
         {/* Description */}

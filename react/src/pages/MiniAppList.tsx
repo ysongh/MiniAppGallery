@@ -181,12 +181,12 @@ function MiniAppList() {
     address: CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
     functionName: 'getAllApps'
-  });
+  }) as { data: bigint[] | undefined };
 
   // Get featured apps
   const featuredApps = mockApps.filter(app => app.featured);
 
-  console.log(miniappids);
+  console.log(miniappids, apps);
 
   return (
     <div className="min-h-screen bg-gray-50">

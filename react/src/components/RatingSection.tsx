@@ -5,7 +5,7 @@ import { useWriteContract } from 'wagmi';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { CONTRACT_ADDRESS } from '../config';
 
-const RatingSection = ({ appId }: { appId: number }) => {
+const RatingSection = ({ appId }: { appId: string | undefined }) => {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [feedback, setFeedback] = useState('');

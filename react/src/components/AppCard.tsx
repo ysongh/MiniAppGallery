@@ -16,7 +16,7 @@ interface MiniApp {
   ratingCount: bigint;
 }
 
-function AppCard({ id }: { id: Number }) {
+function AppCard({ id }: { id: bigint }) {
   const { data: miniapp } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
