@@ -183,6 +183,13 @@ function MiniAppList() {
     functionName: 'getAllApps'
   }) as { data: bigint[] | undefined };
 
+  const { data: filterminiappids = [] } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: MiniAppGallery.abi,
+    functionName: 'getAppsByCategory',
+    args: [selectedCategory]
+  }) as { data: bigint[] | undefined };
+
   // Get featured apps
   const featuredApps = mockApps.filter(app => app.featured);
 
@@ -249,7 +256,13 @@ function MiniAppList() {
             </h2>
           </div>
           
-          {miniappids.length > 0 ? (
+          {selectedCategory === "All" && miniappids.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              {miniappids.map(id => (
+                <AppCard key={id} id={id} />
+              ))}
+            </div>
+          ) : filterminiappids.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {miniappids.map(id => (
                 <AppCard key={id} id={id} />
