@@ -1,9 +1,8 @@
 import { useParams, Link } from 'react-router-dom';
 import { 
-  ArrowLeft, 
-  Star, 
-  ExternalLink, 
-  Calendar, 
+  ArrowLeft,
+  Star,
+  Calendar,
   Download,
   Tag,
 } from 'lucide-react';
