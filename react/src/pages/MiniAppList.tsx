@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Tag, Zap } from 'lucide-react';
 import { useReadContract } from 'wagmi';
 
