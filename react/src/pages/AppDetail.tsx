@@ -139,56 +139,10 @@ function AppDetail() {
         />
 
         {/* Description */}
-        <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <section className="bg-white rounded-lg shadow-md p-6 mb-14">
           <h2 className="text-xl font-bold text-gray-800 mb-4">About this app</h2>
           <div className="prose max-w-none text-gray-700">
             {miniapp?.description}
-          </div>
-        </section>
-
-        {/* Additional Info */}
-        <section className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Additional Information</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <div className="mb-4">
-                <h3 className="text-sm font-medium text-gray-500">Developer</h3>
-                <p className="text-gray-700">{formatAddress(miniapp?.developerAddress)}</p>
-              </div>
-              <div className="mb-4">
-                <h3 className="text-sm font-medium text-gray-500">Category</h3>
-                <p className="text-gray-700">{miniapp?.category}</p>
-              </div>
-            </div>
-            <div>
-              <div className="mb-4">
-                <h3 className="text-sm font-medium text-gray-500">Released</h3>
-                <p className="text-gray-700">{formatDate(miniapp?.registrationDate)}</p>
-              </div>
-              <div>
-                <h3 className="text-sm font-medium text-gray-500">Links</h3>
-                <div className="flex flex-col space-y-2 mt-1">
-                  <a
-                    href={miniapp?.appUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-indigo-600 hover:text-indigo-800 flex items-center"
-                  >
-                    <ExternalLink className="w-3 h-3 mr-1" />
-                    <span>Privacy Policy</span>
-                  </a>
-                  <a
-                    href={miniapp?.appUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-indigo-600 hover:text-indigo-800 flex items-center"
-                  >
-                    <ExternalLink className="w-3 h-3 mr-1" />
-                    <span>Support</span>
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 
