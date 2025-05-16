@@ -1,4 +1,9 @@
 {
+  "accountAssociation": {
+    "header": "eyJmaWQiOjIxODk1MCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDREYkRkMEZkNTk5MzIzMGQ5ZGIyMzdFRmVCNjI3QjY4OTNDN2QwOTgifQ",
+    "payload": "eyJkb21haW4iOiJtaW5pYXBwZ2FsbGVyeS5uZXRsaWZ5LmFwcCJ9",
+    "signature": "MHhhYTZiNzdjZDdlNWFjYWM0OTE3ZDNjNjdiNmZjMGYzZjNkMGY0MmU2MWUxZTFmZjNlOTc0NjY3ZGM4ODYwODkwNGEwNWRiOGUwY2Y3OGU5YzQyNzdiY2Y3YmFkMjU5NzQ0ZjJlZWQyMGQ5NjFlMmUzOGE5NGVlZWNiMDZjMjJhOTFi"
+  },
   "frame": {
     "version": "1",
     "name": "MiniApp Gallery",
