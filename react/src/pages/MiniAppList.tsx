@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Tag, Zap } from 'lucide-react';
+import { Tag } from 'lucide-react';
 import { useReadContract } from 'wagmi';
 
 import MiniAppListHeader from '../components/layout/MiniAppListHeader';
@@ -65,19 +65,6 @@ function MiniAppList() {
             ))}
           </div>
         </div>
-
-        {/* Featured Apps Section */}
-        {selectedCategory === 'All' && (
-          <section className="mb-10">
-            <div className="flex items-center mb-4">
-              <Zap className="w-5 h-5 text-yellow-500 mr-2" />
-              <h2 className="text-2xl font-bold text-gray-800">Featured Apps</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              
-            </div>
-          </section>
-        )}
 
         {/* All Apps */}
         <section>
