@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useWriteContract } from "wagmi";
-import { hardhat } from "wagmi/chains";
+import { baseSepolia } from "wagmi/chains";
 
 import FormHeader from '../components/layout/FormHeader';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
@@ -143,7 +143,7 @@ function SubmitAppPage() {
             {txHash && (
               <div className="mt-4">
                 <a
-                  href={hardhat.blockExplorers?.default + "/tx/" + txHash}
+                  href={baseSepolia.blockExplorers?.default + "/tx/" + txHash}
                 >
                   View Transaction
                 </a>
