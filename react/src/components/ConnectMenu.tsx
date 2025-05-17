@@ -29,8 +29,12 @@ export function ConnectMenu() {
   }
 
   return (
-    <button className="bg-blue-400" type="button" onClick={() => connect({ connector: connectors[0] })}>
-      Connect
+    <button
+      type="button"
+      onClick={() => connect({ connector: connectors[0] })}
+      className="w-full py-2 px-4 bg-indigo-600 text-white font-medium rounded hover:bg-indigo-700 disabled:bg-indigo-300 disabled:cursor-not-allowed"
+    >
+      Connect Wallet to View
     </button>
   );
 }
