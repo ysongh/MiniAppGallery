@@ -6,7 +6,7 @@ import {
   Download,
   Tag,
 } from 'lucide-react';
-import { useReadContract } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 
 import RatingSection from '../components/RatingSection';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
@@ -26,6 +26,8 @@ interface MiniApp {
 
 function AppDetail() {
   const { id } = useParams<{ id: string }>();
+
+  const { address } = useAccount();
 
   const { data: miniapp } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -132,18 +134,18 @@ function AppDetail() {
           </div>
         </section>
 
-        {/* User Rating Section */}
-        <RatingSection 
-          appId={id} 
-        />
-
         {/* Description */}
-        <section className="bg-white rounded-lg shadow-md p-6 mb-14">
+        <section className="bg-white rounded-lg shadow-md p-6 mb-4">
           <h2 className="text-xl font-bold text-gray-800 mb-4">About this app</h2>
           <div className="prose max-w-none text-gray-700">
             {miniapp?.description}
           </div>
         </section>
+
+        {/* User Rating Section */}
+        {address && address !== miniapp?.developerAddress && <RatingSection 
+          appId={id} 
+        />}
 
         {/* Action Buttons */}
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 md:hidden">

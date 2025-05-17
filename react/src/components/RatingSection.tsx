@@ -54,7 +54,7 @@ const RatingSection = ({ appId }: { appId: string | undefined }) => {
   }
 
   return (
-    <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+    <section className="bg-white rounded-lg shadow-md p-6 mb-14">
       <h2 className="text-xl font-bold text-gray-800 mb-4">Rate this App</h2>
       
       <div className="flex flex-col items-center md:items-start">
