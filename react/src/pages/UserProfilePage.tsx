@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, Settings, Star, Download, Clock, Heart, ChevronLeft, ExternalLink } from 'lucide-react';
+import { User, Settings, Star, Heart, ChevronLeft, ExternalLink } from 'lucide-react';
 
 // TypeScript interfaces
 interface MiniApp {
@@ -104,15 +104,13 @@ const mockUserProfile: UserProfile = {
 };
 
 export default function UserProfilePage() {
-  const [activeTab, setActiveTab] = useState<'installed' | 'favorites' | 'developed'>('installed');
+  const [activeTab, setActiveTab] = useState<'favorites' | 'developed'>('developed');
   const [userProfile, setUserProfile] = useState<UserProfile>(mockUserProfile);
   const [apps, setApps] = useState<MiniApp[]>(mockApps);
   
   // Filter apps based on active tab
   const displayedApps = apps.filter(app => {
-    if (activeTab === 'installed') {
-      return userProfile.installedApps.includes(app.id);
-    } else if (activeTab === 'favorites') {
+    if (activeTab === 'favorites') {
       return userProfile.favoriteApps.includes(app.id);
     } else if (activeTab === 'developed') {
       return userProfile.developerApps.includes(app.id);
@@ -189,17 +187,6 @@ export default function UserProfilePage() {
           <div className="flex">
             <button
               className={`px-4 py-4 text-sm font-medium flex items-center ${
-                activeTab === 'installed'
-                  ? 'text-indigo-600 border-b-2 border-indigo-600'
-                  : 'text-gray-600 hover:text-indigo-600'
-              }`}
-              onClick={() => setActiveTab('installed')}
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Installed Apps
-            </button>
-            <button
-              className={`px-4 py-4 text-sm font-medium flex items-center ${
                 activeTab === 'favorites'
                   ? 'text-indigo-600 border-b-2 border-indigo-600'
                   : 'text-gray-600 hover:text-indigo-600'
@@ -228,12 +215,10 @@ export default function UserProfilePage() {
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <h2 className="text-xl font-bold text-gray-800">
-            {activeTab === 'installed' && 'Installed Apps'}
             {activeTab === 'favorites' && 'Favorite Apps'}
             {activeTab === 'developed' && 'Developed Apps'}
           </h2>
           <p className="text-gray-500 text-sm mt-1">
-            {activeTab === 'installed' && `You have installed ${displayedApps.length} apps`}
             {activeTab === 'favorites' && `You have ${displayedApps.length} favorite apps`}
             {activeTab === 'developed' && `You have developed ${displayedApps.length} apps`}
           </p>
@@ -249,21 +234,14 @@ export default function UserProfilePage() {
         ) : (
           <div className="bg-white rounded-lg p-8 text-center border border-gray-200">
             <div className="flex justify-center mb-4">
-              {activeTab === 'installed' && <Download className="w-12 h-12 text-gray-300" />}
               {activeTab === 'favorites' && <Heart className="w-12 h-12 text-gray-300" />}
               {activeTab === 'developed' && <User className="w-12 h-12 text-gray-300" />}
             </div>
             <h3 className="text-lg font-medium text-gray-800">No apps found</h3>
             <p className="text-gray-500 mt-2">
-              {activeTab === 'installed' && "You haven't installed any apps yet"}
               {activeTab === 'favorites' && "You don't have any favorite apps yet"}
               {activeTab === 'developed' && "You haven't developed any apps yet"}
             </p>
-            {activeTab === 'installed' && (
-              <button className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
-                Browse App Store
-              </button>
-            )}
           </div>
         )}
       </main>
@@ -303,13 +281,6 @@ function AppCard({ app, activeTab }: { app: MiniApp; activeTab: string }) {
             </div>
             <span className="text-xs text-gray-500">{app.rating.toFixed(1)}</span>
           </div>
-          
-          {activeTab === 'installed' && app.installDate && (
-            <div className="mt-1 text-xs text-gray-500 flex items-center">
-              <Clock className="w-3 h-3 mr-1" />
-              Installed on {new Date(app.installDate).toLocaleDateString()}
-            </div>
-          )}
           
           {activeTab === 'developed' && (
             <div className="mt-1">
