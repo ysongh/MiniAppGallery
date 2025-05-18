@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   useAccount,
   useConnect,
@@ -10,6 +11,7 @@ import { formatAddress } from "../utils/format";
 export function ConnectMenu() {
   const { isConnected, address } = useAccount();
   const { connect, connectors } = useConnect();
+  const navigate = useNavigate();
   const chains = useChains();
   const chainId = useChainId();
 
@@ -22,7 +24,9 @@ export function ConnectMenu() {
           <p>Connected to: {currentChain ? currentChain.name : 'Not connected'}</p>
         </div>
         <div>
-          <div>{formatAddress(address || "")}</div>
+          <div onClick={() => navigate("/profile")}>
+            {formatAddress(address || "")}
+          </div>
         </div>
       </div>
     );
