@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { User, Settings, Star, Heart, ChevronLeft, ExternalLink } from 'lucide-react';
+import { useAccount, useReadContract } from 'wagmi';
+
+import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
+import { CONTRACT_ADDRESS } from '../config';
 
 // TypeScript interfaces
 interface MiniApp {
@@ -104,9 +108,18 @@ const mockUserProfile: UserProfile = {
 };
 
 export default function UserProfilePage() {
+  const { address } = useAccount();
+
   const [activeTab, setActiveTab] = useState<'favorites' | 'developed'>('developed');
   const [userProfile, setUserProfile] = useState<UserProfile>(mockUserProfile);
   const [apps, setApps] = useState<MiniApp[]>(mockApps);
+
+  const { data: miniappids = [] } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: MiniAppGallery.abi,
+    functionName: 'getAppsByDeveloper',
+    args: [address]
+  }) as { data: bigint[] | undefined };
   
   // Filter apps based on active tab
   const displayedApps = apps.filter(app => {
@@ -117,6 +130,8 @@ export default function UserProfilePage() {
     }
     return false;
   });
+
+  console.log(miniappids);
 
   return (
     <div className="min-h-screen bg-gray-50">
