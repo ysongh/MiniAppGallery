@@ -6,20 +6,6 @@ import AppCardWithEdit from '../components/AppCardWithEdit';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { CONTRACT_ADDRESS } from '../config';
 
-// TypeScript interfaces
-interface MiniApp {
-  id: string;
-  name: string;
-  description: string;
-  developer: string;
-  icon: string;
-  url: string;
-  category: string;
-  featured: boolean;
-  rating: number;
-  installDate?: string; // For installed apps
-}
-
 interface UserProfile {
   id: string;
   username: string;
@@ -32,68 +18,6 @@ interface UserProfile {
   favoriteApps: string[]; // IDs of favorite apps
   developerApps: string[]; // IDs of apps developed by user
 }
-
-// Sample mock data
-const mockApps: MiniApp[] = [
-  {
-    id: '1',
-    name: 'Frames.js',
-    description: 'Build interactive, onchain applications on Farcaster with the Frames protocol',
-    developer: 'Farcaster Team',
-    icon: 'https://example.com/frames.png',
-    url: 'https://warpcast.com/~/launch/frames',
-    category: 'Developer Tools',
-    featured: true,
-    rating: 4.8,
-    installDate: '2025-04-15'
-  },
-  {
-    id: '3',
-    name: 'CastFi',
-    description: 'Decentralized finance tools for managing your crypto assets',
-    developer: 'CastFi Team',
-    icon: 'https://example.com/castfi.png',
-    url: 'https://warpcast.com/~/launch/castfi',
-    category: 'Finance',
-    featured: false,
-    rating: 4.2,
-    installDate: '2025-05-01'
-  },
-  {
-    id: '5',
-    name: 'CastPoll',
-    description: 'Create and participate in polls within the Farcaster ecosystem',
-    developer: '@farcaster_user', // This matches our sample user
-    icon: 'https://example.com/castpoll.png',
-    url: 'https://warpcast.com/~/launch/castpoll',
-    category: 'Social',
-    featured: false,
-    rating: 4.0
-  },
-  {
-    id: '8',
-    name: 'CastStream',
-    description: 'Live streaming platform built on Farcaster',
-    developer: 'Stream Team',
-    icon: 'https://example.com/caststream.png',
-    url: 'https://warpcast.com/~/launch/caststream',
-    category: 'Entertainment',
-    featured: true,
-    rating: 4.6,
-    installDate: '2025-03-22'
-  },
-  {
-    id: '11',
-    name: 'FarGames',
-    description: 'Play games with your Farcaster friends',
-    developer: '@farcaster_user', // This matches our sample user
-    icon: 'https://example.com/fargames.png',
-    url: 'https://warpcast.com/~/launch/fargames',
-    category: 'Games',
-    featured: false,
-    rating: 4.2
-  }
-];
 
 const mockUserProfile: UserProfile = {
   id: 'user123',
@@ -113,7 +37,6 @@ export default function UserProfilePage() {
 
   const [activeTab, setActiveTab] = useState<'favorites' | 'developed'>('developed');
   const [userProfile, setUserProfile] = useState<UserProfile>(mockUserProfile);
-  const [apps, setApps] = useState<MiniApp[]>(mockApps);
 
   const { data: miniappids = [] } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -121,16 +44,6 @@ export default function UserProfilePage() {
     functionName: 'getAppsByDeveloper',
     args: [address]
   }) as { data: bigint[] | undefined };
-  
-  // Filter apps based on active tab
-  const displayedApps = apps.filter(app => {
-    if (activeTab === 'favorites') {
-      return userProfile.favoriteApps.includes(app.id);
-    } else if (activeTab === 'developed') {
-      return userProfile.developerApps.includes(app.id);
-    }
-    return false;
-  });
 
   console.log(miniappids);
 
@@ -235,16 +148,16 @@ export default function UserProfilePage() {
             {activeTab === 'developed' && 'Developed Apps'}
           </h2>
           <p className="text-gray-500 text-sm mt-1">
-            {activeTab === 'favorites' && `You have ${displayedApps.length} favorite apps`}
-            {activeTab === 'developed' && `You have developed ${displayedApps.length} apps`}
+            {activeTab === 'favorites' && `You have ${miniappids.length} favorite apps`}
+            {activeTab === 'developed' && `You have developed ${miniappids.length} apps`}
           </p>
         </div>
         
         {/* Apps Grid */}
-        {displayedApps.length > 0 ? (
+        {miniappids.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {displayedApps.map(app => (
-              <AppCardWithEdit key={app.id} app={app} activeTab={activeTab} />
+            {miniappids.map(id => (
+              <AppCardWithEdit key={id} id={id} />
             ))}
           </div>
         ) : (
