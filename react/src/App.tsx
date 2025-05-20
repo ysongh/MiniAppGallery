@@ -7,6 +7,7 @@ import MiniAppList from "./pages/MiniAppList";
 import SubmitApp from "./pages/SubmitApp";
 import AppDetail from "./pages/AppDetail";
 import UserProfile from "./pages/UserProfile";
+import EditApp from "./pages/EditApp";
 
 function App() {
   useEffect(() => {
@@ -20,6 +21,9 @@ function App() {
         <Route
           path="/app/:id"
           element={<AppDetail />} />
+        <Route
+          path="/editapp/:id"
+          element={<EditApp />} />
         <Route
           path="/profile"
           element={<UserProfile />} />

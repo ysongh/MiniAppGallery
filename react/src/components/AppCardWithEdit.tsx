@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Star, ExternalLink } from 'lucide-react';
 import { useReadContract } from 'wagmi';
 
@@ -79,15 +80,13 @@ function AppCardWithEdit({ id }: { id: bigint }) {
       </div>
       
       <div className="border-t border-gray-100 p-3">
-        <a
-          href={miniapp && 'appUrl' in miniapp ? miniapp.appUrl : '#'}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to={`/editapp/${id}`}
           className="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-700 text-white py-1.5 px-3 rounded-lg transition-colors text-sm"
         >
           <ExternalLink className="w-3 h-3 mr-1" />
           Edit App
-        </a>
+        </Link>
       </div>
     </div>
   );
