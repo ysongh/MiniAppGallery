@@ -17,7 +17,7 @@ const categories = [
   "Game"
 ]
 
-function SubmitAppPage() {
+function SubmitApp() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -334,4 +334,4 @@ function SubmitAppPage() {
   );
 }
 
-export default SubmitAppPage
+export default SubmitApp;

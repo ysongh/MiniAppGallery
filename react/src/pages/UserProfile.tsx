@@ -32,7 +32,7 @@ const mockUserProfile: UserProfile = {
   developerApps: ['5', '11']
 };
 
-export default function UserProfilePage() {
+export default function UserProfile() {
   const { address } = useAccount();
 
   const [activeTab, setActiveTab] = useState<'favorites' | 'developed'>('developed');
