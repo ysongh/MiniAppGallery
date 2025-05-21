@@ -1,12 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Check } from 'lucide-react';
-import { useWriteContract } from "wagmi";
+import { useReadContract, useWriteContract } from "wagmi";
 import { baseSepolia } from "wagmi/chains";
 
 import FormHeader from '../components/layout/FormHeader';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { CONTRACT_ADDRESS } from '../config';
+
+interface MiniApp {
+  name: string;
+  description: string;
+  appUrl: string;
+  developerAddress: string;
+  totalRating: bigint;
+  ratingCount: bigint;
+  category: string;
+  registrationDate: bigint;
+}
 
 const categories = [
   "Developer Tools",
@@ -30,6 +41,25 @@ function EditApp() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { data: miniapp } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: MiniAppGallery.abi,
+    functionName: 'getAppDetails',
+    args: [id]
+  }) as { data: MiniApp | undefined };
+
+  useEffect(() => {
+    if (miniapp) {
+      setFormData({
+        name: miniapp?.name,
+        description: miniapp.description,
+        category: miniapp.category,
+        url: miniapp.appUrl,
+        customCategory: ''
+      })
+    }
+  }, [miniapp]);
 
   const {
     writeContract,
