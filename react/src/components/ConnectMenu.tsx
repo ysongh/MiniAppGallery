@@ -19,15 +19,16 @@ export function ConnectMenu() {
 
   if (isConnected) {
     return (
-      <div className="bg-indigo-600 text-white flex justify-between py-2 px-6 md:px-20">
-        <div>
-          <p>Connected to: {currentChain ? currentChain.name : 'Not connected'}</p>
+      <div className="bg-indigo-600 text-white px-6 md:px-20 py-3 shadow flex justify-between items-center">
+        <div className="text-sm sm:text-base font-medium">
+          🔗 Connected to: <span className="font-semibold">{currentChain ? currentChain.name : 'Not connected'}</span>
         </div>
-        <div>
-          <div onClick={() => navigate("/profile")}>
-            {formatAddress(address || "")}
-          </div>
-        </div>
+        <button
+          onClick={() => navigate("/profile")}
+          className="bg-white text-indigo-600 font-semibold px-4 py-1.5 rounded-full text-sm sm:text-base hover:bg-indigo-100 transition"
+        >
+          {formatAddress(address || "")}
+        </button>
       </div>
     );
   }
