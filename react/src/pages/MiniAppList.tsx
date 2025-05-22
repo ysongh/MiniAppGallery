@@ -34,6 +34,8 @@ function MiniAppList() {
 
   console.log(miniappids);
 
+  const sortIds = miniappids.slice().reverse();
+
   return (
     <div className="min-h-screen bg-gray-50">
       <MiniAppListHeader />
@@ -80,15 +82,15 @@ function MiniAppList() {
             </h2>
           </div>
           
-          {selectedCategory === "All" && miniappids.length > 0 ? (
+          {selectedCategory === "All" && sortIds.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-              {miniappids.map(id => (
+              {sortIds.map(id => (
                 <AppCard key={id} id={id} />
               ))}
             </div>
           ) : filterminiappids.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-              {miniappids.map(id => (
+              {sortIds.map(id => (
                 <AppCard key={id} id={id} />
               ))}
             </div>
