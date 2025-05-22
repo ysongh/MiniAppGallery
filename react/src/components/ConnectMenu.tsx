@@ -39,7 +39,7 @@ export function ConnectMenu() {
       onClick={() => connect({ connector: connectors[0] })}
       className="w-full py-2 px-4 bg-indigo-600 text-white font-medium rounded hover:bg-indigo-700 disabled:bg-indigo-300 disabled:cursor-not-allowed"
     >
-      Connect Wallet to View
+      Connect Wallet
     </button>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Tag } from 'lucide-react';
-import { useReadContract } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
+import { base } from "wagmi/chains";
 
 import MiniAppListHeader from '../components/layout/MiniAppListHeader';
 import AppCard from '../components/AppCard';
@@ -12,19 +13,23 @@ const categories = ["Social", "Finance", "NFTs", "Games", "Developer Tools",
   "Communication", "Entertainment", "News", "Governance", "Shopping"];
 
 function MiniAppList() {
+  const { chain } = useAccount();
+
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const { data: miniappids = [] } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
-    functionName: 'getAllApps'
+    functionName: 'getAllApps',
+    chainId: chain?.id || base.id,
   }) as { data: bigint[] | undefined };
 
   const { data: filterminiappids = [] } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByCategory',
-    args: [selectedCategory]
+    args: [selectedCategory],
+    chainId: chain?.id || base.id,
   }) as { data: bigint[] | undefined };
 
   console.log(miniappids);
