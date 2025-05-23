@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { User, Settings, Heart, ChevronLeft } from 'lucide-react';
 import { useAccount, useReadContract } from 'wagmi';
+import sdk from "@farcaster/frame-sdk";
 
 import AppCardWithEdit from '../components/AppCardWithEdit';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
@@ -36,7 +37,31 @@ export default function UserProfile() {
   const { address } = useAccount();
 
   const [activeTab, setActiveTab] = useState<'favorites' | 'developed'>('developed');
-  const [userProfile, setUserProfile] = useState<UserProfile>(mockUserProfile);
+  const [fid, setFid] = useState<number>(0);
+  const [userProfile] = useState<UserProfile>(mockUserProfile);
+
+  useEffect(() => {
+    const loadSDK = async () => {
+      const context = await sdk.context;
+      // @ts-ignore
+      const newfid = context?.user?.fid;
+      setFid(newfid);
+
+      console.log(context);
+      // @ts-ignore
+      console.log(context?.user);
+      console.log(newfid);
+    }
+    loadSDK();
+  }, [])
+  
+  const viewProfile = useCallback(async () => {
+    try {  
+      await sdk.actions.viewProfile({ fid });
+    } catch (error) {
+      throw new Error(error instanceof Error ? error.message : "Unknown error");
+    }
+  }, []);
 
   const { data: miniappids = [] } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -77,7 +102,7 @@ export default function UserProfile() {
             {/* Profile Info */}
             <div className="flex-grow">
               <h1 className="text-2xl font-bold">{userProfile.displayName}</h1>
-              <p className="text-indigo-200">{userProfile.username}</p>
+              <p className="text-indigo-200">{userProfile.username} {fid}</p>
               <p className="mt-2 text-white">{userProfile.bio}</p>
               <div className="flex mt-3 space-x-4">
                 <div>
@@ -105,6 +130,9 @@ export default function UserProfile() {
             <button className="flex items-center bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors w-full justify-center">
               <Settings className="w-4 h-4 mr-2" />
               Profile Settings
+            </button>
+            <button onClick={viewProfile}>
+              Show profile
             </button>
           </div>
         </div>
