@@ -58,14 +58,6 @@ export default function UserProfile() {
     }
     loadSDK();
   }, [])
-  
-  const viewProfile = useCallback(async () => {
-    try {  
-      await sdk.actions.viewProfile({ fid });
-    } catch (error) {
-      throw new Error(error instanceof Error ? error.message : "Unknown error");
-    }
-  }, []);
 
   const { data: miniappids = [] } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -127,17 +119,6 @@ export default function UserProfile() {
                 Profile Settings
               </button>
             </div>
-          </div>
-          
-          {/* Settings Button (Mobile) */}
-          <div className="mt-4 md:hidden">
-            <button className="flex items-center bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors w-full justify-center">
-              <Settings className="w-4 h-4 mr-2" />
-              Profile Settings
-            </button>
-            <button onClick={viewProfile}>
-              Show profile
-            </button>
           </div>
         </div>
       </section>
