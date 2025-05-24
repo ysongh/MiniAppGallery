@@ -38,6 +38,8 @@ export default function UserProfile() {
 
   const [activeTab, setActiveTab] = useState<'favorites' | 'developed'>('developed');
   const [fid, setFid] = useState<number>(0);
+  const [displayName, setDisplayName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [userProfile] = useState<UserProfile>(mockUserProfile);
 
   useEffect(() => {
@@ -46,6 +48,8 @@ export default function UserProfile() {
       // @ts-ignore
       const newfid = context?.user?.fid;
       setFid(newfid);
+      setDisplayName(context?.user?.displayName || "farcaster_user");
+      setUsername(context?.user?.username || "Farcaster Enthusiast");
 
       console.log(context);
       // @ts-ignore
@@ -94,15 +98,15 @@ export default function UserProfile() {
             <div className="flex-shrink-0">
               <div className="w-24 h-24 rounded-full bg-white p-1">
                 <div className="w-full h-full rounded-full bg-gradient-to-br from-indigo-300 to-purple-400 flex items-center justify-center text-3xl font-bold">
-                  {userProfile.displayName.charAt(0)}
+                  {displayName.charAt(0)}
                 </div>
               </div>
             </div>
             
             {/* Profile Info */}
             <div className="flex-grow">
-              <h1 className="text-2xl font-bold">{userProfile.displayName}</h1>
-              <p className="text-indigo-200">{userProfile.username} {fid}</p>
+              <h1 className="text-2xl font-bold">{displayName}</h1>
+              <p className="text-indigo-200">{username}</p>
               <p className="mt-2 text-white">{userProfile.bio}</p>
               <div className="flex mt-3 space-x-4">
                 <div>
