@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { User, Settings, Heart, ChevronLeft } from 'lucide-react';
 import { useAccount, useReadContract } from 'wagmi';
 import sdk from "@farcaster/frame-sdk";
