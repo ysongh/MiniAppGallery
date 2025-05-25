@@ -7,32 +7,6 @@ import AppCardWithEdit from '../components/AppCardWithEdit';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { CONTRACT_ADDRESS } from '../config';
 
-interface UserProfile {
-  id: string;
-  username: string;
-  displayName: string;
-  profilePicture: string;
-  bio: string;
-  followerCount: number;
-  followingCount: number;
-  installedApps: string[]; // IDs of installed apps
-  favoriteApps: string[]; // IDs of favorite apps
-  developerApps: string[]; // IDs of apps developed by user
-}
-
-const mockUserProfile: UserProfile = {
-  id: 'user123',
-  username: '@farcaster_user',
-  displayName: 'Farcaster Enthusiast',
-  profilePicture: 'https://example.com/profile.jpg',
-  bio: 'Building mini-apps for the Farcaster ecosystem. Web3 developer and crypto enthusiast.',
-  followerCount: 1243,
-  followingCount: 587,
-  installedApps: ['1', '3', '8'],
-  favoriteApps: ['1', '8'],
-  developerApps: ['5', '11']
-};
-
 export default function UserProfile() {
   const { address } = useAccount();
 
@@ -40,7 +14,6 @@ export default function UserProfile() {
   const [fid, setFid] = useState<number>(0);
   const [displayName, setDisplayName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
-  const [userProfile] = useState<UserProfile>(mockUserProfile);
 
   useEffect(() => {
     const loadSDK = async () => {
@@ -66,7 +39,7 @@ export default function UserProfile() {
     args: [address]
   }) as { data: bigint[] | undefined };
 
-  console.log(miniappids);
+  console.log(miniappids, fid);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -99,17 +72,6 @@ export default function UserProfile() {
             <div className="flex-grow">
               <h1 className="text-2xl font-bold">{displayName}</h1>
               <p className="text-indigo-200">{username}</p>
-              <p className="mt-2 text-white">{userProfile.bio}</p>
-              <div className="flex mt-3 space-x-4">
-                <div>
-                  <span className="font-bold">{userProfile.followerCount.toLocaleString()}</span>
-                  <span className="ml-1 text-indigo-200">Followers</span>
-                </div>
-                <div>
-                  <span className="font-bold">{userProfile.followingCount.toLocaleString()}</span>
-                  <span className="ml-1 text-indigo-200">Following</span>
-                </div>
-              </div>
             </div>
             
             {/* Settings Button (Desktop) */}
