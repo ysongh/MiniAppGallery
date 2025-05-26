@@ -144,7 +144,7 @@ function AppDetail() {
 
         {/* User Rating Section */}
         {address && address !== miniapp?.developerAddress && <RatingSection 
-          appId={id} 
+          appId={id} address={address}
         />}
 
         {/* Action Buttons */}

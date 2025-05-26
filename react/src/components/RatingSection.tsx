@@ -1,17 +1,36 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Star } from 'lucide-react';
-import { useWriteContract } from 'wagmi';
+import { useReadContract, useWriteContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { CONTRACT_ADDRESS } from '../config';
 
-const RatingSection = ({ appId }: { appId: string | undefined }) => {
+interface UserRating {
+  value: number;
+  comment: string;
+}
+
+const RatingSection = ({ appId, address }: { appId: string | undefined, address: string | undefined}) => {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasRated, setHasRated] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const { data: userRatingData } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: MiniAppGallery.abi,
+    functionName: 'getUserRating',
+    args: [appId, address]
+  }) as { data: UserRating | undefined };
+
+  useEffect(() => {
+    if (userRatingData) {
+      setRating(userRatingData.value);
+      setFeedback(userRatingData.comment);
+    }
+  }, [userRatingData]);
 
   const { writeContractAsync } = useWriteContract();
 
