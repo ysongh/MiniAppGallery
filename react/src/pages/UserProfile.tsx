@@ -14,6 +14,7 @@ export default function UserProfile() {
   const [fid, setFid] = useState<number>(0);
   const [displayName, setDisplayName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
+  const [pfpUrl, setpfpUrl] = useState<string>("");
 
   useEffect(() => {
     const loadSDK = async () => {
@@ -23,6 +24,7 @@ export default function UserProfile() {
       setFid(newfid);
       setDisplayName(context?.user?.displayName || "farcaster_user");
       setUsername(context?.user?.username || "Farcaster Enthusiast");
+      setpfpUrl(context?.user?.pfpUrl || "");
 
       console.log(context);
       // @ts-ignore
@@ -61,17 +63,24 @@ export default function UserProfile() {
           <div className="flex flex-col md:flex-row md:items-center gap-6">
             {/* Profile Picture */}
             <div className="flex-shrink-0">
-              <div className="w-24 h-24 rounded-full bg-white p-1">
+              {pfpUrl ? (
+                 <img
+                  src={pfpUrl || `https://api.dicebear.com/7.x/identicon/svg?seed=${address}`}
+                  alt="wallet avatar"
+                  className="w-24 h-24 rounded-full"
+                />
+              ): (<div className="w-24 h-24 rounded-full bg-white p-1">
                 <div className="w-full h-full rounded-full bg-gradient-to-br from-indigo-300 to-purple-400 flex items-center justify-center text-3xl font-bold">
                   {displayName.charAt(0)}
                 </div>
               </div>
+              )}
             </div>
             
             {/* Profile Info */}
             <div className="flex-grow">
               <h1 className="text-2xl font-bold">{displayName}</h1>
-              <p className="text-indigo-200">{username}</p>
+              <p className="text-indigo-200">@{username}</p>
             </div>
             
             {/* Settings Button (Desktop) */}
