@@ -36,58 +36,62 @@ function AppCard({ id }: { id: bigint }) {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 transition-all hover:shadow-lg">
-      {/* App Icon */}
-      <div className="flex justify-center p-6 bg-gray-50">
-        <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-xl font-bold">
-          {firstLetter}
-        </div>
-      </div>
-      
-      {/* App Info */}
-      <div className="p-4">
-        <h3 className="font-bold text-lg text-gray-800">
-          {miniapp && 'name' in miniapp ? miniapp.name : 'Loading...'}
-        </h3>
-        <p className="text-gray-500 text-sm mt-1">
-          {miniapp && 'developerAddress' in miniapp ? formatAddress(miniapp.developerAddress) : '-'}
-        </p>
-        <div className="flex items-center mt-2">
-          <div className="flex mr-2">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className={`w-3 h-3 ${
-                  i < Math.floor(rating)
-                    ? 'text-yellow-400 fill-yellow-400'
-                    : 'text-gray-300'
-                }`}
-              />
-            ))}
+      {/* Mobile landscape layout */}
+      <div className="flex sm:block">
+        {/* App Icon */}
+        <div className="flex justify-center items-center p-4 sm:p-6 bg-gray-50 sm:bg-gray-50 flex-shrink-0">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-lg sm:text-xl font-bold">
+            {firstLetter}
           </div>
-          <span className="text-xs text-gray-500">{rating ? rating.toFixed(1) : '-'}</span>
         </div>
-        <p className="text-gray-600 text-sm mt-3 line-clamp-2 h-10">
-          {miniapp && 'description' in miniapp ? miniapp.description : 'No description available'}
-        </p>
-        <div className="mt-4">
-          <a
-            href={miniapp && 'appUrl' in miniapp ? miniapp.appUrl : '#'}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg transition-colors"
-            onClick={(e) => !(miniapp && 'appUrl' in miniapp && miniapp.appUrl) && e.preventDefault()}
-          >
-            <ExternalLink className="w-4 h-4 mr-2" />
-            Open App
-          </a>
-        </div>
-        <div className="mt-4">
+        
+        {/* App Info */}
+        <div className="p-4 flex-1 flex flex-col justify-between sm:block">
+          <div>
+            <h3 className="font-bold text-base sm:text-lg text-gray-800">
+              {miniapp && 'name' in miniapp ? miniapp.name : 'Loading...'}
+            </h3>
+            <p className="text-gray-500 text-sm mt-1">
+              {miniapp && 'developerAddress' in miniapp ? formatAddress(miniapp.developerAddress) : '-'}
+            </p>
+            <div className="flex items-center mt-2">
+              <div className="flex mr-2">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`w-3 h-3 ${
+                      i < Math.floor(rating)
+                        ? 'text-yellow-400 fill-yellow-400'
+                        : 'text-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-xs text-gray-500">{rating ? rating.toFixed(1) : '-'}</span>
+            </div>
+            <p className="text-gray-600 text-sm mt-2 sm:mt-3 line-clamp-2 sm:h-10">
+              {miniapp && 'description' in miniapp ? miniapp.description : 'No description available'}
+            </p>
+          </div>
+          <div className="mt-3 sm:mt-4">
+            <a
+              href={miniapp && 'appUrl' in miniapp ? miniapp.appUrl : '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm"
+            >
+              <ExternalLink className="w-4 h-4 mr-2" />
+              Open App
+            </a>
+          </div>
+          <div className="mt-4">
           <Link
             to={`/app/${id}`}
             className="flex items-center justify-center w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg transition-colors"
           >
             View
           </Link>
+        </div>
         </div>
       </div>
     </div>
