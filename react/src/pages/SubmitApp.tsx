@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useWriteContract } from "wagmi";
-import { baseSepolia } from "wagmi/chains";
+import { base } from "wagmi/chains";
 
 import FormHeader from '../components/layout/FormHeader';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
@@ -137,13 +137,13 @@ function SubmitApp() {
             </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">App Submitted Successfully!</h2>
             <p className="text-gray-600 text-center mb-8">
-              Thank you for submitting your app. Our team will review it and get back to you soon.
+              Thank you for submitting your app.
             </p>
             {isPending && <div className="mt-4">Pending...</div>}
             {txHash && (
               <div className="mt-4">
                 <a
-                  href={baseSepolia.blockExplorers?.default + "/tx/" + txHash}
+                  href={base.blockExplorers?.default + "/tx/" + txHash}
                 >
                   View Transaction
                 </a>
@@ -294,7 +294,7 @@ function SubmitApp() {
                       ? 'border-red-300 focus:ring-red-200'
                       : 'border-gray-300 focus:ring-indigo-200'
                   }`}
-                  placeholder="https://warpcast.com/~/launch/your-app"
+                  placeholder="https://farcaster.xyz/~/launch/your-app"
                 />
                 {errors.url && (
                   <p className="text-red-500 text-sm mt-1">{errors.url}</p>
