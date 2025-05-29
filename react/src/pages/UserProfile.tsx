@@ -6,6 +6,7 @@ import sdk from "@farcaster/frame-sdk";
 import AppCardWithEdit from '../components/AppCardWithEdit';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { CONTRACT_ADDRESS } from '../config';
+import { formatAddress } from '../utils/format';
 
 export default function UserProfile() {
   const { address } = useAccount();
@@ -79,7 +80,11 @@ export default function UserProfile() {
             
             {/* Profile Info */}
             <div className="flex-grow">
-              <h1 className="text-2xl font-bold">{displayName}</h1>
+              <div className="flex items-end">
+                <h1 className="text-2xl font-bold mr-2">{displayName}</h1>
+                <p>({formatAddress(address || "")})</p>
+              </div>
+              
               <p className="text-indigo-200">@{username}</p>
             </div>
             
