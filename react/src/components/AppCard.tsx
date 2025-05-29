@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Star, ExternalLink } from 'lucide-react';
+import { Star, Tag, ExternalLink } from 'lucide-react';
 import { useReadContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
@@ -9,6 +9,7 @@ import { formatAddress } from '../utils/format';
 // Define types for the contract response
 interface MiniApp {
   name: string;
+  category: string;
   description: string;
   appUrl: string;
   developerAddress: string;
@@ -53,9 +54,15 @@ function AppCard({ id }: { id: bigint }) {
         {/* App Info */}
         <div className="p-4 flex-1 flex flex-col justify-between sm:block">
           <div>
-            <h3 className="font-bold text-base sm:text-lg text-gray-800">
-              {miniapp && 'name' in miniapp ? miniapp.name : 'Loading...'}
-            </h3>
+            <div className="flex justify-between items-start sm:flex-col sm:items-start">
+              <h3 className="font-bold text-base sm:text-lg text-gray-800">
+                {miniapp && 'name' in miniapp ? miniapp.name : 'Loading...'}
+              </h3>
+              <span className="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center ml-2 sm:ml-0 sm:mt-1 whitespace-nowrap">
+                <Tag className="w-3 h-3 mr-1" />
+                {miniapp?.category}
+              </span>
+            </div>
             <div className="flex justify-between flex-row-reverse sm:block">
               <p className="text-gray-500 text-sm mt-1">
                 {miniapp && 'developerAddress' in miniapp ? formatAddress(miniapp.developerAddress) : '-'}
