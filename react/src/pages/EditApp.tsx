@@ -200,7 +200,7 @@ function EditApp() {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
                     errors.name
                       ? 'border-red-300 focus:ring-red-200'
                       : 'border-gray-300 focus:ring-indigo-200'
@@ -223,7 +223,7 @@ function EditApp() {
                   value={formData.description}
                   onChange={handleInputChange}
                   rows={4}
-                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
                     errors.description
                       ? 'border-red-300 focus:ring-red-200'
                       : 'border-gray-300 focus:ring-indigo-200'
@@ -245,7 +245,7 @@ function EditApp() {
                   name="category"
                   value={formData.category}
                   onChange={handleCategoryChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
                     errors.category
                       ? 'border-red-300 focus:ring-red-200'
                       : 'border-gray-300 focus:ring-indigo-200'
@@ -276,7 +276,7 @@ function EditApp() {
                     name="customCategory"
                     value={formData.customCategory}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
                       errors.customCategory
                         ? 'border-red-300 focus:ring-red-200'
                         : 'border-gray-300 focus:ring-indigo-200'
@@ -300,7 +300,7 @@ function EditApp() {
                   name="url"
                   value={formData.url}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
                     errors.url
                       ? 'border-red-300 focus:ring-red-200'
                       : 'border-gray-300 focus:ring-indigo-200'
