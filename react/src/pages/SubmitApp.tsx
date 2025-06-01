@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useWriteContract } from "wagmi";
 import { base } from "wagmi/chains";
+import { sdk } from '@farcaster/frame-sdk';
 
 import FormHeader from '../components/layout/FormHeader';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
@@ -125,6 +126,27 @@ function SubmitApp() {
     setErrors({});
   };
 
+  const handleComposeCast = async () => {
+    try {
+      const result = await sdk.actions.composeCast({
+        text: 'I submiited my mini app? Check out the gallery! 🎉',
+        embeds: ["https://miniappgallery.netlify.app/"],
+        // Optional: parent cast reference
+        // parent: { type: 'cast', hash: '0xabc123...' },
+        // Optional: close the app after composing
+        // close: true,
+      });
+  
+      if (result) {
+        console.log('Cast composed:', result.cast);
+      } else {
+        console.log('Cast composition was closed or canceled.');
+      }
+    } catch (error) {
+      console.error('Error composing cast:', error);
+    }
+  };
+
   if (isSuccess) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -149,7 +171,14 @@ function SubmitApp() {
                 </a>
               </div>
             )}
+            <button
+              onClick={handleComposeCast}
+              className="w-full py-2 px-4 my-2 bg-green-600 text-white font-medium rounded hover:bg-green-700"
+            >
+              Share on Farcaster 🚀
+            </button>
             <div className="flex space-x-4">
+             
               <button
                 onClick={resetForm}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg transition-colors"
