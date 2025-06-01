@@ -115,17 +115,6 @@ function SubmitApp() {
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      description: '',
-      category: '',
-      url: '',
-      customCategory: ''
-    });
-    setErrors({});
-  };
-
   const handleComposeCast = async () => {
     try {
       const result = await sdk.actions.composeCast({
@@ -171,23 +160,16 @@ function SubmitApp() {
                 </a>
               </div>
             )}
-            <button
-              onClick={handleComposeCast}
-              className="w-full py-2 px-4 my-2 bg-green-600 text-white font-medium rounded hover:bg-green-700"
-            >
-              Share on Farcaster 🚀
-            </button>
             <div className="flex space-x-4">
-             
               <button
-                onClick={resetForm}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg transition-colors"
+                onClick={handleComposeCast}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg transition-colors cursor-pointer"
               >
-                Submit Another App
+                Share on Farcaster 🚀
               </button>
               <button
                 onClick={() => navigate("/")}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-6 rounded-lg transition-colors"
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-6 rounded-lg transition-colors cursor-pointer"
               >
                 Return to App Store
               </button>
