@@ -25,7 +25,7 @@ const categories = [
   "Finance",
   "Social",
   "NFTs",
-  "Game"
+  "Games"
 ]
 
 function EditApp() {

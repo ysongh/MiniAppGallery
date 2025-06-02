@@ -15,7 +15,7 @@ const categories = [
   "Finance",
   "Social",
   "NFTs",
-  "Game"
+  "Games"
 ]
 
 function SubmitApp() {
