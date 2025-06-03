@@ -133,7 +133,7 @@ function EditApp() {
       const {name, description, category, url} = formData;
 
       writeContract({
-        address: CONTRACT_ADDRESS,
+        address: import.meta.env.VITE_CONTRACT_ADDRESS,
         abi: MiniAppGallery.abi,
         functionName: "updateApp",
         args: [id, name, description, category, url],
@@ -291,7 +291,7 @@ function EditApp() {
               {/* App URL */}
               <div>
                 <label htmlFor="url" className="block text-gray-700 font-medium mb-2">
-                  App URL
+                  Mini-App URL
                 </label>
                 <input
                   type="text"
@@ -304,7 +304,7 @@ function EditApp() {
                       ? 'border-red-300 focus:ring-red-200'
                       : 'border-gray-300 focus:ring-indigo-200'
                   }`}
-                  placeholder="https://warpcast.com/~/launch/your-app"
+                  placeholder="https://yourwebsite.xyz"
                 />
                 {errors.url && (
                   <p className="text-red-500 text-sm mt-1">{errors.url}</p>
