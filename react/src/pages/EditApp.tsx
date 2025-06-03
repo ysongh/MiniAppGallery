@@ -6,7 +6,6 @@ import { baseSepolia } from "wagmi/chains";
 
 import FormHeader from '../components/layout/FormHeader';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
-import { CONTRACT_ADDRESS } from '../config';
 
 interface MiniApp {
   name: string;
@@ -43,7 +42,7 @@ function EditApp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { data: miniapp } = useReadContract({
-    address: CONTRACT_ADDRESS,
+    address: import.meta.env.VITE_CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
     args: [id]

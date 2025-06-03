@@ -7,7 +7,6 @@ import MiniAppListHeader from '../components/layout/MiniAppListHeader';
 import AppCard from '../components/AppCard';
 // import FeaturedAppCard from '../components/FeaturedAppCard';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
-import { CONTRACT_ADDRESS } from '../config';
 
 const categories = ["Social", "Finance", "NFTs", "Games", "Developer Tools", 
   "Communication", "Entertainment", "News", "Governance", "Shopping"];
@@ -18,14 +17,14 @@ function MiniAppList() {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const { data: miniappids = [] } = useReadContract({
-    address: CONTRACT_ADDRESS,
+    address: import.meta.env.VITE_CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
     functionName: 'getAllApps',
     chainId: chain?.id || base.id,
   }) as { data: bigint[] | undefined };
 
   const { data: filterminiappids = [] } = useReadContract({
-    address: CONTRACT_ADDRESS,
+    address: import.meta.env.VITE_CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByCategory',
     args: [selectedCategory],

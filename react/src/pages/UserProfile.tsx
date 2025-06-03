@@ -5,7 +5,6 @@ import sdk from "@farcaster/frame-sdk";
 
 import AppCardWithEdit from '../components/AppCardWithEdit';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
-import { CONTRACT_ADDRESS } from '../config';
 import { formatAddress } from '../utils/format';
 
 export default function UserProfile() {
@@ -36,7 +35,7 @@ export default function UserProfile() {
   }, [])
 
   const { data: miniappids = [] } = useReadContract({
-    address: CONTRACT_ADDRESS,
+    address: import.meta.env.VITE_CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByDeveloper',
     args: [address]

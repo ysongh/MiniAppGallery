@@ -7,7 +7,6 @@ import { sdk } from '@farcaster/frame-sdk';
 
 import FormHeader from '../components/layout/FormHeader';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
-import { CONTRACT_ADDRESS } from '../config';
 
 const categories = [
   "Developer Tools",
@@ -104,7 +103,7 @@ function SubmitApp() {
       const {name, description, category, url} = formData;
 
       writeContract({
-        address: CONTRACT_ADDRESS,
+        address: import.meta.env.VITE_CONTRACT_ADDRESS,
         abi: MiniAppGallery.abi,
         functionName: "registerApp",
         args: [name, description, category, url],

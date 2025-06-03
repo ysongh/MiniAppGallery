@@ -11,7 +11,6 @@ import { useAccount, useReadContract } from 'wagmi';
 import RatingSection from '../components/RatingSection';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress, formatDate } from '../utils/format';
-import { CONTRACT_ADDRESS } from '../config';
 
 interface MiniApp {
   name: string;
@@ -30,7 +29,7 @@ function AppDetail() {
   const { address } = useAccount();
 
   const { data: miniapp } = useReadContract({
-    address: CONTRACT_ADDRESS,
+    address: import.meta.env.VITE_CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
     args: [id]

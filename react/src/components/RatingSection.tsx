@@ -3,7 +3,6 @@ import { Star } from 'lucide-react';
 import { useReadContract, useWriteContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
-import { CONTRACT_ADDRESS } from '../config';
 
 interface UserRating {
   value: number;
@@ -19,7 +18,7 @@ const RatingSection = ({ appId, address }: { appId: string | undefined, address:
   const [errorMessage, setErrorMessage] = useState('');
 
   const { data: userRatingData } = useReadContract({
-    address: CONTRACT_ADDRESS,
+    address: import.meta.env.VITE_CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
     functionName: 'getUserRating',
     args: [appId, address]
@@ -46,7 +45,7 @@ const RatingSection = ({ appId, address }: { appId: string | undefined, address:
     try {
       // Submit rating to blockchain
       await writeContractAsync({
-        address: CONTRACT_ADDRESS,
+        address: import.meta.env.VITE_CONTRACT_ADDRESS,
         abi: MiniAppGallery.abi,
         functionName: 'rateApp',
         args: [appId, rating, feedback],

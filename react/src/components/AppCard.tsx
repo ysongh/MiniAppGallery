@@ -3,7 +3,6 @@ import { Star, Tag, ExternalLink } from 'lucide-react';
 import { useReadContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
-import { CONTRACT_ADDRESS } from '../config';
 import { formatAddress } from '../utils/format';
 
 // Define types for the contract response
@@ -21,7 +20,7 @@ function AppCard({ id }: { id: bigint }) {
   const navigate = useNavigate();
   
   const { data: miniapp } = useReadContract({
-    address: CONTRACT_ADDRESS,
+    address: import.meta.env.VITE_CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
     args: [id]
