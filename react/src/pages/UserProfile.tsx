@@ -15,6 +15,7 @@ export default function UserProfile() {
   const [displayName, setDisplayName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [pfpUrl, setpfpUrl] = useState<string>("");
+  const [isMiniApp, setIsMiniApp] = useState<Boolean>(false);
 
   useEffect(() => {
     const loadSDK = async () => {
@@ -25,6 +26,10 @@ export default function UserProfile() {
       setDisplayName(context?.user?.displayName || "farcaster_user");
       setUsername(context?.user?.username || "Farcaster Enthusiast");
       setpfpUrl(context?.user?.pfpUrl || "");
+
+      // @ts-ignore
+      const newIsMiniApp = await sdk.isInMiniApp();
+      setIsMiniApp(newIsMiniApp);
 
       console.log(context);
       // @ts-ignore
@@ -63,30 +68,29 @@ export default function UserProfile() {
           <div className="flex flex-col md:flex-row md:items-center gap-6">
             {/* Profile Picture */}
             <div className="flex-shrink-0">
-              {pfpUrl ? (
-                 <img
-                  src={pfpUrl || `https://api.dicebear.com/7.x/identicon/svg?seed=${address}`}
-                  alt="wallet avatar"
-                  className="w-24 h-24 rounded-full"
-                />
-              ): (<div className="w-24 h-24 rounded-full bg-white p-1">
-                <div className="w-full h-full rounded-full bg-gradient-to-br from-indigo-300 to-purple-400 flex items-center justify-center text-3xl font-bold">
-                  {displayName.charAt(0)}
-                </div>
-              </div>
-              )}
+              <img
+                src={pfpUrl || `https://api.dicebear.com/7.x/identicon/svg?seed=${address}`}
+                alt="wallet avatar"
+                className="w-24 h-24 rounded-full"
+              />
             </div>
             
             {/* Profile Info */}
-            <div className="flex-grow">
-              <div className="flex items-end">
-                <h1 className="text-2xl font-bold mr-2">{displayName}</h1>
-                <p>({formatAddress(address || "")})</p>
+            {isMiniApp ? (
+              <div className="flex-grow">
+                <h1 className="text-2xl font-bold">{displayName}</h1>
+                <p className="text-indigo-200">@{username}</p>
               </div>
-              
-              <p className="text-indigo-200">@{username}</p>
-            </div>
-            
+            ) : (
+              <div className="flex-grow">
+                <div className="flex items-end">
+                  <h1 className="text-2xl font-bold mr-2">
+                    {formatAddress(address || "")}
+                  </h1>
+                </div>
+              </div>
+            )}
+                        
             {/* Settings Button (Desktop) */}
             <div className="hidden md:block">
               <button className="flex items-center bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">
