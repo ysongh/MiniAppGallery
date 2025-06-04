@@ -7,9 +7,9 @@
   "frame": {
     "version": "1",
     "name": "MiniApp Gallery",
-    "iconUrl": "https://raw.githubusercontent.com/ysongh/MiniAppGallery/refs/heads/master/react/public/images/logo.png",
+    "iconUrl": "https://miniappgallery.netlify.app/images/logo.png",
     "homeUrl": "https://miniappgallery.netlify.app",
-    "splashImageUrl": "https://raw.githubusercontent.com/ysongh/MiniAppGallery/refs/heads/master/react/public/images/logo.png",
+    "splashImageUrl": "https://miniappgallery.netlify.app/images/splashImage.png",
     "subtitle": "Gallery of MiniApps",
     "description": "A gallery that showcases a list of Mini Apps",
     "screenshotUrls": [],
