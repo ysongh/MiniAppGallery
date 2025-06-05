@@ -1,5 +1,6 @@
 import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
-import { http, createConfig } from "wagmi";
+import { http } from "wagmi";
+import { createConfig } from '@privy-io/wagmi';
 import { base, baseSepolia, hardhat } from "wagmi/chains";
 
 export const config = createConfig({

@@ -12,6 +12,8 @@
   "dependencies": {
     "@farcaster/frame-sdk": "latest",
     "@farcaster/frame-wagmi-connector": "latest",
+    "@privy-io/react-auth": "^2.13.8",
+    "@privy-io/wagmi": "^1.0.3",
     "@tailwindcss/vite": "^4.1.5",
     "@tanstack/react-query": "5.45.1",
     "lucide-react": "^0.507.0",

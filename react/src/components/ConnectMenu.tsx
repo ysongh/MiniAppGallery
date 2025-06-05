@@ -7,8 +7,10 @@ import {
   useChains,
   useChainId,
 } from "wagmi";
+import { usePrivy } from '@privy-io/react-auth';
 
 export function ConnectMenu() {
+  const { login } = usePrivy();
   const { isConnected, address } = useAccount();
   const { connect, connectors } = useConnect();
   const chains = useChains();
@@ -48,12 +50,22 @@ export function ConnectMenu() {
   }
 
   return (
-    <button
-      type="button"
-      onClick={() => connect({ connector: connectors[0] })}
-      className="w-full py-2 px-4 bg-indigo-600 text-white font-medium rounded hover:bg-indigo-700 disabled:bg-indigo-300 disabled:cursor-not-allowed"
-    >
-      Connect Wallet
-    </button>
+    <div className="flex">
+      <button
+        type="button"
+        onClick={() => connect({ connector: connectors[0] })}
+        className="w-full py-2 px-4 bg-indigo-600 text-white font-medium rounded hover:bg-indigo-700 disabled:bg-indigo-300 disabled:cursor-not-allowed"
+      >
+        Connect Wallet
+      </button>
+      <button
+        type="button"
+        onClick={() => login()}
+        className="w-full py-2 px-4 bg-red-600 text-white font-medium rounded hover:bg-red-700 disabled:bg-indigo-300 disabled:cursor-not-allowed"
+      >
+        Login with Privy
+      </button>
+    </div>
+    
   );
 }
