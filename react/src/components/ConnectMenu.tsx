@@ -6,12 +6,11 @@ import {
   useConnect,
   useChains,
   useChainId,
-  useDisconnect,
 } from "wagmi";
 import { usePrivy } from '@privy-io/react-auth';
 
 export function ConnectMenu() {
-  const { login } = usePrivy();
+  const { authenticated, login } = usePrivy();
   const { isConnected, address } = useAccount();
   const { connect, connectors } = useConnect();
  
@@ -30,7 +29,7 @@ export function ConnectMenu() {
     loadSDK();
   }, [])
 
-  if (isConnected) {
+  if (isConnected || authenticated) {
     return (
       <div className="bg-indigo-600 text-white px-6 md:px-20 py-3 shadow flex justify-between items-center">
         <div className="text-sm sm:text-base font-medium">
@@ -54,22 +53,20 @@ export function ConnectMenu() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex justify-center gap-4 py-4">
       <button
-        type="button"
+        className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
         onClick={() => connect({ connector: connectors[0] })}
-        className="w-full py-2 px-4 bg-indigo-600 text-white font-medium rounded hover:bg-indigo-700 disabled:bg-indigo-300 disabled:cursor-not-allowed"
       >
-        Connect Wallet
+        Connect Wallet Only
       </button>
+    
       <button
-        type="button"
+        className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
         onClick={() => login()}
-        className="w-full py-2 px-4 bg-red-600 text-white font-medium rounded hover:bg-red-700 disabled:bg-indigo-300 disabled:cursor-not-allowed"
       >
         Login with Privy
       </button>
     </div>
-    
   );
 }

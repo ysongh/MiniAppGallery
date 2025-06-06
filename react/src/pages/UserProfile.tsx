@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User, Settings, ChevronLeft } from 'lucide-react';
+import { User, ChevronLeft } from 'lucide-react';
 import { useAccount, useDisconnect, useReadContract } from 'wagmi';
 import sdk from "@farcaster/frame-sdk";
 
