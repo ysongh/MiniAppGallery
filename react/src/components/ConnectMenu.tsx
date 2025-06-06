@@ -6,6 +6,7 @@ import {
   useConnect,
   useChains,
   useChainId,
+  useDisconnect,
 } from "wagmi";
 import { usePrivy } from '@privy-io/react-auth';
 
@@ -13,6 +14,7 @@ export function ConnectMenu() {
   const { login } = usePrivy();
   const { isConnected, address } = useAccount();
   const { connect, connectors } = useConnect();
+ 
   const chains = useChains();
   const chainId = useChainId();
 
@@ -34,17 +36,19 @@ export function ConnectMenu() {
         <div className="text-sm sm:text-base font-medium">
           🔗 Connected to: <span className="font-semibold">{currentChain ? currentChain.name : 'Not connected'}</span>
         </div>
-        <Link
-          to="/profile"
-          className="flex items-center gap-2 bg-white text-indigo-600 font-semibold px-4 py-1.5 rounded-full text-sm sm:text-base hover:bg-indigo-100 transition"
-        >
-          <img
-            src={pfpUrl ? pfpUrl : `https://api.dicebear.com/7.x/identicon/svg?seed=${address}`}
-            alt="wallet avatar"
-            className="w-6 h-6 rounded-full"
-          />
-          Profile
-        </Link>
+        <div className="flex">
+          <Link
+            to="/profile"
+            className="flex items-center gap-2 bg-white text-indigo-600 font-semibold px-4 py-1.5 rounded-full text-sm sm:text-base hover:bg-indigo-100 transition"
+          >
+            <img
+              src={pfpUrl ? pfpUrl : `https://api.dicebear.com/7.x/identicon/svg?seed=${address}`}
+              alt="wallet avatar"
+              className="w-6 h-6 rounded-full"
+            />
+            Profile
+          </Link>
+        </div>
       </div>
     );
   }

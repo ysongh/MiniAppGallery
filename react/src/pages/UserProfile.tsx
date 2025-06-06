@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { User, Settings, ChevronLeft } from 'lucide-react';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount, useDisconnect, useReadContract } from 'wagmi';
 import sdk from "@farcaster/frame-sdk";
 
 import AppCardWithEdit from '../components/AppCardWithEdit';
@@ -9,6 +9,7 @@ import { formatAddress } from '../utils/format';
 
 export default function UserProfile() {
   const { address } = useAccount();
+  const { disconnect } = useDisconnect();
 
   const [activeTab, setActiveTab] = useState<'favorites' | 'developed'>('developed');
   const [fid, setFid] = useState<number>(0);
@@ -93,9 +94,18 @@ export default function UserProfile() {
                         
             {/* Settings Button (Desktop) */}
             <div className="hidden md:block">
-              <button className="flex items-center bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">
-                <Settings className="w-4 h-4 mr-2" />
-                Profile Settings
+              <button
+                onClick={() => disconnect()}
+                className="ml-2 py-2 px-4 bg-red-600 text-white font-medium rounded hover:bg-red-700 disabled:bg-indigo-300 disabled:cursor-not-allowed"
+              >
+                Disconnect
+              </button>
+            </div>
+
+            {/* Settings Button (Mobile) */}
+            <div className="mt-4 md:hidden">
+              <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg w-full justify-center" onClick={() => disconnect()}>
+                Disconnect
               </button>
             </div>
           </div>
