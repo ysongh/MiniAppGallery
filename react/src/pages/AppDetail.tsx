@@ -7,10 +7,12 @@ import {
   Tag,
 } from 'lucide-react';
 import { useAccount, useReadContract } from 'wagmi';
+import { sdk } from '@farcaster/frame-sdk';
 
 import RatingSection from '../components/RatingSection';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress, formatDate } from '../utils/format';
+
 
 interface MiniApp {
   name: string;
@@ -42,6 +44,26 @@ function AppDetail() {
   ? Number(miniapp.totalRating) / Number(miniapp.ratingCount)
   : 0;
   
+  const handleComposeCast = async () => {
+    try {
+      const result = await sdk.actions.composeCast({
+        text: 'Check out my mini app🎉',
+        embeds: ["https://miniappgallery.netlify.app/#/app/" + id],
+        // Optional: parent cast reference
+        // parent: { type: 'cast', hash: '0xabc123...' },
+        // Optional: close the app after composing
+        // close: true,
+      });
+  
+      if (result) {
+        console.log('Cast composed:', result.cast);
+      } else {
+        console.log('Cast composition was closed or canceled.');
+      }
+    } catch (error) {
+      console.error('Error composing cast:', error);
+    }
+  };
 
   if (!miniapp) {
     return (
@@ -105,6 +127,12 @@ function AppDetail() {
                     Get App
                   </a>
                 </div>
+                <button
+                  onClick={handleComposeCast}
+                  className="w-full py-2 px-4 my-2 bg-green-600 text-white font-medium rounded hover:bg-green-700"
+                >
+                  Share on Farcaster 🚀
+                </button>
               </div>
 
               {/* Ratings and Downloads */}
