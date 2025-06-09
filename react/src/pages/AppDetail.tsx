@@ -10,9 +10,9 @@ import { useAccount, useReadContract } from 'wagmi';
 import { sdk } from '@farcaster/frame-sdk';
 
 import RatingSection from '../components/RatingSection';
+import ReviewsList from '../components/ReviewsList';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress, formatDate } from '../utils/format';
-
 
 interface MiniApp {
   name: string;
@@ -24,6 +24,13 @@ interface MiniApp {
   category: string;
   registrationDate: bigint;
 }
+
+type Review = {
+  user: string;
+  rating: number;
+  comment: string;
+  timestamp: number;
+};
 
 function AppDetail() {
   const { id } = useParams<{ id: string }>();
@@ -37,7 +44,14 @@ function AppDetail() {
     args: [id]
   }) as { data: MiniApp | undefined };
 
-  console.log(miniapp);
+  const { data: appRatings = [] } = useReadContract({
+    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+    abi: MiniAppGallery.abi,
+    functionName: 'getAppRatings',
+    args: [id]
+  }) as { data: Review };
+
+  console.log(appRatings);
 
   // Calculate rating safely
   const rating = miniapp && 'ratingCount' in miniapp && miniapp.ratingCount && miniapp.ratingCount > 0n
@@ -168,6 +182,8 @@ function AppDetail() {
             {miniapp?.description}
           </div>
         </section>
+
+        <ReviewsList reviews={appRatings} />
 
         {/* User Rating Section */}
         {address && address !== miniapp?.developerAddress && <RatingSection 
