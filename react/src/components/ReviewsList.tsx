@@ -7,6 +7,7 @@ type Review = {
   rating: number;
   comment: string;
   timestamp: number;
+  value: number;
 };
 
 const ReviewsList = ({ reviews } : { reviews: Review[]}) => {  
@@ -25,9 +26,6 @@ const ReviewsList = ({ reviews } : { reviews: Review[]}) => {
             <div key={index} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
               <div className="flex justify-between items-start mb-2">
                 <div className="flex items-start">
-                  <div className="bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center text-gray-500 font-medium">
-                    {formatAddress(review.user).charAt(2)}
-                  </div>
                   <div className="ml-3">
                     <div className="font-medium text-gray-800">{formatAddress(review.user)}</div>
                     <div className="flex items-center mt-1">
@@ -35,7 +33,7 @@ const ReviewsList = ({ reviews } : { reviews: Review[]}) => {
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < Number(review.value)
+                            i < Number(review ? review.value : 0)
                               ? 'text-yellow-400 fill-yellow-400'
                               : 'text-gray-300'
                           }`}
@@ -47,7 +45,7 @@ const ReviewsList = ({ reviews } : { reviews: Review[]}) => {
               </div>
               
               {review.comment && (
-                <div className="text-gray-700 ml-13">
+                <div className="text-gray-700 ml-4">
                   {review.comment}
                 </div>
               )}
