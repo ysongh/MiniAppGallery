@@ -131,22 +131,22 @@ function AppDetail() {
                   </div>
                 </div>
                 <div className="mt-4 md:mt-0">
+                  <button
+                    onClick={handleComposeCast}
+                    className="py-2 px-4 my-2 bg-green-600 text-white font-medium rounded hover:bg-green-700 w-full"
+                  >
+                    Share 
+                  </button>
                   <a
                     href={miniapp?.appUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg transition-colors"
+                    className="flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-md transition-colors"
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Get App
                   </a>
                 </div>
-                <button
-                  onClick={handleComposeCast}
-                  className="w-full py-2 px-4 my-2 bg-green-600 text-white font-medium rounded hover:bg-green-700"
-                >
-                  Share on Farcaster 🚀
-                </button>
               </div>
 
               {/* Ratings and Downloads */}
