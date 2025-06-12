@@ -1,6 +1,6 @@
 import { Star, MessageSquare } from 'lucide-react';
 
-import { formatAddress } from '../utils/format';
+import { formatAddress, formatDate } from '../utils/format';
 
 type Review = {
   user: string;
@@ -49,7 +49,11 @@ const ReviewsList = ({ reviews } : { reviews: Review[]}) => {
                   {review.comment}
                 </div>
               )}
-
+              {review.timestamp && (
+                <div className="text-gray-700 ml-4">
+                  Post on {formatDate(BigInt(review.timestamp))}
+                </div>
+              )}
             </div>
           ))}
         </div>
