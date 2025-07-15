@@ -20,11 +20,15 @@ export function ConnectMenu() {
   const currentChain = chains.find(chain => chain.id === chainId);
 
   const [pfpUrl, setpfpUrl] = useState<string>("");
+  const [isMiniApp, setIsMiniApp] = useState<Boolean>(false);
 
   useEffect(() => {
     const loadSDK = async () => {
       const context = await sdk.context;
       setpfpUrl(context?.user?.pfpUrl || "");
+
+      const newIsMiniApp = await sdk.isInMiniApp();
+      setIsMiniApp(newIsMiniApp);
     }
     loadSDK();
   }, [])
@@ -56,7 +60,7 @@ export function ConnectMenu() {
     <div className="flex justify-center gap-4 py-4">
       <button
         className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
-        onClick={() => connect({ connector: connectors[0] })}
+        onClick={() => connect({ connector: connectors[isMiniApp ? 0 : 1] })}
       >
         Connect Wallet Only
       </button>
