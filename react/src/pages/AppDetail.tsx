@@ -3,7 +3,7 @@ import {
   ArrowLeft,
   Star,
   Calendar,
-  Download,
+  ExternalLink,
   Tag,
 } from 'lucide-react';
 import { useAccount, useReadContract } from 'wagmi';
@@ -143,8 +143,8 @@ function AppDetail() {
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-md transition-colors"
                   >
-                    <Download className="w-4 h-4 mr-2" />
-                    Get App
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Open App
                   </a>
                 </div>
               </div>
@@ -198,8 +198,8 @@ function AppDetail() {
             rel="noopener noreferrer"
             className="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-lg transition-colors font-medium"
           >
-            <Download className="w-5 h-5 mr-2" />
-            Get App
+            <ExternalLink className="w-5 h-5 mr-2" />
+            Open App
           </a>
         </div>
       </main>
