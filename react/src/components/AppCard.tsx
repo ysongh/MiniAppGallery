@@ -14,6 +14,7 @@ interface MiniApp {
   developerAddress: string;
   totalRating: bigint;
   ratingCount: bigint;
+  isActive: boolean;
 }
 
 function AppCard({ id }: { id: bigint }) {
@@ -35,6 +36,8 @@ function AppCard({ id }: { id: bigint }) {
   
   // Get first letter of name safely
   const firstLetter = miniapp && 'name' in miniapp ? miniapp.name.charAt(0) : '?';
+
+  if (miniapp && !miniapp?.isActive) return null;
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 transition-all hover:shadow-lg">
