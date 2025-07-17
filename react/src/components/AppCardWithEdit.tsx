@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Star, ExternalLink } from 'lucide-react';
-import { useReadContract } from 'wagmi';
+import { useReadContract, useWriteContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress } from '../utils/format';
@@ -13,6 +13,7 @@ interface MiniApp {
   developerAddress: string;
   totalRating: bigint;
   ratingCount: bigint;
+  isActive: boolean;
 }
 
 function AppCardWithEdit({ id }: { id: bigint }) {
@@ -25,6 +26,22 @@ function AppCardWithEdit({ id }: { id: bigint }) {
 
   console.log(miniapp);
 
+  const {
+    writeContract,
+    //data: txHash,
+    isPending,
+    //isSuccess
+  } = useWriteContract();
+
+  const togglePublished = () => {
+    writeContract({
+      address: import.meta.env.VITE_CONTRACT_ADDRESS,
+      abi: MiniAppGallery.abi,
+      functionName: "setAppStatus",
+      args: [id, !miniapp?.isActive],
+    })
+  };
+  
   // Calculate rating safely
   const rating = miniapp && 'ratingCount' in miniapp && miniapp.ratingCount && miniapp.ratingCount > 0n
   ? Number(miniapp.totalRating) / Number(miniapp.ratingCount)
@@ -71,8 +88,8 @@ function AppCardWithEdit({ id }: { id: bigint }) {
           </div>
           
           <div className="mt-1">
-            <span className="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">
-              Published
+            <span className={`text-xs px-2 py-0.5 rounded-full ${ miniapp?.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`} onClick={togglePublished}>
+              {isPending ? "Updating..." : miniapp?.isActive ? "Published" : "Not Published"}
             </span>
           </div>
         </div>
