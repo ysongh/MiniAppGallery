@@ -21,19 +21,27 @@ const ReviewsList = ({ reviews } : { reviews: Review[]}) => {
           <p>No reviews yet. Be the first to leave a review!</p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {reviews.map((review, index) => (
-            <div key={index} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
-              <div className="flex justify-between items-start mb-2">
-                <div className="flex items-start">
-                  <div className="ml-3">
-                    <div className="font-medium text-gray-800">{formatAddress(review.user)}</div>
-                    <div className="flex items-center mt-1">
+            <div
+              key={index}
+              className="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200"
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={`https://api.dicebear.com/7.x/identicon/svg?seed=${review.user}`}
+                    alt="avatar"
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <div>
+                    <p className="font-semibold text-gray-800">{formatAddress(review.user)}</p>
+                    <div className="flex items-center gap-1 mt-1">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < Number(review ? review.value : 0)
+                            i < Number(review.value)
                               ? 'text-yellow-400 fill-yellow-400'
                               : 'text-gray-300'
                           }`}
@@ -42,17 +50,14 @@ const ReviewsList = ({ reviews } : { reviews: Review[]}) => {
                     </div>
                   </div>
                 </div>
+
+                <span className="text-xs text-gray-400 whitespace-nowrap">
+                  {formatDate(BigInt(review.timestamp))}
+                </span>
               </div>
-              
+
               {review.comment && (
-                <div className="text-gray-700 ml-4">
-                  {review.comment}
-                </div>
-              )}
-              {review.timestamp && (
-                <div className="text-gray-700 ml-4">
-                  Post on {formatDate(BigInt(review.timestamp))}
-                </div>
+                <p className="text-gray-700 mt-2">{review.comment}</p>
               )}
             </div>
           ))}
