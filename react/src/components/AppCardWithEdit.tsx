@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Star, ExternalLink } from 'lucide-react';
 import { useReadContract, useWriteContract } from 'wagmi';
 
@@ -17,6 +17,8 @@ interface MiniApp {
 }
 
 function AppCardWithEdit({ id }: { id: bigint }) {
+  const navigate = useNavigate();
+
   const { data: miniapp } = useReadContract({
     address: import.meta.env.VITE_CONTRACT_ADDRESS,
     abi: MiniAppGallery.abi,
@@ -55,7 +57,10 @@ function AppCardWithEdit({ id }: { id: bigint }) {
       <div className="flex p-4">
         {/* App Icon */}
         <div className="flex-shrink-0">
-          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-xl font-bold">
+          <div
+            className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-xl font-bold cursor-pointer"
+             onClick={() => navigate(`/app/${id}`)}
+          >
             {firstLetter}
           </div>
         </div>
