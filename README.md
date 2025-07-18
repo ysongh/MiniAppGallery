@@ -15,5 +15,4 @@ In Farcaster’s growing ecosystem, finding new and high-quality Mini Apps is ch
 ## Tech Stack
 - **Frontend**: React, Next.js, Tailwind CSS
 - **Backend**: Node.js (planned for API integration)
-- **Blockchain**: Farcaster protocol, Ethereum/Base (for on-chain app data)
 - **Tools**: Vite, TypeScript, Hardhat (for contract verification)
