@@ -183,6 +183,7 @@ function AppDetail() {
           </div>
         </section>
 
+        {/* @ts-ignore */}
         <ReviewsList reviews={appRatings} />
 
         {/* User Rating Section */}

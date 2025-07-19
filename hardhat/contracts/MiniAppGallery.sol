@@ -41,6 +41,8 @@ contract MiniAppGallery {
     // Track user ratings
     mapping(uint256 => mapping(address => uint256)) public userRatingIndex;
     mapping(uint256 => mapping(address => bool)) public hasUserRated;
+
+    mapping(address => uint256) public totalDonationsSent;
     
     // Mapping of developer addresses to their app IDs
     mapping(address => uint256[]) public developerApps;
@@ -56,6 +58,9 @@ contract MiniAppGallery {
     
     // Total apps counter
     uint256 public totalApps;
+
+    // Platform fee
+    uint256 public platformFeeRate = 0;
     
     // Events
     event AppRegistered(uint256 indexed appId, string name, address indexed developer);
@@ -66,7 +71,8 @@ contract MiniAppGallery {
     event CategoryAdded(string category);
     event RatingSubmitted(uint256 indexed appId, address indexed user, uint256 rating);
     event RatingUpdated(uint256 indexed appId, address indexed user, uint256 newRating);
-    
+    event DonationSent(uint256 indexed appId, address indexed from, address indexed to, uint256 amount);
+
     // Modifiers
     modifier onlyOwner() {
         require(msg.sender == owner, "Only owner can call");
@@ -251,6 +257,33 @@ contract MiniAppGallery {
             
             emit AppFeatured(_appId, _isFeatured);
         }
+    }
+
+    /**
+     * @dev Donate to a user who gave a good review (developer only)
+     * @param _appId The app ID
+     * @param _user The user address who wrote the review
+     */
+    function donateToReviewer(
+        uint256 _appId, 
+        address _user
+    ) external payable appExists(_appId) onlyAppDeveloper(_appId) {
+        require(_user != address(0), "Invalid user address");
+        require(_user != msg.sender, "Can't donate to yourself");
+        require(msg.value > 0, "Must send ETH");
+        require(hasUserRated[_appId][_user], "User hasn't rated this app");
+        
+        // Calculate platform fee
+        uint256 platformFee = (msg.value * platformFeeRate) / 10000;
+        uint256 donationAmount = msg.value - platformFee;
+        
+        // Update totals
+        totalDonationsSent[msg.sender] += donationAmount;
+        
+        // Transfer ETH to reviewer
+        payable(_user).transfer(donationAmount);
+        
+        emit DonationSent(_appId, msg.sender, _user, donationAmount);
     }
     
     /**
