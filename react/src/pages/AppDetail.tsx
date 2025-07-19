@@ -184,7 +184,7 @@ function AppDetail() {
         </section>
 
         {/* @ts-ignore */}
-        <ReviewsList reviews={appRatings} />
+        <ReviewsList appId={id} reviews={appRatings} />
 
         {/* User Rating Section */}
         {address && address !== miniapp?.developerAddress && <RatingSection 

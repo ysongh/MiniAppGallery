@@ -1,6 +1,9 @@
 import { Star, MessageSquare } from 'lucide-react';
+import { useWriteContract } from 'wagmi';
+import { parseEther } from "viem";
 
 import { formatAddress, formatDate } from '../utils/format';
+import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 
 type Review = {
   user: string;
@@ -10,7 +13,24 @@ type Review = {
   value: number;
 };
 
-const ReviewsList = ({ reviews } : { reviews: Review[]}) => {  
+const ReviewsList = ({ appId, reviews } : { appId: string, reviews: Review[]}) => {
+  const { writeContractAsync } = useWriteContract();
+  
+  const handleDonateToReviewer = async (reviewer: string) => {
+    try {
+      await writeContractAsync({
+        address: import.meta.env.VITE_CONTRACT_ADDRESS,
+        abi: MiniAppGallery.abi,
+        functionName: 'donateToReviewer',
+        args: [appId, reviewer],
+        value: parseEther("0.01")
+      });
+      
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+    }
+  };
+
   return (
     <section className="bg-white rounded-lg shadow-md p-6 mb-6">
       <h2 className="text-xl font-bold text-gray-800 mb-4">Reviews</h2>
@@ -51,9 +71,18 @@ const ReviewsList = ({ reviews } : { reviews: Review[]}) => {
                   </div>
                 </div>
 
-                <span className="text-xs text-gray-400 whitespace-nowrap">
-                  {formatDate(BigInt(review.timestamp))}
-                </span>
+                <div className="flex flex-col">
+                  <span className="text-xs text-gray-400 whitespace-nowrap">
+                    {formatDate(BigInt(review.timestamp))}
+                  </span>
+                 <button
+                    onClick={() => handleDonateToReviewer(review.user)}
+                    className="py-1 mt-1 bg-green-600 text-white font-sm rounded hover:bg-green-700 cursor-pointer"
+                  >
+                    Tip 
+                  </button>
+                </div>
+               
               </div>
 
               {review.comment && (
