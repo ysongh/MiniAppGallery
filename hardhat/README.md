@@ -8,3 +8,5 @@
  npx hardhat ignition deploy ./ignition/modules/MiniAppGallery.js --network localhost
  ```
  
+## Deploy UniqueUserSignup
+npx hardhat ignition deploy ./ignition/modules/UniqueUserSignup.js --network localhost
