@@ -11,6 +11,11 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
       chainId: 8453
     },
+    alfajores: {
+      url: "https://alfajores-forno.celo-testnet.org",
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 44787
+    },
   },
   etherscan: {
     apiKey: {
