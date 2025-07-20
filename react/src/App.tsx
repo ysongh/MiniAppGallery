@@ -8,6 +8,7 @@ import SubmitApp from "./pages/SubmitApp";
 import AppDetail from "./pages/AppDetail";
 import UserProfile from "./pages/UserProfile";
 import EditApp from "./pages/EditApp";
+import SelfVerification from "./pages/SelfVerification";
 
 function App() {
   useEffect(() => {
@@ -30,6 +31,9 @@ function App() {
         <Route
           path="/submitapp"
           element={<SubmitApp />} />
+        <Route
+          path="/selfverification"
+          element={<SelfVerification />} />
         <Route
           path="/"
           element={<MiniAppList />} />
