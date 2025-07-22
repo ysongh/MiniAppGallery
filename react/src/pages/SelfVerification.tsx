@@ -1,13 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { User, CheckCircle, AlertCircle, Loader, Wallet } from 'lucide-react';
+import { useAccount } from 'wagmi';
+import { getUniversalLink } from "@selfxyz/core";
+import { SelfAppBuilder, SelfQRcodeWrapper } from '@selfxyz/qrcode';
 
 const SelfVerification = () => {
+  const { address } = useAccount();
 
   const [isRegistered, setIsRegistered] = useState(false);
   const [totalUsers, setTotalUsers] = useState(0);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [selfApp, setSelfApp] = useState(null);
+  const [universalLink, setUniversalLink] = useState("");
 
+  useEffect(() => {
+    try {
+      const app = new SelfAppBuilder({
+        version: 2,
+        appName: process.env.NEXT_PUBLIC_SELF_APP_NAME || "Self Workshop",
+        scope: process.env.NEXT_PUBLIC_SELF_SCOPE || "self-workshop",
+        endpoint: `${process.env.NEXT_PUBLIC_SELF_ENDPOINT}`,
+        logoBase64: "https://i.postimg.cc/mrmVf9hm/self.png",
+        userId: address,
+        endpointType: "staging_https",
+        userIdType: "hex",
+        userDefinedData: "Bonjour Cannes!",
+        disclosures: {
+          /* 1. what you want to verify from users' identity */
+          minimumAge: 18,
+          // ofac: false,
+          // excludedCountries: [countries.BELGIUM],
+
+          /* 2. what you want users to reveal */
+          // name: false,
+          // issuing_state: true,
+          nationality: true,
+          // date_of_birth: true,
+          // passport_number: false,
+          gender: true,
+          // expiry_date: false,
+        }
+      }).build();
+
+      setSelfApp(app);
+      setUniversalLink(getUniversalLink(app));
+    } catch (error) {
+      console.error("Failed to initialize Self app:", error);
+    }
+  }, [address]);
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-2xl mx-auto">
@@ -58,6 +99,35 @@ const SelfVerification = () => {
                   </div>
                 </div>
               )}
+
+              {/* Registration Actions */}
+              {!isRegistered && (
+                <div className="text-center space-y-4">
+                  <div className="space-y-4">
+                    <div className="bg-white border-2 border-gray-200 rounded-lg p-6 inline-block">
+                      <SelfQRcodeWrapper
+                        selfApp={selfApp}
+                        onSuccess={() => {
+                          console.log('Verification successful');
+                          // Handle successful verification
+                        }}
+                        onError={() => {
+                          console.error('Failed to verify identity');
+                        }}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-lg font-medium text-gray-900">
+                        Scan with Self App
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Open the Self mobile app and scan this QR code to verify your identity
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
             </div>
 
           {/* Instructions */}
