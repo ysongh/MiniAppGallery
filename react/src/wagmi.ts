@@ -1,14 +1,15 @@
 import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
 import { http } from "wagmi";
 import { createConfig } from '@privy-io/wagmi';
-import { base, baseSepolia, hardhat } from "wagmi/chains";
+import { base, baseSepolia, celoAlfajores, hardhat } from "wagmi/chains";
 
 export const config = createConfig({
-  chains: [base, baseSepolia, hardhat],
+  chains: [base, baseSepolia, celoAlfajores, hardhat],
   connectors: [farcasterFrame()],
   transports: {
     [base.id]: http(),
     [baseSepolia.id]: http(),
+    [celoAlfajores.id]: http(),
     [hardhat.id]: http(),
   },
 });

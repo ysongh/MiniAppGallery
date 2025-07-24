@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { User, CheckCircle, AlertCircle, Loader, Wallet } from 'lucide-react';
-import { useAccount } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 import { getUniversalLink } from "@selfxyz/core";
 import { SelfAppBuilder, SelfQRcodeWrapper } from '@selfxyz/qrcode';
 
-const SelfVerification = () => {
-  const { address } = useAccount();
+import UniqueUserSignup from '../artifacts/contracts/UniqueUserSignup.sol/UniqueUserSignup.json';
 
-  const [isRegistered, setIsRegistered] = useState(false);
+const SelfVerification = () => {
+  const { address, chain } = useAccount();
+
   const [totalUsers, setTotalUsers] = useState(0);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -49,6 +50,16 @@ const SelfVerification = () => {
       console.error("Failed to initialize Self app:", error);
     }
   }, [address]);
+  
+  const { data: isRegistered } = useReadContract({
+    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+    abi: UniqueUserSignup.abi,
+    functionName: 'isCurrentUserRegistered',
+    chainId: chain?.id
+  }) as { data: boolean | undefined };
+
+  console.log(isRegistered);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-2xl mx-auto">
