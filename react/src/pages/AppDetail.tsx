@@ -13,6 +13,7 @@ import RatingSection from '../components/RatingSection';
 import ReviewsList from '../components/ReviewsList';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress, formatDate } from '../utils/format';
+import { getContractAddress } from '../utils/contractAddress';
 
 interface MiniApp {
   name: string;
@@ -33,19 +34,19 @@ type Review = {
 };
 
 function AppDetail() {
-  const { id } = useParams<{ id: string }>();
+  const { id, networkid } = useParams<{ id: string, networkid: string }>();
 
   const { address } = useAccount();
 
   const { data: miniapp } = useReadContract({
-    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+    address: getContractAddress(Number(networkid)),
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
     args: [id]
   }) as { data: MiniApp | undefined };
 
   const { data: appRatings = [] } = useReadContract({
-    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+    address: getContractAddress(Number(networkid)),
     abi: MiniAppGallery.abi,
     functionName: 'getAppRatings',
     args: [id]
@@ -62,7 +63,7 @@ function AppDetail() {
     try {
       const result = await sdk.actions.composeCast({
         text: 'Check out my mini app🎉',
-        embeds: ["https://miniappgallery.netlify.app/#/app/" + id],
+        embeds: [`https://miniappgallery.netlify.app/#/app/${i}/${networkid}`],
         // Optional: parent cast reference
         // parent: { type: 'cast', hash: '0xabc123...' },
         // Optional: close the app after composing

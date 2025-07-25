@@ -20,7 +20,7 @@ function App() {
       <ConnectMenu />
       <Routes>
         <Route
-          path="/app/:id"
+          path="/app/:id/:networkid"
           element={<AppDetail />} />
         <Route
           path="/editapp/:id"

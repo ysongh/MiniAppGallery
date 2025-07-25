@@ -48,7 +48,7 @@ function AppCard({ id, chainId }: { id: bigint, chainId: number }) {
         <div className="flex justify-center items-center p-4 sm:p-6 bg-gray-50 sm:bg-gray-50 flex-shrink-0">
           <div
             className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-lg sm:text-xl font-bold cursor-pointer"
-            onClick={() => navigate(`/app/${id}`)}
+            onClick={() => navigate(`/app/${id}/${chainId}`)}
           >
             {firstLetter}
           </div>
