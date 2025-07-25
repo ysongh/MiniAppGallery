@@ -9,7 +9,6 @@ import UniqueUserSignup from '../artifacts/contracts/UniqueUserSignup.sol/Unique
 const SelfVerification = () => {
   const { address, chain } = useAccount();
 
-  const [totalUsers, setTotalUsers] = useState(0);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [selfApp, setSelfApp] = useState(null);
@@ -50,7 +49,7 @@ const SelfVerification = () => {
       console.error("Failed to initialize Self app:", error);
     }
   }, [address]);
-  
+
   const { data: isRegistered } = useReadContract({
     address: import.meta.env.VITE_CONTRACT_ADDRESS,
     abi: UniqueUserSignup.abi,
@@ -58,7 +57,14 @@ const SelfVerification = () => {
     chainId: chain?.id
   }) as { data: boolean | undefined };
 
-  console.log(isRegistered);
+  const { data: totalRegisteredUsers } = useReadContract({
+    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+    abi: UniqueUserSignup.abi,
+    functionName: 'totalRegisteredUsers',
+    chainId: chain?.id
+  }) as { data: number | undefined };
+
+  console.log(totalRegisteredUsers);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -96,7 +102,7 @@ const SelfVerification = () => {
               {/* Statistics */}
               <div className="bg-indigo-50 rounded-lg p-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-indigo-600">{totalUsers}</p>
+                  <p className="text-2xl font-bold text-indigo-600">{Number(totalRegisteredUsers)}</p>
                   <p className="text-sm text-indigo-800">Total Registered Users</p>
                 </div>
               </div>
