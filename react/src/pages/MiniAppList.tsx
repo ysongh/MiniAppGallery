@@ -7,6 +7,7 @@ import MiniAppListHeader from '../components/layout/MiniAppListHeader';
 import AppCard from '../components/AppCard';
 // import FeaturedAppCard from '../components/FeaturedAppCard';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
+import { getContractAddress } from '../utils/contractAddress';
 
 const categories = ["Social", "Finance", "NFTs", "Games", "Developer Tools", 
   "Communication", "Entertainment", "News", "Governance", "Shopping"];
@@ -17,14 +18,14 @@ function MiniAppList() {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const { data: miniappids = [] } = useReadContract({
-    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+    address: getContractAddress(chain?.id || 1),
     abi: MiniAppGallery.abi,
     functionName: 'getAllApps',
     chainId: chain?.id || base.id,
   }) as { data: bigint[] | undefined };
 
   const { data: filterminiappids = [] } = useReadContract({
-    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+    address: getContractAddress(chain?.id || 1),
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByCategory',
     args: [selectedCategory],
@@ -84,13 +85,13 @@ function MiniAppList() {
           {selectedCategory === "All" && sortIds.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {sortIds.map(id => (
-                <AppCard key={id} id={id} />
+                <AppCard key={id} id={id} chainId={chain?.id || 1} />
               ))}
             </div>
           ) : filterminiappids.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {filterminiappids.map(id => (
-                <AppCard key={id} id={id} />
+                <AppCard key={id} id={id} chainId={chain?.id || 1} />
               ))}
             </div>
           ) : (

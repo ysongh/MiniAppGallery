@@ -4,6 +4,7 @@ import { useReadContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress } from '../utils/format';
+import { getContractAddress } from '../utils/contractAddress';
 
 // Define types for the contract response
 interface MiniApp {
@@ -17,11 +18,11 @@ interface MiniApp {
   isActive: boolean;
 }
 
-function AppCard({ id }: { id: bigint }) {
+function AppCard({ id, chainId }: { id: bigint, chainId: number }) {
   const navigate = useNavigate();
   
   const { data: miniapp } = useReadContract({
-    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+    address: getContractAddress(chainId),
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
     args: [id]
