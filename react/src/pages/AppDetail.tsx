@@ -36,7 +36,7 @@ type Review = {
 function AppDetail() {
   const { id, networkid } = useParams<{ id: string, networkid: string }>();
 
-  const { address } = useAccount();
+  const { address, chain } = useAccount();
 
   const { data: miniapp } = useReadContract({
     address: getContractAddress(Number(networkid)),
@@ -189,7 +189,7 @@ function AppDetail() {
 
         {/* User Rating Section */}
         {address && address !== miniapp?.developerAddress && <RatingSection 
-          appId={id} address={address}
+          appId={id} address={address} chainId={chain?.id || 1}
         />}
 
         {/* Action Buttons */}

@@ -3,13 +3,14 @@ import { Star } from 'lucide-react';
 import { useReadContract, useWriteContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
+import { getContractAddress } from '../utils/contractAddress';
 
 interface UserRating {
   value: number;
   comment: string;
 }
 
-const RatingSection = ({ appId, address }: { appId: string | undefined, address: string | undefined}) => {
+const RatingSection = ({ appId, address, chainId }: { appId: string | undefined, address: string | undefined, chainId: number }) => {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [feedback, setFeedback] = useState('');
@@ -18,7 +19,7 @@ const RatingSection = ({ appId, address }: { appId: string | undefined, address:
   const [errorMessage, setErrorMessage] = useState('');
 
   const { data: userRatingData } = useReadContract({
-    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+    address: getContractAddress(chainId),
     abi: MiniAppGallery.abi,
     functionName: 'getUserRating',
     args: [appId, address]
@@ -45,7 +46,7 @@ const RatingSection = ({ appId, address }: { appId: string | undefined, address:
     try {
       // Submit rating to blockchain
       await writeContractAsync({
-        address: import.meta.env.VITE_CONTRACT_ADDRESS,
+        address: getContractAddress(chainId),
         abi: MiniAppGallery.abi,
         functionName: 'rateApp',
         args: [appId, rating, feedback],
