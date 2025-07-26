@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check } from 'lucide-react';
-import { useWriteContract } from "wagmi";
-import { base } from "wagmi/chains";
+import { Check, AlertCircle } from 'lucide-react';
+import { useWriteContract, useAccount, useSwitchChain } from "wagmi";
+import { base, baseSepolia } from "wagmi/chains";
 import { sdk } from '@farcaster/frame-sdk';
 
 import FormHeader from '../components/layout/FormHeader';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
+import { getContractAddress } from '../utils/contractAddress';
 
 const categories = [
   "Developer Tools",
@@ -15,17 +16,25 @@ const categories = [
   "Social",
   "NFTs",
   "Games"
-]
+];
+
+const supportedNetworks = [
+  { id: base.id, name: 'Base', chain: base },
+  { id: baseSepolia.id, name: 'Base Sepolia', chain: baseSepolia },
+];
 
 function SubmitApp() {
   const navigate = useNavigate();
+  const { chain, isConnected } = useAccount();
+  const { switchChain, isPending: isSwitching } = useSwitchChain();
 
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     category: '',
     url: '',
-    customCategory: ''
+    customCategory: '',
+    networkId: base.id.toString() // Default to Base
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,6 +45,9 @@ function SubmitApp() {
     isPending,
     isSuccess
   } = useWriteContract();
+
+  const selectedNetwork = supportedNetworks.find(network => network.id.toString() === formData.networkId);
+  const isCorrectNetwork = chain?.id.toString() === formData.networkId;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -65,6 +77,30 @@ function SubmitApp() {
     }
   };
 
+  const handleNetworkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setFormData(prev => ({ ...prev, networkId: value }));
+    
+    // Clear error
+    if (errors.networkId) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors.networkId;
+        return newErrors;
+      });
+    }
+  };
+
+  const handleSwitchNetwork = async () => {
+    if (!selectedNetwork) return;
+    
+    try {
+      await switchChain({ chainId: selectedNetwork.id });
+    } catch (error) {
+      console.error('Failed to switch network:', error);
+    }
+  };
+
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
     
@@ -89,6 +125,16 @@ function SubmitApp() {
     } else if (!formData.url.startsWith('http://') && !formData.url.startsWith('https://')) {
       newErrors.url = 'URL must start with http:// or https://';
     }
+
+    if (!formData.networkId) {
+      newErrors.networkId = 'Please select a network';
+    }
+
+    if (!isConnected) {
+      newErrors.wallet = 'Please connect your wallet';
+    } else if (!isCorrectNetwork) {
+      newErrors.network = `Please switch to ${selectedNetwork?.name} network`;
+    }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -103,7 +149,7 @@ function SubmitApp() {
       const {name, description, category, url} = formData;
 
       writeContract({
-        address: import.meta.env.VITE_CONTRACT_ADDRESS,
+        address: getContractAddress(chain?.id || 1),
         abi: MiniAppGallery.abi,
         functionName: "registerApp",
         args: [name, description, category, url],
@@ -117,7 +163,7 @@ function SubmitApp() {
   const handleComposeCast = async () => {
     try {
       const result = await sdk.actions.composeCast({
-        text: 'I submiited my mini app? Check out the gallery! 🎉',
+        text: 'I submitted my mini app! Check out the gallery! 🎉',
         embeds: ["https://miniappgallery.netlify.app/"],
         // Optional: parent cast reference
         // parent: { type: 'cast', hash: '0xabc123...' },
@@ -147,15 +193,18 @@ function SubmitApp() {
             </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">App Submitted Successfully!</h2>
             <p className="text-gray-600 text-center mb-8">
-              Thank you for submitting your app.
+              Thank you for submitting your app on {selectedNetwork?.name}.
             </p>
             {isPending && <div className="mt-4">Pending...</div>}
             {txHash && (
               <div className="mt-4">
                 <a
-                  href={base.blockExplorers?.default + "/tx/" + txHash}
+                  href={selectedNetwork?.chain.blockExplorers?.default.url + "/tx/" + txHash}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 underline"
                 >
-                  View Transaction
+                  View Transaction on {selectedNetwork?.name}
                 </a>
               </div>
             )}
@@ -188,6 +237,66 @@ function SubmitApp() {
         <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
+              {/* Network Selection */}
+              <div>
+                <label htmlFor="networkId" className="block text-gray-700 font-medium mb-2">
+                  Network
+                </label>
+                <select
+                  id="networkId"
+                  name="networkId"
+                  value={formData.networkId}
+                  onChange={handleNetworkChange}
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
+                    errors.networkId
+                      ? 'border-red-300 focus:ring-red-200'
+                      : 'border-gray-300 focus:ring-indigo-200'
+                  }`}
+                >
+                  {supportedNetworks.map(network => (
+                    <option key={network.id} value={network.id.toString()}>
+                      {network.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.networkId && (
+                  <p className="text-red-500 text-sm mt-1">{errors.networkId}</p>
+                )}
+                
+                {/* Network Status */}
+                {isConnected && selectedNetwork && (
+                  <div className="mt-2">
+                    {isCorrectNetwork ? (
+                      <div className="flex items-center text-green-600 text-sm">
+                        <Check className="w-4 h-4 mr-1" />
+                        Connected to {selectedNetwork.name}
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-amber-600 text-sm">
+                          <AlertCircle className="w-4 h-4 mr-1" />
+                          Switch to {selectedNetwork.name}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleSwitchNetwork}
+                          disabled={isSwitching}
+                          className="text-sm bg-amber-100 hover:bg-amber-200 text-amber-800 px-3 py-1 rounded transition-colors disabled:opacity-50"
+                        >
+                          {isSwitching ? 'Switching...' : 'Switch Network'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {errors.network && (
+                  <p className="text-red-500 text-sm mt-1">{errors.network}</p>
+                )}
+                {errors.wallet && (
+                  <p className="text-red-500 text-sm mt-1">{errors.wallet}</p>
+                )}
+              </div>
+
               {/* App Name */}
               <div>
                 <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
@@ -318,9 +427,11 @@ function SubmitApp() {
               <div className="mt-8">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !isConnected || !isCorrectNetwork}
                   className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center ${
-                    isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+                    isSubmitting || !isConnected || !isCorrectNetwork 
+                      ? 'opacity-75 cursor-not-allowed' 
+                      : ''
                   }`}
                 >
                   {isSubmitting ? (
@@ -331,6 +442,10 @@ function SubmitApp() {
                       </svg>
                       Submitting...
                     </>
+                  ) : !isConnected ? (
+                    'Connect Wallet First'
+                  ) : !isCorrectNetwork ? (
+                    `Switch to ${selectedNetwork?.name}`
                   ) : (
                     'Submit App'
                   )}
