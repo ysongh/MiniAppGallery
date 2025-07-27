@@ -6,6 +6,7 @@ import sdk from "@farcaster/frame-sdk";
 import AppCardWithEdit from '../components/AppCardWithEdit';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress } from '../utils/format';
+import { getContractAddress } from '../utils/contractAddress';
 
 export default function UserProfile() {
   const { address } = useAccount();
@@ -40,14 +41,14 @@ export default function UserProfile() {
     loadSDK();
   }, [])
 
-  const { data: miniappids = [] } = useReadContract({
-    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+  const { data: baseSepoliaMiniappids = [] } = useReadContract({
+    address: getContractAddress(84532),
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByDeveloper',
     args: [address]
   }) as { data: bigint[] | undefined };
 
-  console.log(miniappids, fid);
+  console.log(baseSepoliaMiniappids, fid);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -138,15 +139,15 @@ export default function UserProfile() {
             {activeTab === 'developed' && 'Developed Apps'}
           </h2>
           <p className="text-gray-500 text-sm mt-1">
-            {activeTab === 'developed' && `You have developed ${miniappids.length} apps`}
+            {activeTab === 'developed' && `You have developed ${baseSepoliaMiniappids.length} apps`}
           </p>
         </div>
         
         {/* Apps Grid */}
-        {miniappids.length > 0 ? (
+        {baseSepoliaMiniappids.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {miniappids.map(id => (
-              <AppCardWithEdit key={id} id={id} />
+            {baseSepoliaMiniappids.map(id => (
+              <AppCardWithEdit key={id} id={id} chainId={84532} />
             ))}
           </div>
         ) : (
