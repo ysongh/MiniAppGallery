@@ -4,6 +4,7 @@ import { parseEther } from "viem";
 
 import { formatAddress, formatDate } from '../utils/format';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
+import { getContractAddress } from '../utils/contractAddress';
 
 type Review = {
   user: string;
@@ -13,13 +14,13 @@ type Review = {
   value: number;
 };
 
-const ReviewsList = ({ appId, reviews } : { appId: string, reviews: Review[]}) => {
+const ReviewsList = ({ appId, reviews, chainId } : { appId: string, reviews: Review[], chainId: number}) => {
   const { writeContractAsync } = useWriteContract();
   
   const handleDonateToReviewer = async (reviewer: string) => {
     try {
       await writeContractAsync({
-        address: import.meta.env.VITE_CONTRACT_ADDRESS,
+        address: getContractAddress(chainId),
         abi: MiniAppGallery.abi,
         functionName: 'donateToReviewer',
         args: [appId, reviewer],
@@ -77,9 +78,9 @@ const ReviewsList = ({ appId, reviews } : { appId: string, reviews: Review[]}) =
                   </span>
                  <button
                     onClick={() => handleDonateToReviewer(review.user)}
-                    className="py-1 mt-1 bg-green-600 text-white font-sm rounded hover:bg-green-700 cursor-pointer"
+                    className="py-1 px-2 mt-1 bg-green-600 text-white font-sm rounded hover:bg-green-700 cursor-pointer"
                   >
-                    Tip 
+                    Tip 0.01 CELO
                   </button>
                 </div>
                
