@@ -23,7 +23,7 @@ function App() {
           path="/app/:id/:networkid"
           element={<AppDetail />} />
         <Route
-          path="/editapp/:id"
+          path="/editapp/:id/:networkid"
           element={<EditApp />} />
         <Route
           path="/profile"

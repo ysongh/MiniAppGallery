@@ -103,7 +103,7 @@ function AppCardWithEdit({ id, chainId }: { id: bigint, chainId: number }) {
       
       <div className="border-t border-gray-100 p-3">
         <Link
-          to={`/editapp/${id}`}
+          to={`/editapp/${id}/${chainId}`}
           className="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-700 text-white py-1.5 px-3 rounded-lg transition-colors text-sm"
         >
           <ExternalLink className="w-3 h-3 mr-1" />

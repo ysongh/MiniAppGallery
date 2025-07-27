@@ -6,6 +6,7 @@ import { baseSepolia } from "wagmi/chains";
 
 import FormHeader from '../components/layout/FormHeader';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
+import { getContractAddress } from '../utils/contractAddress';
 
 interface MiniApp {
   name: string;
@@ -29,7 +30,7 @@ const categories = [
 
 function EditApp() {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id, networkid } = useParams();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -42,7 +43,7 @@ function EditApp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { data: miniapp } = useReadContract({
-    address: import.meta.env.VITE_CONTRACT_ADDRESS,
+    address: getContractAddress(Number(networkid)),
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
     args: [id]
@@ -133,7 +134,7 @@ function EditApp() {
       const {name, description, category, url} = formData;
 
       writeContract({
-        address: import.meta.env.VITE_CONTRACT_ADDRESS,
+        address: getContractAddress(Number(networkid)),
         abi: MiniAppGallery.abi,
         functionName: "updateApp",
         args: [id, name, description, category, url],
