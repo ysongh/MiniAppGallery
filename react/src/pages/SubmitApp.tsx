@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, AlertCircle } from 'lucide-react';
 import { useWriteContract, useAccount, useSwitchChain } from "wagmi";
-import { base, baseSepolia } from "wagmi/chains";
+import { base, baseSepolia, celoAlfajores } from "wagmi/chains";
 import { sdk } from '@farcaster/frame-sdk';
 
 import FormHeader from '../components/layout/FormHeader';
@@ -21,6 +21,7 @@ const categories = [
 const supportedNetworks = [
   { id: base.id, name: 'Base', chain: base },
   { id: baseSepolia.id, name: 'Base Sepolia', chain: baseSepolia },
+  { id: celoAlfajores.id, name: 'Celo Alfajores', chain: celoAlfajores },
 ];
 
 function SubmitApp() {
