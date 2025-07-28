@@ -45,7 +45,16 @@ export default function UserProfile() {
     address: getContractAddress(84532),
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByDeveloper',
-    args: [address]
+    args: [address],
+    chainId: 84532,
+  }) as { data: bigint[] | undefined };
+
+   const { data: celoAlfajoresMiniappids = [] } = useReadContract({
+    address: getContractAddress(44787),
+    abi: MiniAppGallery.abi,
+    functionName: 'getAppsByDeveloper',
+    args: [address],
+    chainId: 44787,
   }) as { data: bigint[] | undefined };
 
   console.log(baseSepoliaMiniappids, fid);
@@ -144,10 +153,13 @@ export default function UserProfile() {
         </div>
         
         {/* Apps Grid */}
-        {baseSepoliaMiniappids.length > 0 ? (
+        {baseSepoliaMiniappids.length > 0 || celoAlfajoresMiniappids.length > 0? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {baseSepoliaMiniappids.map(id => (
-              <AppCardWithEdit key={id} id={id} chainId={84532} />
+              <AppCardWithEdit key={id + "1"} id={id} chainId={84532} />
+            ))}
+            {celoAlfajoresMiniappids.map(id => (
+              <AppCardWithEdit key={id + "2"} id={id} chainId={44787} />
             ))}
           </div>
         ) : (

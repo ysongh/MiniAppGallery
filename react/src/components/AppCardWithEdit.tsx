@@ -24,7 +24,8 @@ function AppCardWithEdit({ id, chainId }: { id: bigint, chainId: number }) {
     address: getContractAddress(chainId),
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
-    args: [id]
+    args: [id],
+    chainId: chainId,
   }) as { data: MiniApp | undefined };
 
   console.log(miniapp);
