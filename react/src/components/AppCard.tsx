@@ -25,10 +25,12 @@ function AppCard({ id, chainId }: { id: bigint, chainId: number }) {
     address: getContractAddress(chainId),
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
-    args: [id]
+    args: [id],
+    //@ts-ignore
+    chainId: chainId,
   }) as { data: MiniApp | undefined };
 
-  console.log(miniapp);
+  console.log(miniapp, chainId);
 
   // Calculate rating safely
   const rating = miniapp && 'ratingCount' in miniapp && miniapp.ratingCount && miniapp.ratingCount > 0n

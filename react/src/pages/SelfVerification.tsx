@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { User, CheckCircle, AlertCircle, Loader, Wallet } from 'lucide-react';
+import { User, CheckCircle, AlertCircle } from 'lucide-react';
 import { useAccount, useReadContract } from 'wagmi';
 import { getUniversalLink } from "@selfxyz/core";
 import { SelfAppBuilder, SelfQRcodeWrapper } from '@selfxyz/qrcode';
@@ -9,10 +9,9 @@ import UniqueUserSignup from '../artifacts/contracts/UniqueUserSignup.sol/Unique
 const SelfVerification = () => {
   const { address, chain } = useAccount();
 
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [error] = useState('');
   const [selfApp, setSelfApp] = useState(null);
-  const [universalLink, setUniversalLink] = useState("");
+  const [setUniversalLink] = useState("");
 
   useEffect(() => {
     try {
@@ -42,8 +41,9 @@ const SelfVerification = () => {
           // expiry_date: false,
         }
       }).build();
-
+      // @ts-ignore
       setSelfApp(app);
+      // @ts-ignore
       setUniversalLink(getUniversalLink(app));
     } catch (error) {
       console.error("Failed to initialize Self app:", error);
@@ -122,7 +122,9 @@ const SelfVerification = () => {
                 <div className="text-center space-y-4">
                   <div className="space-y-4">
                     <div className="bg-white border-2 border-gray-200 rounded-lg p-6 inline-block">
+                      
                       <SelfQRcodeWrapper
+                        // @ts-ignore
                         selfApp={selfApp}
                         onSuccess={() => {
                           console.log('Verification successful');

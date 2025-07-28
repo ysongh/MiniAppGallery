@@ -35,7 +35,7 @@ function SubmitApp() {
     category: '',
     url: '',
     customCategory: '',
-    networkId: base.id.toString() // Default to Base
+    networkId: celoAlfajores.id.toString()
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);

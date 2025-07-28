@@ -25,6 +25,7 @@ function AppCardWithEdit({ id, chainId }: { id: bigint, chainId: number }) {
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
     args: [id],
+    //@ts-ignore
     chainId: chainId,
   }) as { data: MiniApp | undefined };
 

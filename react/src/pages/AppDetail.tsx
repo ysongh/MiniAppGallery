@@ -63,7 +63,7 @@ function AppDetail() {
     try {
       const result = await sdk.actions.composeCast({
         text: 'Check out my mini app🎉',
-        embeds: [`https://miniappgallery.netlify.app/#/app/${i}/${networkid}`],
+        embeds: [`https://miniappgallery.netlify.app/#/app/${id}/${networkid}`],
         // Optional: parent cast reference
         // parent: { type: 'cast', hash: '0xabc123...' },
         // Optional: close the app after composing
