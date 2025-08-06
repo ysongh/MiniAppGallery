@@ -6,13 +6,22 @@ import {
   useConnect,
   useChains,
   useChainId,
+  useSwitchChain,
 } from "wagmi";
 import { usePrivy } from '@privy-io/react-auth';
+import { base, baseSepolia, celoAlfajores } from "wagmi/chains";
+
+const supportedNetworks = [
+  { id: base.id, name: 'Base', chain: base },
+  { id: baseSepolia.id, name: 'Base Sepolia', chain: baseSepolia },
+  { id: celoAlfajores.id, name: 'Celo Alfajores', chain: celoAlfajores },
+];
 
 export function ConnectMenu() {
   const { authenticated, login } = usePrivy();
   const { isConnected, address } = useAccount();
   const { connect, connectors } = useConnect();
+  const { switchChain, isPending: isSwitching } = useSwitchChain();
  
   const chains = useChains();
   const chainId = useChainId();
@@ -33,11 +42,36 @@ export function ConnectMenu() {
     loadSDK();
   }, [])
 
+   const handleSwitchNetwork = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedNetwork = supportedNetworks.find(network => network.id.toString() === e.target.value);
+    
+    if (!selectedNetwork) return;
+    
+    try {
+      await switchChain({ chainId: selectedNetwork.id });
+    } catch (error) {
+      console.error('Failed to switch network:', error);
+    }
+  };
+
   if (isConnected || authenticated) {
     return (
       <div className="bg-indigo-600 text-white px-6 md:px-20 py-3 shadow flex justify-between items-center">
-        <div className="text-sm sm:text-base font-medium">
-          🔗 Connected to: <span className="font-semibold">{currentChain ? currentChain.name : 'Not connected'}</span>
+        <div className="text-sm sm:text-base font-medium flex items-center">
+          <p className="font-semibold mr-2">🔗 Connected to: </p>
+          <select
+            id="networkId"
+            name="networkId"
+            value={currentChain ? currentChain.id : 1}
+            onChange={handleSwitchNetwork}
+            className="p-1 border rounded-lg focus:outline-none focus:ring-2 text-black border-gray-300 focus:ring-indigo-200 bg-white"
+          >
+            {supportedNetworks.map(network => (
+              <option key={network.id} value={network.id.toString()}>
+                {network.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex">
           <Link
