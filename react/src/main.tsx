@@ -7,21 +7,23 @@ import { WagmiProvider, createConfig, http } from 'wagmi';
 
 import App from "./App.tsx";
 import { config } from "./wagmi.ts";
+import { theme } from "./theme.ts";
 // import { privyConfig } from './privyConfig';
 
 import "./index.css";
 import { CDPHooksProvider } from "@coinbase/cdp-hooks";
+import { CDPReactProvider } from "@coinbase/cdp-react";
 
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <CDPHooksProvider config={{projectId: import.meta.env.VITE_CDP_PROJECT_ID }}>
+    <CDPReactProvider config={{projectId: import.meta.env.VITE_CDP_PROJECT_ID,  }} theme={theme}>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <App />
         </QueryClientProvider>
       </WagmiProvider>
-    </CDPHooksProvider>
+    </CDPReactProvider>
   </React.StrictMode>,
 );

@@ -109,11 +109,7 @@ export function ConnectMenu() {
       >
         Login with Privy
       </button> */}
-      {isInitialized && (
-        <>
-          {isSignedIn && <AuthButton />}
-        </>
-      )}
+      <AuthButton />
     </div>
   );
 }
