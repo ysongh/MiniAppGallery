@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Star, Tag, ExternalLink } from 'lucide-react';
+import { Star, Tag } from 'lucide-react';
 import { useReadContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
@@ -93,7 +93,7 @@ function AppCard({ id, chainId }: { id: bigint, chainId: number }) {
             </p>
           </div>
           <div className="mt-3 sm:mt-4">
-            <a
+            {/* <a
               href={miniapp && 'appUrl' in miniapp ? miniapp.appUrl : '#'}
               target="_blank"
               rel="noopener noreferrer"
@@ -101,7 +101,13 @@ function AppCard({ id, chainId }: { id: bigint, chainId: number }) {
             >
               <ExternalLink className="w-4 h-4 mr-2" />
               Open App
-            </a>
+            </a> */}
+            <div
+              className="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm"
+              onClick={() => navigate(`/app/${id}/${chainId}`)}
+            >
+              View App
+            </div>
           </div>
         </div>
       </div>

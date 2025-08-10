@@ -35,7 +35,7 @@ function SubmitApp() {
     category: '',
     url: '',
     customCategory: '',
-    networkId: baseSepolia.id.toString()
+    networkId: base.id.toString()
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
