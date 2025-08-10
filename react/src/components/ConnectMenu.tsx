@@ -3,29 +3,25 @@ import { Link } from "react-router-dom";
 import sdk from "@farcaster/frame-sdk";
 import {
   useAccount,
-  useConnect,
   useChains,
   useChainId,
   useSwitchChain,
 } from "wagmi";
 // import { usePrivy } from '@privy-io/react-auth';
-import { useIsInitialized, useIsSignedIn } from "@coinbase/cdp-hooks";
-import { base, baseSepolia, celoAlfajores } from "wagmi/chains";
+import { base, baseSepolia } from "wagmi/chains";
 import { AuthButton } from "@coinbase/cdp-react/components/AuthButton";
 
 const supportedNetworks = [
   { id: base.id, name: 'Base', chain: base },
   { id: baseSepolia.id, name: 'Base Sepolia', chain: baseSepolia },
-  { id: celoAlfajores.id, name: 'Celo Alfajores', chain: celoAlfajores },
+  // { id: celoAlfajores.id, name: 'Celo Alfajores', chain: celoAlfajores },
 ];
 
 export function ConnectMenu() {
   // const { authenticated, login } = usePrivy();
   const { isConnected, address } = useAccount();
-  const { connect, connectors } = useConnect();
-  const { switchChain, isPending: isSwitching } = useSwitchChain();
-   const { isInitialized } = useIsInitialized();
-  const { isSignedIn } = useIsSignedIn();
+  // const { connect, connectors } = useConnect();
+  const { switchChain } = useSwitchChain();
  
   const chains = useChains();
   const chainId = useChainId();
@@ -94,14 +90,16 @@ export function ConnectMenu() {
     );
   }
 
+  console.log(isMiniApp)
+
   return (
-    <div className="flex justify-center gap-4 py-4">
-      <button
-        className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
+    <div className="flex justify-center gap-4 py-4 bg-blue-300">
+      {/* <button
+        className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition hidden"
         onClick={() => connect({ connector: connectors[isMiniApp ? 0 : 1] })}
       >
         Connect Wallet Only
-      </button>
+      </button> */}
     
       {/* <button
         className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition"

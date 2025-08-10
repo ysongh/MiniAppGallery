@@ -19,6 +19,7 @@ const connector = createCDPEmbeddedWalletConnector({
 export const config = createConfig({
   chains: [base, baseSepolia, celoAlfajores, hardhat],
   connectors: [farcasterFrame(), connector],
+  // @ts-ignore
   transports: {
     [base.id]: http(),
     [baseSepolia.id]: http(),

@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 // import { PrivyProvider } from '@privy-io/react-auth';
 // import { WagmiProvider } from '@privy-io/wagmi';
-import { WagmiProvider, createConfig, http } from 'wagmi';
+import { WagmiProvider, } from 'wagmi';
 
 import App from "./App.tsx";
 import { config } from "./wagmi.ts";
@@ -11,7 +11,6 @@ import { theme } from "./theme.ts";
 // import { privyConfig } from './privyConfig';
 
 import "./index.css";
-import { CDPHooksProvider } from "@coinbase/cdp-hooks";
 import { CDPReactProvider } from "@coinbase/cdp-react";
 
 const queryClient = new QueryClient();

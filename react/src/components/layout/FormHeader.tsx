@@ -17,7 +17,7 @@ function FormHeader() {
           </button>
           <div>
             <h1 className="text-2xl font-bold">Submit Your Mini-App</h1>
-            <p className="mt-1 text-purple-100">Add your app to the Farcaster App Store</p>
+            <p className="mt-1 text-purple-100">Add your app to the Mini App Gallery</p>
           </div>
         </div>
       </div>

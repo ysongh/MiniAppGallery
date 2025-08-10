@@ -24,7 +24,7 @@ const ReviewsList = ({ appId, reviews, chainId } : { appId: string, reviews: Rev
         abi: MiniAppGallery.abi,
         functionName: 'donateToReviewer',
         args: [appId, reviewer],
-        value: parseEther("0.01")
+        value: parseEther("0.0001")
       });
       
     } catch (error) {
@@ -80,7 +80,7 @@ const ReviewsList = ({ appId, reviews, chainId } : { appId: string, reviews: Rev
                     onClick={() => handleDonateToReviewer(review.user)}
                     className="py-1 px-2 mt-1 bg-green-600 text-white font-sm rounded hover:bg-green-700 cursor-pointer"
                   >
-                    Tip 0.01 CELO
+                    Tip 0.0001 ETH
                   </button>
                 </div>
                
