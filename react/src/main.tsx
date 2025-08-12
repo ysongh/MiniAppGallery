@@ -7,17 +7,25 @@ import { WagmiProvider, } from 'wagmi';
 
 import App from "./App.tsx";
 import { config } from "./wagmi.ts";
-import { theme } from "./theme.ts";
+// import { theme } from "./theme.ts";
 // import { privyConfig } from './privyConfig';
 
 import "./index.css";
-import { CDPReactProvider } from "@coinbase/cdp-react";
+import { CDPReactProvider, type Theme } from "@coinbase/cdp-react";
 
 const queryClient = new QueryClient();
 
+const themeOverrides: Partial<Theme> = {
+   //@ts-ignore
+  "colors-background": "black",
+  "colors-backgroundOverlay": "rgba(0,0,0,0.5)",
+  "colors-text": "white",
+  "colors-textSecondary": "#999999",
+}
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <CDPReactProvider config={{projectId: import.meta.env.VITE_CDP_PROJECT_ID,  }} theme={theme}>
+    <CDPReactProvider config={{projectId: import.meta.env.VITE_CDP_PROJECT_ID,  }} theme={themeOverrides}>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <App />
