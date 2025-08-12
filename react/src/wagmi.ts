@@ -1,7 +1,7 @@
 import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
-// import { createConfig } from '@privy-io/wagmi';
+import { createConfig } from '@privy-io/wagmi';
 import { createCDPEmbeddedWalletConnector } from '@coinbase/cdp-wagmi';
-import { createConfig, http } from 'wagmi';
+import { http } from 'wagmi';
 import { base, baseSepolia, celoAlfajores, hardhat } from "wagmi/chains";
 import { CDP_CONFIG } from "./config";
 
