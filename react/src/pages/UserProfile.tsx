@@ -49,13 +49,21 @@ export default function UserProfile() {
     chainId: 84532,
   }) as { data: bigint[] | undefined };
 
-   const { data: celoAlfajoresMiniappids = [] } = useReadContract({
+  const { data: celoAlfajoresMiniappids = [] } = useReadContract({
     address: getContractAddress(44787),
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByDeveloper',
     args: [address],
     chainId: 44787,
   }) as { data: bigint[] | undefined };
+
+   const { data: totalDonationsSent = 0 } = useReadContract({
+    address: getContractAddress(84532),
+    abi: MiniAppGallery.abi,
+    functionName: 'totalDonationsSent',
+    args: [address],
+    chainId: 84532,
+  }) as { data: bigint | undefined };
 
   console.log(baseSepoliaMiniappids, fid);
 
@@ -91,6 +99,7 @@ export default function UserProfile() {
               <div className="flex-grow">
                 <h1 className="text-2xl font-bold">{displayName}</h1>
                 <p className="text-indigo-200">@{username}</p>
+                <p>{Number(totalDonationsSent)} ETH Donated</p>
               </div>
             ) : (
               <div className="flex-grow">
@@ -99,6 +108,7 @@ export default function UserProfile() {
                     {formatAddress(address || "")}
                   </h1>
                 </div>
+                <p>{Number(totalDonationsSent)} ETH Donated</p>
               </div>
             )}
                         
