@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { User, ChevronLeft } from 'lucide-react';
-import { useAccount, useDisconnect, useReadContract } from 'wagmi';
+import { useAccount, useBalance, useDisconnect, useReadContract } from 'wagmi';
 import sdk from "@farcaster/frame-sdk";
 
 import AppCardWithEdit from '../components/AppCardWithEdit';
@@ -18,6 +18,11 @@ export default function UserProfile() {
   const [username, setUsername] = useState<string>("");
   const [pfpUrl, setpfpUrl] = useState<string>("");
   const [isMiniApp, setIsMiniApp] = useState<Boolean>(false);
+
+  const result = useBalance({
+    address,
+    unit: 'ether', 
+  })
 
   useEffect(() => {
     const loadSDK = async () => {
@@ -65,7 +70,7 @@ export default function UserProfile() {
     chainId: 84532,
   }) as { data: bigint | undefined };
 
-  console.log(baseSepoliaMiniappids, fid);
+  console.log(baseSepoliaMiniappids, fid, result);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -100,6 +105,7 @@ export default function UserProfile() {
                 <h1 className="text-2xl font-bold">{displayName}</h1>
                 <p className="text-indigo-200">@{username}</p>
                 <p>{Number(totalDonationsSent)} ETH Donated</p>
+                <p>{result?.data?.value?.toString()} ETH</p>
               </div>
             ) : (
               <div className="flex-grow">
@@ -109,6 +115,7 @@ export default function UserProfile() {
                   </h1>
                 </div>
                 <p>{Number(totalDonationsSent)} ETH Donated</p>
+                <p>{result?.data?.value?.toString()} ETH</p>
               </div>
             )}
                         
