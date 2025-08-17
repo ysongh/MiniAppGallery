@@ -9,13 +9,13 @@ import {
   useSwitchChain,
 } from "wagmi";
 import { usePrivy } from '@privy-io/react-auth';
-import { base, baseSepolia } from "wagmi/chains";
+import { base, baseSepolia, celoSepolia } from "wagmi/chains";
 import { AuthButton } from "@coinbase/cdp-react/components/AuthButton";
 
 const supportedNetworks = [
   { id: base.id, name: 'Base', chain: base },
   { id: baseSepolia.id, name: 'Base Sepolia', chain: baseSepolia },
-  // { id: celoAlfajores.id, name: 'Celo Alfajores', chain: celoAlfajores },
+  { id: celoSepolia.id, name: 'Celo Sepolia', chain: celoSepolia },
 ];
 
 export function ConnectMenu() {
