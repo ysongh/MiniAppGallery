@@ -16,6 +16,11 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
       chainId: 44787
     },
+    celoSepolia: {
+      url: "https://forno.celo-sepolia.celo-testnet.org",
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 11142220
+    },
   },
   etherscan: {
     apiKey: {
