@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, AlertCircle } from 'lucide-react';
 import { useWriteContract, useAccount, useSwitchChain } from "wagmi";
-import { base, baseSepolia, celoSepolia } from "wagmi/chains";
+import { base } from "wagmi/chains";
 import { sdk } from '@farcaster/frame-sdk';
 
 import FormHeader from '../components/layout/FormHeader';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { getContractAddress } from '../utils/contractAddress';
+import { supportedNetworks } from '../utils/contractAddress';
 
 const categories = [
   "Developer Tools",
@@ -16,12 +17,6 @@ const categories = [
   "Social",
   "NFTs",
   "Games"
-];
-
-const supportedNetworks = [
-  { id: base.id, name: 'Base', chain: base },
-  { id: baseSepolia.id, name: 'Base Sepolia', chain: baseSepolia },
-  { id: celoSepolia.id, name: 'Celo Sepolia', chain: celoSepolia },
 ];
 
 function SubmitApp() {
