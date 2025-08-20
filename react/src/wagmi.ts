@@ -1,29 +1,16 @@
 import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
 import { createConfig } from '@privy-io/wagmi';
-import { createCDPEmbeddedWalletConnector } from '@coinbase/cdp-wagmi';
 import { http } from 'wagmi';
-import { base, baseSepolia, celoAlfajores, hardhat } from "wagmi/chains";
-import { CDP_CONFIG } from "./config";
-
-const connector = createCDPEmbeddedWalletConnector({
-  cdpConfig: CDP_CONFIG,
-  providerConfig: {
-    chains: [base, baseSepolia],
-    transports: {
-      [base.id]: http(),
-      [baseSepolia.id]: http()
-    }
-  }
-});
+import { base, baseSepolia, celoSepolia, hardhat } from "wagmi/chains";
 
 export const config = createConfig({
-  chains: [base, baseSepolia, celoAlfajores, hardhat],
-  connectors: [farcasterFrame(), connector],
+  chains: [base, baseSepolia, celoSepolia, hardhat],
+  connectors: [farcasterFrame()],
   // @ts-ignore
   transports: {
     [base.id]: http(),
     [baseSepolia.id]: http(),
-    // [celoAlfajores.id]: http(),
+    [celoSepolia.id]: http(),
     // [hardhat.id]: http(),
   },
 });

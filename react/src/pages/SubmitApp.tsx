@@ -91,7 +91,8 @@ function SubmitApp() {
     if (!selectedNetwork) return;
     
     try {
-      await switchChain({ chainId: selectedNetwork.id });
+      //@ts-ignore
+      switchChain({ chainId: selectedNetwork.id });
     } catch (error) {
       console.error('Failed to switch network:', error);
     }

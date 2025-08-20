@@ -9,7 +9,6 @@ import {
   useSwitchChain,
 } from "wagmi";
 import { usePrivy } from '@privy-io/react-auth';
-import { AuthButton } from "@coinbase/cdp-react/components/AuthButton";
 
 import { supportedNetworks } from '../utils/contractAddress';
 
@@ -44,7 +43,8 @@ export function ConnectMenu() {
     if (!selectedNetwork) return;
     
     try {
-      await switchChain({ chainId: selectedNetwork.id });
+      //@ts-ignore
+      switchChain({ chainId: selectedNetwork.id });
     } catch (error) {
       console.error('Failed to switch network:', error);
     }
@@ -102,7 +102,6 @@ export function ConnectMenu() {
       >
         Login with Privy
       </button>
-      <AuthButton className="hidden" />
     </div>
   );
 }
