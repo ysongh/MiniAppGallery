@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { User, ChevronLeft } from 'lucide-react';
 import { useAccount, useBalance, useDisconnect, useReadContract } from 'wagmi';
+import { usePrivy } from '@privy-io/react-auth';
 import sdk from "@farcaster/frame-sdk";
 
 import AppCardWithEdit from '../components/AppCardWithEdit';
@@ -9,8 +11,10 @@ import { formatAddress } from '../utils/format';
 import { getContractAddress } from '../utils/contractAddress';
 
 export default function UserProfile() {
+  const navigate = useNavigate();
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
+  const { ready, authenticated } = usePrivy();
 
   const [activeTab, setActiveTab] = useState<'favorites' | 'developed'>('developed');
   const [fid, setFid] = useState<number>(0);
@@ -18,6 +22,10 @@ export default function UserProfile() {
   const [username, setUsername] = useState<string>("");
   const [pfpUrl, setpfpUrl] = useState<string>("");
   const [isMiniApp, setIsMiniApp] = useState<Boolean>(false);
+
+  if (ready && !authenticated) {
+    navigate("/");
+  }
 
   const result = useBalance({
     address,
