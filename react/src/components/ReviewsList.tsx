@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Star, MessageSquare } from 'lucide-react';
 import { useWriteContract } from 'wagmi';
 import { parseEther } from "viem";
@@ -5,6 +6,7 @@ import { parseEther } from "viem";
 import { formatAddress, formatDate } from '../utils/format';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { getContractAddress } from '../utils/contractAddress';
+import TipModal from './TipModal';
 
 type Review = {
   user: string;
@@ -16,15 +18,27 @@ type Review = {
 
 const ReviewsList = ({ appId, reviews, chainId } : { appId: string, reviews: Review[], chainId: number}) => {
   const { writeContractAsync } = useWriteContract();
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [currentReviewer, setCurrentReviewer] = useState<string>("");
+
+  const closeTipModal = () => {
+    setIsOpen(false);
+  };
+
+  const openTipModal = (reviewer: string) => {
+    setCurrentReviewer(reviewer);
+    setIsOpen(true);
+  };
   
-  const handleDonateToReviewer = async (reviewer: string) => {
+  const handleDonateToReviewer = async (amount: string) => {
     try {
       await writeContractAsync({
         address: getContractAddress(chainId),
         abi: MiniAppGallery.abi,
         functionName: 'donateToReviewer',
-        args: [appId, reviewer],
-        value: parseEther("0.0001")
+        args: [appId, currentReviewer],
+        value: parseEther(amount)
       });
       
     } catch (error) {
@@ -77,10 +91,10 @@ const ReviewsList = ({ appId, reviews, chainId } : { appId: string, reviews: Rev
                     {formatDate(BigInt(review.timestamp))}
                   </span>
                  <button
-                    onClick={() => handleDonateToReviewer(review.user)}
+                    onClick={() => openTipModal(review.user)}
                     className="py-1 px-2 mt-1 bg-green-600 text-white font-sm rounded hover:bg-green-700 cursor-pointer"
                   >
-                    Tip 0.0001 ETH
+                    Tip
                   </button>
                 </div>
                
@@ -93,6 +107,7 @@ const ReviewsList = ({ appId, reviews, chainId } : { appId: string, reviews: Rev
           ))}
         </div>
       )}
+      {isOpen && <TipModal closeTipModal={closeTipModal} handleDonateToReviewer={handleDonateToReviewer} />}
     </section>
   );
 };
