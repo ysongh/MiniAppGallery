@@ -14,7 +14,7 @@ export default function UserProfile() {
   const navigate = useNavigate();
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
-  const { ready, authenticated } = usePrivy();
+  const { authenticated, logout } = usePrivy();
 
   const [activeTab, setActiveTab] = useState<'favorites' | 'developed'>('developed');
   const [fid, setFid] = useState<number>(0);
@@ -23,7 +23,7 @@ export default function UserProfile() {
   const [pfpUrl, setpfpUrl] = useState<string>("");
   const [isMiniApp, setIsMiniApp] = useState<Boolean>(false);
 
-  if (ready && !authenticated) {
+  if (!address) {
     navigate("/");
   }
 
@@ -122,7 +122,7 @@ export default function UserProfile() {
             {/* Settings Button (Desktop) */}
             <div className="hidden md:block">
               <button
-                onClick={() => disconnect()}
+                onClick={() => authenticated ? logout() : disconnect()}
                 className="ml-2 py-2 px-4 bg-red-600 text-white font-medium rounded hover:bg-red-700 disabled:bg-indigo-300 disabled:cursor-not-allowed"
               >
                 Disconnect
@@ -131,7 +131,7 @@ export default function UserProfile() {
 
             {/* Settings Button (Mobile) */}
             <div className="mt-4 md:hidden">
-              <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg w-full justify-center" onClick={() => disconnect()}>
+              <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg w-full justify-center"  onClick={() => authenticated ? logout() : disconnect()}>
                 Disconnect
               </button>
             </div>
