@@ -9,8 +9,8 @@ function TipModal({ closeTipModal, handleDonateToReviewer } : { closeTipModal: a
   };
 
   return (
-    <div className="fixed inset-0 bg-purple-300 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl max-w-md w-full mx-4">
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+      <div className="bg-white border-purple-400 border-3 rounded-xl max-w-md w-full mx-4">
         {/* Modal Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">           
           <button
@@ -47,22 +47,6 @@ function TipModal({ closeTipModal, handleDonateToReviewer } : { closeTipModal: a
             <p className="text-sm text-gray-600">
               Show your appreciation for this review by sending a tip to the user
             </p>
-          </div>
-
-          {/* Quick Amount Buttons */}
-          <div className="mb-6">
-            <p className="text-sm font-medium text-gray-700 mb-3">Quick amounts:</p>
-            <div className="flex space-x-2">
-              {['0.001', '0.01', '0.1'].map(amount => (
-                <button
-                  key={amount}
-                  onClick={() => setTipAmount(amount)}
-                  className="px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  {amount} ETH
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Action Buttons */}
