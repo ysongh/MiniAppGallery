@@ -107,7 +107,11 @@ const ReviewsList = ({ appId, reviews, chainId } : { appId: string, reviews: Rev
           ))}
         </div>
       )}
-      {isOpen && <TipModal closeTipModal={closeTipModal} handleDonateToReviewer={handleDonateToReviewer} />}
+      {isOpen && <TipModal
+        closeTipModal={closeTipModal}
+        handleDonateToReviewer={handleDonateToReviewer}
+        chainId={chainId}
+      />}
     </section>
   );
 };

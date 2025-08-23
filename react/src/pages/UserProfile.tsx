@@ -12,7 +12,7 @@ import { getContractAddress } from '../utils/contractAddress';
 
 export default function UserProfile() {
   const navigate = useNavigate();
-  const { address } = useAccount();
+  const { address, chain } = useAccount();
   const { disconnect } = useDisconnect();
   const { authenticated, logout } = usePrivy();
 
@@ -23,7 +23,7 @@ export default function UserProfile() {
   const [pfpUrl, setpfpUrl] = useState<string>("");
   const [isMiniApp, setIsMiniApp] = useState<Boolean>(false);
 
-  if (!address) {
+  if (!authenticated) {
     navigate("/");
   }
 
@@ -70,6 +70,8 @@ export default function UserProfile() {
     chainId: 84532,
   }) as { data: bigint | undefined };
 
+  const symbol = chain?.id === 11142220 ? "CELO" : "ETH";
+
   console.log(baseSepoliaMiniappids, fid, result);
 
   return (
@@ -104,8 +106,8 @@ export default function UserProfile() {
               <div className="flex-grow">
                 <h1 className="text-2xl font-bold">{displayName}</h1>
                 <p className="text-indigo-200">@{username}</p>
-                <p>{Number(totalDonationsSent)} ETH Donated</p>
-                <p>{result?.data?.value?.toString()} ETH</p>
+                <p>{Number(totalDonationsSent)} {symbol} Donated</p>
+                <p>{result?.data?.value?.toString()} {symbol}</p>
               </div>
             ) : (
               <div className="flex-grow">
@@ -114,8 +116,8 @@ export default function UserProfile() {
                     {formatAddress(address || "")}
                   </h1>
                 </div>
-                <p>{Number(totalDonationsSent)} ETH Donated</p>
-                <p>{result?.data?.value?.toString()} ETH</p>
+                <p>{Number(totalDonationsSent)} {symbol} Donated</p>
+                <p>{result?.data?.value?.toString()} {symbol}</p>
               </div>
             )}
                         

@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { Heart, X } from 'lucide-react';
 
-function TipModal({ closeTipModal, handleDonateToReviewer } : { closeTipModal: any , handleDonateToReviewer: any}) {
+function TipModal({ closeTipModal, handleDonateToReviewer, chainId } : { closeTipModal: any , handleDonateToReviewer: any, chainId: number}) {
   const [tipAmount, setTipAmount] = useState('');
 
   const handleTipSubmit = () => {
    handleDonateToReviewer(tipAmount);
   };
 
+  const symbol = chainId === 11142220 ? "CELO" : "ETH";
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
       <div className="bg-white border-purple-400 border-3 rounded-xl max-w-md w-full mx-4">
         {/* Modal Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">           
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">         
           <button
             onClick={closeTipModal}
             className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -25,7 +27,7 @@ function TipModal({ closeTipModal, handleDonateToReviewer } : { closeTipModal: a
         <div className="p-6">
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Amount (ETH)
+              Amount ({symbol})
             </label>
             <div className="relative">
               <input
@@ -38,7 +40,7 @@ function TipModal({ closeTipModal, handleDonateToReviewer } : { closeTipModal: a
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <span className="text-gray-500 font-medium">ETH</span>
+                <span className="text-gray-500 font-medium">{symbol}</span>
               </div>
             </div>
           </div>
