@@ -28,9 +28,7 @@ module.exports = {
     },
   },
   etherscan: {
-    apiKey: {
-      base: process.env.BASE_ETHERSCAN_API_KEY
-    },
+    apiKey: process.env.ETHERSCAN_API_KEY,
     customChains: [
       {
         network: 'base',
@@ -39,6 +37,14 @@ module.exports = {
           apiURL: "https://api.basescan.org/api",
           browserURL: "https://basescan.org"
         }
+      },
+      {
+        network: "celo",
+        chainId: 42220,
+        urls: {
+          apiURL: "https://api.celoscan.io/api",
+          browserURL: "https://celoscan.io/",
+        },
       },
     ],
   },

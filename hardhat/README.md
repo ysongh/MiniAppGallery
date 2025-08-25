@@ -10,3 +10,6 @@
  
 ## Deploy UniqueUserSignup
 npx hardhat ignition deploy ./ignition/modules/UniqueUserSignup.js --network localhost
+
+## Verify Contract
+npx hardhat verify [CONTRACT_ADDRESS] [...CONSTRUCTOR_ARGS] --network celo
