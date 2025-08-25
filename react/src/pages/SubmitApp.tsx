@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, AlertCircle } from 'lucide-react';
 import { useWriteContract, useAccount, useSwitchChain } from "wagmi";
-import { base } from "wagmi/chains";
+import { celoSepolia } from "wagmi/chains";
 import { sdk } from '@farcaster/frame-sdk';
 
 import FormHeader from '../components/layout/FormHeader';
@@ -30,7 +30,7 @@ function SubmitApp() {
     category: '',
     url: '',
     customCategory: '',
-    networkId: base.id.toString()
+    networkId: celoSepolia.id.toString()
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
