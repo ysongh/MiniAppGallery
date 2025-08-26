@@ -70,7 +70,7 @@ export default function UserProfile() {
     chainId: 84532,
   }) as { data: bigint | undefined };
 
-  const symbol = chain?.id === 11142220 ? "CELO" : "ETH";
+  const symbol = chain?.id === 11142220 || 42220 ? "CELO" : "ETH";
 
   console.log(baseSepoliaMiniappids, fid, result);
 

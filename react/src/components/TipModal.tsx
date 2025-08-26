@@ -8,7 +8,7 @@ function TipModal({ closeTipModal, handleDonateToReviewer, chainId } : { closeTi
    handleDonateToReviewer(tipAmount);
   };
 
-  const symbol = chainId === 11142220 ? "CELO" : "ETH";
+  const symbol = chainId === 11142220 || 42220 ? "CELO" : "ETH";
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 p-4">

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Tag } from 'lucide-react';
 import { useAccount, useReadContract } from 'wagmi';
-import { base } from "wagmi/chains";
+import { celo } from "wagmi/chains";
 
 import MiniAppListHeader from '../components/layout/MiniAppListHeader';
 import AppCard from '../components/AppCard';
@@ -18,18 +18,18 @@ function MiniAppList() {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const { data: miniappids = [] } = useReadContract({
-    address: getContractAddress(chain?.id || base.id),
+    address: getContractAddress(chain?.id || celo.id),
     abi: MiniAppGallery.abi,
     functionName: 'getAllApps',
-    chainId: chain?.id || base.id,
+    chainId: chain?.id || celo.id,
   }) as { data: bigint[] | undefined };
 
   const { data: filterminiappids = [] } = useReadContract({
-    address: getContractAddress(chain?.id || base.id),
+    address: getContractAddress(chain?.id || celo.id),
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByCategory',
     args: [selectedCategory],
-    chainId: chain?.id || base.id,
+    chainId: chain?.id || celo.id,
   }) as { data: bigint[] | undefined };
 
   console.log(miniappids);
@@ -85,13 +85,13 @@ function MiniAppList() {
           {selectedCategory === "All" && sortIds.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {sortIds.map(id => (
-                <AppCard key={id} id={id} chainId={chain?.id || base.id} />
+                <AppCard key={id} id={id} chainId={chain?.id || celo.id} />
               ))}
             </div>
           ) : filterminiappids.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {filterminiappids.map(id => (
-                <AppCard key={id} id={id} chainId={chain?.id || base.id} />
+                <AppCard key={id} id={id} chainId={chain?.id || celo.id} />
               ))}
             </div>
           ) : (
