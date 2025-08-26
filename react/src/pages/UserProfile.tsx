@@ -107,7 +107,7 @@ export default function UserProfile() {
                 <h1 className="text-2xl font-bold">{displayName}</h1>
                 <p className="text-indigo-200">@{username}</p>
                 <p>{Number(totalDonationsSent)} {symbol} Donated</p>
-                <p>{result?.data?.value?.toString()} {symbol}</p>
+                {/* <p>{result?.data?.value?.toString()} {symbol}</p> */}
               </div>
             ) : (
               <div className="flex-grow">
@@ -117,7 +117,7 @@ export default function UserProfile() {
                   </h1>
                 </div>
                 <p>{Number(totalDonationsSent)} {symbol} Donated</p>
-                <p>{result?.data?.value?.toString()} {symbol}</p>
+                {/* <p>{result?.data?.value?.toString()} {symbol}</p> */}
               </div>
             )}
                         

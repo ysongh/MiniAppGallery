@@ -5,7 +5,6 @@ import {
   useAccount,
   useChains,
   useChainId,
-  useConnect,
   useSwitchChain,
 } from "wagmi";
 import { usePrivy } from '@privy-io/react-auth';
@@ -15,7 +14,7 @@ import { supportedNetworks } from '../utils/contractAddress';
 export function ConnectMenu() {
   const { authenticated, login } = usePrivy();
   const { isConnected, address } = useAccount();
-  const { connect, connectors } = useConnect();
+  // const { connect, connectors } = useConnect();
   const { switchChain } = useSwitchChain();
  
   const chains = useChains();
@@ -90,12 +89,12 @@ export function ConnectMenu() {
 
   return (
     <div className="flex justify-center gap-4 py-4 bg-blue-300">
-      <button
+      {/* <button
         className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
         onClick={() => connect({ connector: connectors[0] })}
       >
         Connect Wallet Only
-      </button>
+      </button> */}
       <button
         className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
         onClick={() => login()}

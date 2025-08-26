@@ -78,7 +78,7 @@ function MiniAppList() {
           <div className="flex items-center mb-4">
             <Tag className="w-5 h-5 text-indigo-600 mr-2" />
             <h2 className="text-2xl font-bold text-gray-800">
-              {selectedCategory === 'All' ? 'All Apps' : selectedCategory} ({chain?.name})
+              {selectedCategory === 'All' ? 'All Apps' : selectedCategory} ({chain?.name || "CELO"})
             </h2>
           </div>
           

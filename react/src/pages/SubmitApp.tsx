@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, AlertCircle } from 'lucide-react';
 import { useWriteContract, useAccount, useSwitchChain } from "wagmi";
-import { celoSepolia } from "wagmi/chains";
+import { celo } from "wagmi/chains";
 import { sdk } from '@farcaster/frame-sdk';
 
 import FormHeader from '../components/layout/FormHeader';
@@ -30,7 +30,7 @@ function SubmitApp() {
     category: '',
     url: '',
     customCategory: '',
-    networkId: celoSepolia.id.toString()
+    networkId: celo.id.toString()
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -210,7 +210,7 @@ function SubmitApp() {
                 onClick={handleComposeCast}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg transition-colors cursor-pointer"
               >
-                Share on Base 🚀
+                Share on Farcaster 🚀
               </button>
               <button
                 onClick={() => navigate("/")}
