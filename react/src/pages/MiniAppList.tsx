@@ -12,8 +12,18 @@ import { getContractAddress } from '../utils/contractAddress';
 const categories = ["Social", "Finance", "NFTs", "Games", "Developer Tools", 
   "Communication", "Entertainment", "News", "Governance", "Shopping"];
 
+const chainName = {
+  8453: "BASE",
+  42220: "CELO",
+  11142220: "CELOSEPOLIA"
+}
+
 function MiniAppList() {
   const { chain } = useAccount();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const chainid = urlParams.get('chainid');
+  console.log('chainid:', chainid);
 
   const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -78,20 +88,21 @@ function MiniAppList() {
           <div className="flex items-center mb-4">
             <Tag className="w-5 h-5 text-indigo-600 mr-2" />
             <h2 className="text-2xl font-bold text-gray-800">
-              {selectedCategory === 'All' ? 'All Apps' : selectedCategory} ({chain?.name || "CELO"})
+              {/* @ts-ignore */}
+              {selectedCategory === 'All' ? 'All Apps' : selectedCategory} ({chain?.name || chainid && chainName[Number(chainid)] || "CELO"})
             </h2>
           </div>
           
           {selectedCategory === "All" && sortIds.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {sortIds.map(id => (
-                <AppCard key={id} id={id} chainId={chain?.id || celo.id} />
+                <AppCard key={id} id={id} chainId={chain?.id || Number(chainid) || celo.id} />
               ))}
             </div>
           ) : filterminiappids.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {filterminiappids.map(id => (
-                <AppCard key={id} id={id} chainId={chain?.id || celo.id} />
+                <AppCard key={id} id={id} chainId={chain?.id || Number(chainid) || celo.id} />
               ))}
             </div>
           ) : (
