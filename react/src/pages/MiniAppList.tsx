@@ -28,18 +28,18 @@ function MiniAppList() {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const { data: miniappids = [] } = useReadContract({
-    address: getContractAddress(chain?.id || celo.id),
+    address: getContractAddress(chain?.id || Number(chainid) || celo.id),
     abi: MiniAppGallery.abi,
     functionName: 'getAllApps',
-    chainId: chain?.id || celo.id,
+    chainId: (chain?.id || Number(chainid) || celo.id) as 8453 | 84532 | 11142220 | 42220,
   }) as { data: bigint[] | undefined };
 
   const { data: filterminiappids = [] } = useReadContract({
-    address: getContractAddress(chain?.id || celo.id),
+    address: getContractAddress(chain?.id ||  Number(chainid) || celo.id),
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByCategory',
     args: [selectedCategory],
-    chainId: chain?.id || celo.id,
+    chainId: (chain?.id || Number(chainid) || celo.id) as 8453 | 84532 | 11142220 | 42220,
   }) as { data: bigint[] | undefined };
 
   console.log(miniappids);

@@ -13,7 +13,7 @@ import { supportedNetworks } from '../utils/contractAddress';
 
 export function ConnectMenu() {
   const { authenticated, login } = usePrivy();
-  const { isConnected, address } = useAccount();
+  const { address } = useAccount();
   // const { connect, connectors } = useConnect();
   const { switchChain } = useSwitchChain();
  

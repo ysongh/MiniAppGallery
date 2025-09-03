@@ -42,6 +42,7 @@ function AppDetail() {
     address: getContractAddress(Number(networkid)),
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
+    chainId: Number(networkid) as 8453 | 84532 | 11142220 | 42220,
     args: [id]
   }) as { data: MiniApp | undefined };
 
@@ -49,6 +50,7 @@ function AppDetail() {
     address: getContractAddress(Number(networkid)),
     abi: MiniAppGallery.abi,
     functionName: 'getAppRatings',
+    chainId: Number(networkid) as 8453 | 84532 | 11142220 | 42220,
     args: [id]
   }) as { data: Review };
 
