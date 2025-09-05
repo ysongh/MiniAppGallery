@@ -5,6 +5,7 @@ import { useReadContract, useWriteContract } from 'wagmi';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress } from '../utils/format';
 import { getContractAddress } from '../utils/contractAddress';
+import { getBGColor } from '../utils/getColors';
 
 // Define types for the contract response
 interface MiniApp {
@@ -66,8 +67,8 @@ function AppCardWithEdit({ id, chainId }: { id: bigint, chainId: number }) {
         {/* App Icon */}
         <div className="flex-shrink-0">
           <div
-            className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-xl font-bold cursor-pointer"
-             onClick={() => navigate(`/app/${id}`)}
+            className={`${getBGColor(chainId)} w-16 h-16 rounded-xl flex items-center justify-center text-white text-xl font-bold cursor-pointer`}
+            onClick={() => navigate(`/app/${id}`)}
           >
             {firstLetter}
           </div>

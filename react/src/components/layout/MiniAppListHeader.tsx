@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { Upload } from 'lucide-react';
 
-function MiniAppListHeader() {
+import { getBGColor } from '../../utils/getColors';
+
+function MiniAppListHeader({ networkId } : { networkId: number }) {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-6">
+    <header className={`${getBGColor(networkId)} text-white p-6`}>
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between">
           <div>

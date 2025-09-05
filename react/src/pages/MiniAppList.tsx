@@ -48,7 +48,7 @@ function MiniAppList() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <MiniAppListHeader />
+      <MiniAppListHeader networkId={chain?.id || Number(chainid) || celo.id} />
       
       {/* Main Content */}
       <main className="container mx-auto px-4 py-6">
