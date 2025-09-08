@@ -132,6 +132,9 @@ function AppDetail() {
                       {miniapp?.category}
                     </span>
                   </div>
+                  <div className="prose max-w-none text-gray-700 mt-2">
+                    {miniapp?.description}
+                  </div>
                 </div>
                 <div className="mt-4 md:mt-0">
                   <button
@@ -175,14 +178,6 @@ function AppDetail() {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Description */}
-        <section className="bg-white rounded-lg shadow-md p-6 mb-4">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">About this app</h2>
-          <div className="prose max-w-none text-gray-700">
-            {miniapp?.description}
           </div>
         </section>
 
