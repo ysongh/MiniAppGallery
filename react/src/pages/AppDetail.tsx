@@ -188,19 +188,7 @@ function AppDetail() {
         {address && address !== miniapp?.developerAddress && <RatingSection 
           appId={id} address={address} chainId={chain?.id || 1}
         />}
-
-        {/* Action Buttons */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 md:hidden">
-          <a
-            href={miniapp?.appUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-lg transition-colors font-medium"
-          >
-            <ExternalLink className="w-5 h-5 mr-2" />
-            Open App
-          </a>
-        </div>
+        
       </main>
     </div>
   );
