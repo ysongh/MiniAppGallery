@@ -88,20 +88,24 @@ export function ConnectMenu() {
   console.log(isMiniApp)
 
   return (
-    <div className="flex justify-between gap-4 p-4 bg-blue-300">
-      {/* <button
-        className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
-        onClick={() => connect({ connector: connectors[0] })}
-      >
-        Connect Wallet Only
-      </button> */}
-      <h1 className="text-2xl font-bold">Mini App Gallery</h1>
-      <button
-        className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
-        onClick={() => login()}
-      >
-        Login with Privy
-      </button>
+    <div className="bg-blue-300">
+      <div className="container mx-auto py-3">
+        <div className="flex justify-between gap-4 ">
+          {/* <button
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
+            onClick={() => connect({ connector: connectors[0] })}
+          >
+            Connect Wallet Only
+          </button> */}
+          <h1 className="text-2xl font-bold">Mini App Gallery</h1>
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
+            onClick={() => login()}
+          >
+            Login with Privy
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
