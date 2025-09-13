@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
-function FormHeader() {
+import { getBGColor } from '../../utils/getColors';
+
+function FormHeader({ chainId }: { chainId: number }) {
   const navigate = useNavigate();
+
+  console.log(chainId, "chainId")
   
   return (
-    <header className="bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-6">
+    <header className={`${getBGColor(chainId)} text-white p-6`}>
       <div className="container mx-auto">
         <div className="flex items-center">
           <button
