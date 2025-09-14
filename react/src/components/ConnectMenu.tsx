@@ -49,7 +49,7 @@ export function ConnectMenu() {
     }
   };
 
-  if (authenticated) {
+  if (authenticated || isMiniApp) {
     return (
       <div className="bg-indigo-600 text-white px-6 md:px-20 py-3 shadow flex justify-between items-center">
         <div className="text-sm sm:text-base font-medium flex items-center">

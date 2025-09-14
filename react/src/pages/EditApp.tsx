@@ -148,7 +148,7 @@ function EditApp() {
   if (isSuccess) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <FormHeader />
+        <FormHeader chainId={Number(networkid) || 1} />
         
         <div className="container mx-auto px-4 py-10 flex-1 flex flex-col">
           <div className="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto flex flex-col items-center">
@@ -182,7 +182,7 @@ function EditApp() {
     
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <FormHeader />
+      <FormHeader chainId={Number(networkid) || 1} />
       
       {/* Main Content */}
       <div className="container mx-auto px-4 py-10 flex-1">
