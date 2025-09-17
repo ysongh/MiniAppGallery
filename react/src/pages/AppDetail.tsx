@@ -14,6 +14,7 @@ import ReviewsList from '../components/ReviewsList';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress, formatDate } from '../utils/format';
 import { getContractAddress } from '../utils/contractAddress';
+import { NetworkIds } from '../utils/types';
 
 interface MiniApp {
   name: string;
@@ -42,7 +43,7 @@ function AppDetail() {
     address: getContractAddress(Number(networkid)),
     abi: MiniAppGallery.abi,
     functionName: 'getAppDetails',
-    chainId: Number(networkid) as 8453 | 84532 | 11142220 | 42220,
+    chainId: Number(networkid) as NetworkIds,
     args: [id]
   }) as { data: MiniApp | undefined };
 
@@ -50,7 +51,7 @@ function AppDetail() {
     address: getContractAddress(Number(networkid)),
     abi: MiniAppGallery.abi,
     functionName: 'getAppRatings',
-    chainId: Number(networkid) as 8453 | 84532 | 11142220 | 42220,
+    chainId: Number(networkid) as NetworkIds,
     args: [id]
   }) as { data: Review };
 

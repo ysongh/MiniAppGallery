@@ -1,0 +1,1 @@
+export type NetworkIds = 8453 | 42161 | 42220;

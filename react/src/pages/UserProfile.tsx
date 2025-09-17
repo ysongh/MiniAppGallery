@@ -54,12 +54,12 @@ export default function UserProfile() {
     loadSDK();
   }, [])
 
-  const { data: baseSepoliaMiniappids = [] } = useReadContract({
-    address: getContractAddress(84532),
+  const { data: baseMiniappids = [] } = useReadContract({
+    address: getContractAddress(8453),
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByDeveloper',
     args: [address],
-    chainId: 84532,
+    chainId: 8453,
   }) as { data: bigint[] | undefined };
 
   const { data: celoMiniappids = [] } = useReadContract({
@@ -71,16 +71,16 @@ export default function UserProfile() {
   }) as { data: bigint[] | undefined };
 
   const { data: totalDonationsSent = 0 } = useReadContract({
-    address: getContractAddress(84532),
+    address: getContractAddress(8453),
     abi: MiniAppGallery.abi,
     functionName: 'totalDonationsSent',
     args: [address],
-    chainId: 84532,
+    chainId: 8453,
   }) as { data: bigint | undefined };
 
-  const symbol = chain?.id === 11142220 || 42220 ? "CELO" : "ETH";
+  const symbol = chain?.id === 42220 || 42220 ? "CELO" : "ETH";
 
-  console.log(baseSepoliaMiniappids, fid, result);
+  console.log(baseMiniappids, fid, result);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -175,14 +175,14 @@ export default function UserProfile() {
             {activeTab === 'developed' && 'Developed Apps'}
           </h2>
           <p className="text-gray-500 text-sm mt-1">
-            {activeTab === 'developed' && `You have developed ${baseSepoliaMiniappids.length} apps`}
+            {activeTab === 'developed' && `You have developed ${baseMiniappids.length} apps`}
           </p>
         </div>
         
         {/* Apps Grid */}
-        {baseSepoliaMiniappids.length > 0 || celoMiniappids.length > 0 ? (
+        {baseMiniappids.length > 0 || celoMiniappids.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {baseSepoliaMiniappids.map(id => (
+            {baseMiniappids.map(id => (
               <AppCardWithEdit key={id + "1"} id={id} chainId={84532} />
             ))}
             {celoMiniappids.map(id => (

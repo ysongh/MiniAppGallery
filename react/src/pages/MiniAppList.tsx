@@ -8,6 +8,7 @@ import AppCard from '../components/AppCard';
 // import FeaturedAppCard from '../components/FeaturedAppCard';
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { getContractAddress } from '../utils/contractAddress';
+import { NetworkIds } from '../utils/types';
 
 const categories = ["Social", "Finance", "NFTs", "Games", "Developer Tools", 
   "Communication", "Entertainment", "News", "Governance", "Shopping"];
@@ -31,7 +32,7 @@ function MiniAppList() {
     address: getContractAddress(chain?.id || Number(chainid) || celo.id),
     abi: MiniAppGallery.abi,
     functionName: 'getAllApps',
-    chainId: (chain?.id || Number(chainid) || celo.id) as 8453 | 84532 | 11142220 | 42220,
+    chainId: (chain?.id || Number(chainid) || celo.id) as NetworkIds,
   }) as { data: bigint[] | undefined };
 
   const { data: filterminiappids = [] } = useReadContract({
@@ -39,7 +40,7 @@ function MiniAppList() {
     abi: MiniAppGallery.abi,
     functionName: 'getAppsByCategory',
     args: [selectedCategory],
-    chainId: (chain?.id || Number(chainid) || celo.id) as 8453 | 84532 | 11142220 | 42220,
+    chainId: (chain?.id || Number(chainid) || celo.id) as NetworkIds,
   }) as { data: bigint[] | undefined };
 
   console.log(miniappids);
