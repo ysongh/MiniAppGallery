@@ -11,6 +11,11 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
       chainId: 8453
     },
+    arbitrum: {
+      url: `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_APIKEY}`,
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 42161
+    },
     alfajores: {
       url: "https://alfajores-forno.celo-testnet.org",
       accounts: [process.env.PRIVATE_KEY],
@@ -44,6 +49,14 @@ module.exports = {
         urls: {
           apiURL: "https://api.celoscan.io/api",
           browserURL: "https://celoscan.io/",
+        },
+      },
+      {
+        network: "arbitrum",
+        chainId: 42161,
+        urls: {
+          apiURL: "https://api.arbiscan.io/api",
+          browserURL: "https://arbiscan.io/",
         },
       },
     ],
