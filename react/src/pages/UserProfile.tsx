@@ -23,10 +23,6 @@ export default function UserProfile() {
   const [pfpUrl, setpfpUrl] = useState<string>("");
   const [isMiniApp, setIsMiniApp] = useState<Boolean>(false);
 
-  if (!authenticated) {
-    navigate("/");
-  }
-
   const result = useBalance({
     address,
     unit: 'ether', 
@@ -82,6 +78,15 @@ export default function UserProfile() {
 
   console.log(baseMiniappids, fid, result);
 
+  const logoutWallet = async () => {
+    if (authenticated) {
+      await logout();
+    } else {
+      disconnect() ;
+    }
+    navigate("/");
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -132,7 +137,7 @@ export default function UserProfile() {
             {/* Settings Button (Desktop) */}
             <div className="hidden md:block">
               <button
-                onClick={() => authenticated ? logout() : disconnect()}
+                onClick={logoutWallet}
                 className="ml-2 py-2 px-4 bg-red-600 text-white font-medium rounded hover:bg-red-700 disabled:bg-indigo-300 disabled:cursor-not-allowed"
               >
                 Disconnect
@@ -141,7 +146,7 @@ export default function UserProfile() {
 
             {/* Settings Button (Mobile) */}
             <div className="mt-4 md:hidden">
-              <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg w-full justify-center"  onClick={() => authenticated ? logout() : disconnect()}>
+              <button onClick={logoutWallet} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg w-full justify-center"  >
                 Disconnect
               </button>
             </div>
