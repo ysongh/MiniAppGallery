@@ -13,7 +13,7 @@ import { supportedNetworks } from '../utils/contractAddress';
 
 export function ConnectMenu() {
   const { authenticated, login } = usePrivy();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   // const { connect, connectors } = useConnect();
   const { switchChain } = useSwitchChain();
  
@@ -49,7 +49,7 @@ export function ConnectMenu() {
     }
   };
 
-  if (authenticated || isMiniApp) {
+  if (authenticated || (isMiniApp && isConnected)) {
     return (
       <div className="bg-indigo-600 text-white px-6 md:px-20 py-3 shadow flex justify-between items-center">
         <div className="text-sm sm:text-base font-medium flex items-center">
