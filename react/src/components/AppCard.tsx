@@ -38,25 +38,12 @@ function AppCard({ id, chainId }: { id: bigint, chainId: number }) {
     ? Number(miniapp.totalRating) / Number(miniapp.ratingCount)
     : 0;
   
-  // Get first letter of name safely
-  const firstLetter = miniapp && 'name' in miniapp ? miniapp.name.charAt(0) : '?';
-
   if (miniapp && !miniapp?.isActive) return null;
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 transition-all hover:shadow-lg">
       {/* Mobile landscape layout */}
       <div className="flex sm:block">
-        {/* App Icon */}
-        <div className="flex justify-center items-center p-4 sm:p-6 bg-gray-50 sm:bg-gray-50 flex-shrink-0">
-          <div
-            className={`${getBGColor(chainId)} w-16 h-16 sm:w-20 sm:h-20 rounded-xl  flex items-center justify-center text-white text-lg sm:text-xl font-bold cursor-pointer`}
-            onClick={() => navigate(`/app/${id}/${chainId}`)}
-          >
-            {firstLetter}
-          </div>
-        </div>
-        
         {/* App Info */}
         <div className="p-4 flex-1 flex flex-col justify-between sm:block">
           <div>

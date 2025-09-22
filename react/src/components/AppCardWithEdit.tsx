@@ -53,9 +53,6 @@ function AppCardWithEdit({ id, chainId }: { id: bigint, chainId: number }) {
   ? Number(miniapp.totalRating) / Number(miniapp.ratingCount)
   : 0;
   
-  // Get first letter of name safely
-  const firstLetter = miniapp && 'name' in miniapp ? miniapp.name.charAt(0) : '?';
-
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200 transition-all hover:shadow-md">
       <div className="mt-1 text-center">
@@ -63,17 +60,7 @@ function AppCardWithEdit({ id, chainId }: { id: bigint, chainId: number }) {
           {chainId === 84532 ? "Base Sepolia" : "Celo"}
         </span>
       </div>
-      <div className="flex p-4">
-        {/* App Icon */}
-        <div className="flex-shrink-0">
-          <div
-            className={`${getBGColor(chainId)} w-16 h-16 rounded-xl flex items-center justify-center text-white text-xl font-bold cursor-pointer`}
-            onClick={() => navigate(`/app/${id}`)}
-          >
-            {firstLetter}
-          </div>
-        </div>
-        
+      <div className="flex p-4">        
         {/* App Info */}
         <div className="ml-4 flex-grow">
           <h3 className="font-bold text-gray-800">

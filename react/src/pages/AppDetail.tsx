@@ -114,13 +114,6 @@ function AppDetail() {
         {/* App Overview */}
         <section className="bg-white rounded-lg shadow-md p-6 mb-6">
           <div className="flex flex-col md:flex-row">
-            {/* App Icon */}
-            <div className="flex-shrink-0 flex items-start justify-center md:justify-start mb-6 md:mb-0">
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-3xl font-bold">
-                {miniapp?.name?.charAt(0)}
-              </div>
-            </div>
-
             {/* App Info */}
             <div className="md:ml-6 flex-grow">
               <div className="flex flex-col md:flex-row md:items-center justify-between">
