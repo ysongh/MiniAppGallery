@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@farcaster/frame-sdk": "latest",
-    "@farcaster/frame-wagmi-connector": "0.0.53",
+    "@farcaster/miniapp-wagmi-connector": "^1.0.0",
     "@privy-io/react-auth": "^2.13.8",
     "@privy-io/wagmi": "^1.0.3",
     "@selfxyz/core": "1.0.7-beta.1",

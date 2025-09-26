@@ -1,11 +1,11 @@
-import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
+import { farcasterMiniApp as miniAppConnector } from '@farcaster/miniapp-wagmi-connector'
 import { createConfig } from '@privy-io/wagmi';
 import { http } from 'wagmi';
 import { arbitrum, base, celo } from "wagmi/chains";
 
 export const config = createConfig({
   chains: [arbitrum, base, celo],
-  connectors: [farcasterFrame()],
+  connectors: [miniAppConnector()],
   // @ts-ignore
   transports: {
     [arbitrum.id]: http(),
