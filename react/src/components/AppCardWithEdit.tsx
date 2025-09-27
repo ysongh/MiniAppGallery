@@ -1,11 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Star, ExternalLink } from 'lucide-react';
 import { useReadContract, useWriteContract } from 'wagmi';
 
 import MiniAppGallery from '../artifacts/contracts/MiniAppGallery.sol/MiniAppGallery.json';
 import { formatAddress } from '../utils/format';
 import { getContractAddress } from '../utils/contractAddress';
-import { getBGColor } from '../utils/getColors';
 
 // Define types for the contract response
 interface MiniApp {
@@ -19,8 +18,6 @@ interface MiniApp {
 }
 
 function AppCardWithEdit({ id, chainId }: { id: bigint, chainId: number }) {
-  const navigate = useNavigate();
-
   const { data: miniapp } = useReadContract({
     address: getContractAddress(chainId),
     abi: MiniAppGallery.abi,
