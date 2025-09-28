@@ -5,6 +5,7 @@ import {
   useAccount,
   useChains,
   useChainId,
+  useDisconnect,
   useSwitchChain,
 } from "wagmi";
 import { usePrivy } from '@privy-io/react-auth';
@@ -12,9 +13,10 @@ import { usePrivy } from '@privy-io/react-auth';
 import { supportedNetworks } from '../utils/contractAddress';
 
 export function ConnectMenu() {
-  const { authenticated, login } = usePrivy();
+  const { authenticated, login, logout } = usePrivy();
   const { address, isConnected } = useAccount();
   // const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   const { switchChain } = useSwitchChain();
  
   const chains = useChains();
@@ -36,6 +38,17 @@ export function ConnectMenu() {
     loadSDK();
   }, [])
 
+  useEffect(() => {
+    const logoutWallet = async () => {
+      if (authenticated) {
+        await logout();
+      } else {
+        disconnect() ;
+      }
+    }
+    if (!isConnected) logoutWallet();
+  }, [])
+  
    const handleSwitchNetwork = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedNetwork = supportedNetworks.find(network => network.id.toString() === e.target.value);
     
