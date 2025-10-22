@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import pkg from 'body-parser';
 
+import miniappRoutes from './routes/miniapp.js';
+
 dotenv.config();
 
 const { json } = pkg;
@@ -13,6 +15,7 @@ app.use(cors());
 
 app.use(json());
 
+app.use('/api/miniapp', miniappRoutes);
 app.get('/', (req, res) => res.send('It Work'));
 
 app.use((err, req, res, next) => {
