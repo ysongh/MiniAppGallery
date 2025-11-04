@@ -59,13 +59,10 @@ function AppCardWithEdit({ id, chainId }: { id: bigint, chainId: number }) {
       </div>
       <div className="flex p-4">        
         {/* App Info */}
-        <div className="ml-4 flex-grow">
+        <div className="ml-4">
           <h3 className="font-bold text-gray-800">
             {miniapp && 'name' in miniapp ? miniapp.name : 'Loading...'}
           </h3>
-          <p className="text-gray-500 text-xs">
-            {miniapp && 'developerAddress' in miniapp ? formatAddress(miniapp.developerAddress) : '-'}
-          </p>
           
           <div className="flex items-center mt-1">
             <div className="flex mr-1">
