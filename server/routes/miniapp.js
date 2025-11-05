@@ -1,12 +1,32 @@
 import express from 'express';
 import { config as loadEnv } from 'dotenv';
 
+import MiniApp from '../models/Miniapp.js';
+
 loadEnv();
 
 const router = express.Router();
 
 const API_BASE = 'https://api.neynar.com';
-const API_KEY = process.env.NEYNAR_API_KEY; 
+const API_KEY = process.env.NEYNAR_API_KEY;
+
+// GET - Fetch all mini apps
+router.get('/miniapps', async (req, res) => {
+  try {
+    const miniApps = await MiniApp.find();
+    res.json({
+      success: true,
+      count: miniApps.length,
+      data: miniApps
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching mini apps',
+      error: error.message
+    });
+  }
+});
 
 router.get('/detail', async (req, res) => {
   const params = new URLSearchParams();

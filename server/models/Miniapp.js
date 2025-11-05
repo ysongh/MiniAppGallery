@@ -18,4 +18,4 @@ const miniAppSchema = new mongoose.Schema({
 
 const MiniApp = mongoose.model('MiniApp', miniAppSchema);
 
-module.exports = MiniApp;
+export default MiniApp;
