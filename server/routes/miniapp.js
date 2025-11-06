@@ -28,6 +28,43 @@ router.get('/miniapps', async (req, res) => {
   }
 });
 
+// POST - Create or increment visits (upsert)
+router.post('/miniapps/:appId/visit', async (req, res) => {
+  try {
+    const { appId } = req.params;
+    
+    if (!appId) {
+      return res.status(400).json({
+        success: false,
+        message: 'appId is required'
+      });
+    }
+    
+    // Find the mini app and increment visits, or create if not exists
+    const miniApp = await MiniApp.findOneAndUpdate(
+      { appId },
+      { $inc: { visits: 1 } },
+      { 
+        new: true,           // Return updated document
+        upsert: true,        // Create if doesn't exist
+        setDefaultsOnInsert: true
+      }
+    );
+    
+    res.json({
+      success: true,
+      data: miniApp,
+      message: miniApp.visits === 1 ? 'Mini app created' : 'Visit recorded'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error recording visit',
+      error: error.message
+    });
+  }
+});
+
 router.get('/detail', async (req, res) => {
   const params = new URLSearchParams();
   try {
