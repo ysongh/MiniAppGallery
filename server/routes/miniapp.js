@@ -28,6 +28,31 @@ router.get('/miniapps', async (req, res) => {
   }
 });
 
+// GET - Fetch single mini app by appId
+router.get('/miniapps/:appId', async (req, res) => {
+  try {
+    const miniApp = await MiniApp.findOne({ appId: req.params.appId });
+    
+    if (!miniApp) {
+      return res.status(404).json({
+        success: false,
+        message: 'Mini app not found'
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: miniApp
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching mini app',
+      error: error.message
+    });
+  }
+});
+
 // POST - Create or increment visits (upsert)
 router.post('/miniapps/:appId/visit', async (req, res) => {
   try {
