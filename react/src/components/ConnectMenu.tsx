@@ -101,7 +101,7 @@ export function ConnectMenu() {
   console.log(isMiniApp)
 
   return (
-    <div className="bg-blue-300">
+    <div className="bg-blue-300 px-4">
       <div className="container mx-auto py-3">
         <div className="flex justify-between gap-4 ">
           {/* <button
