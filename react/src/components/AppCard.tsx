@@ -36,6 +36,28 @@ function AppCard({ id, chainId }: { id: bigint, chainId: number }) {
   const rating = miniapp && 'ratingCount' in miniapp && miniapp.ratingCount && miniapp.ratingCount > 0n
     ? Number(miniapp.totalRating) / Number(miniapp.ratingCount)
     : 0;
+
+  const viewApp = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVERURL}/api/miniapp/miniapps/${id}/visit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to record visit');
+      }
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      navigate(`/app/${id}/${chainId}`);
+    }
+  }
   
   if (miniapp && !miniapp?.isActive) return null;
 
@@ -91,7 +113,7 @@ function AppCard({ id, chainId }: { id: bigint, chainId: number }) {
             </a> */}
             <div
               className="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm"
-              onClick={() => navigate(`/app/${id}/${chainId}`)}
+              onClick={viewApp}
             >
               View App
             </div>
