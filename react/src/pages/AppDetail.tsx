@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   ArrowLeft,
   Star,
   Calendar,
   ExternalLink,
+  PersonStanding,
   Tag,
 } from 'lucide-react';
 import { useAccount, useReadContract } from 'wagmi';
@@ -36,8 +38,35 @@ type Review = {
 
 function AppDetail() {
   const { id, networkid } = useParams<{ id: string, networkid: string }>();
-
   const { address, chain } = useAccount();
+
+   const [visitCount, setVisitCount] = useState<number>(0);
+
+  useEffect(() => {
+   getViewCount();
+  }, [])
+
+  const getViewCount = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVERURL}/api/miniapp/miniapps/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to record visit');
+      }
+      console.log(data);
+      setVisitCount(data?.data?.visits);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  
 
   const { data: miniapp } = useReadContract({
     address: getContractAddress(Number(networkid)),
@@ -166,9 +195,13 @@ function AppDetail() {
                   </div>
                   <span>{rating ? rating.toFixed(1) : '-'}</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center mr-6">
                   <Calendar className="w-4 h-4 mr-1 text-gray-500" />
                   <span>Released {formatDate(miniapp?.registrationDate)}</span>
+                </div>
+                 <div className="flex items-center">
+                  <PersonStanding className="w-4 h-4 mr-1 text-gray-500" />
+                  <span>{visitCount} Visited</span>
                 </div>
               </div>
             </div>
