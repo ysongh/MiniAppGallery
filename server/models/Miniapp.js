@@ -11,7 +11,14 @@ const miniAppSchema = new mongoose.Schema({
     type: Number,
     default: 0,
     min: 0
-  }
+  },
+  visitedIPs: [{
+    ip: String,
+    lastVisit: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 }, {
   timestamps: true // Adds createdAt and updatedAt fields automatically
 });

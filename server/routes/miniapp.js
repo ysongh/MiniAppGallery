@@ -65,21 +65,63 @@ router.post('/miniapps/:appId/visit', async (req, res) => {
       });
     }
     
-    // Find the mini app and increment visits, or create if not exists
-    const miniApp = await MiniApp.findOneAndUpdate(
-      { appId },
-      { $inc: { visits: 1 } },
-      { 
-        new: true,           // Return updated document
-        upsert: true,        // Create if doesn't exist
-        setDefaultsOnInsert: true
-      }
+    // Get IP address from request
+    const ip = req.ip || 
+               req.headers['x-forwarded-for']?.split(',')[0] || 
+               req.connection.remoteAddress ||
+               req.socket.remoteAddress;
+    
+    // Time window to prevent duplicate visits (24 hours in milliseconds)
+    const visitWindow = 24 * 60 * 60 * 1000;
+    const cutoffTime = new Date(Date.now() - visitWindow);
+    
+    // Find existing mini app
+    let miniApp = await MiniApp.findOne({ appId });
+    
+    if (!miniApp) {
+      // Create new mini app with first visit
+      miniApp = new MiniApp({
+        appId,
+        visits: 1,
+        visitedIPs: [{ ip, lastVisit: new Date() }]
+      });
+      await miniApp.save();
+      
+      return res.json({
+        success: true,
+        data: miniApp,
+        message: 'Mini app created',
+        visitCounted: true
+      });
+    }
+    
+    // Check if IP has visited recently
+    const recentVisit = miniApp.visitedIPs.find(
+      v => v.ip === ip && v.lastVisit > cutoffTime
     );
+    
+    if (recentVisit) {
+      // IP visited recently, don't increment
+      return res.json({
+        success: true,
+        data: miniApp,
+        message: 'Visit already recorded from this IP',
+        visitCounted: false
+      });
+    }
+    
+    // Remove old IP entry if exists and add new one
+    miniApp.visitedIPs = miniApp.visitedIPs.filter(v => v.ip !== ip);
+    miniApp.visitedIPs.push({ ip, lastVisit: new Date() });
+    miniApp.visits += 1;
+    
+    await miniApp.save();
     
     res.json({
       success: true,
       data: miniApp,
-      message: miniApp.visits === 1 ? 'Mini app created' : 'Visit recorded'
+      message: 'Visit recorded',
+      visitCounted: true
     });
   } catch (error) {
     res.status(500).json({
