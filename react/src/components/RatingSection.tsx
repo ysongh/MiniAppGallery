@@ -100,15 +100,6 @@ const RatingSection = ({ appId, address, chainId }: { appId: string | undefined,
           ))}
         </div>
         
-        {/* Rating Description */}
-        <p className="text-gray-600 mb-4 h-6">
-          {rating === 1 && "Poor - Needs significant improvement"}
-          {rating === 2 && "Fair - Has some issues to address"}
-          {rating === 3 && "Good - Meets basic expectations"}
-          {rating === 4 && "Very Good - Exceeds expectations"}
-          {rating === 5 && "Excellent - Outstanding experience"}
-        </p>
-        
         {/* Feedback Textarea */}
         <div className="w-full mb-4">
           <label htmlFor="feedback" className="block text-sm font-medium text-gray-700 mb-1">
